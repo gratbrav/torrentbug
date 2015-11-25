@@ -1,0 +1,9 @@
+{
+    "config": {
+        "vendor-dir": "src/plugins"
+    },
+    "require": {
+        "components/jquery": "2.1.4",
+        "twitter/bootstrap": "3.3.5"
+    }
+}
