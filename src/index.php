@@ -656,6 +656,7 @@ $drivespace = getDriveSpace($cfg["path"]);
 
 ************************************************************/
 ?>
+<!doctype html>
 <html>
 <head>
     <title><?php echo $cfg["pagetitle"] ?></title>

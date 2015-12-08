@@ -25,6 +25,7 @@
 // ADODB support.
 include_once('db.php');
 include_once("settingsfunctions.php");
+include_once './Class/autoload.php';
 
 // Create Connection.
 $db = getdb();
@@ -78,16 +79,14 @@ ob_start();
 
 <?php
 	$loginFailed = 0;
- 
-$user = strtolower(getRequestVar('username'));
-
-$iamhim = addslashes(getRequestVar('iamhim'));
+ 	$user = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
+ 	$iamhim = filter_input(INPUT_POST, 'iamhim', FILTER_SANITIZE_STRING);
 
 $create_time = time();
 
 // Check for user
-if(!empty($user) && !empty($iamhim))
-{
+	if(!empty($user) && !empty($iamhim)) {
+		
     $sec_code = getRequestVar('security');
     $rnd_number = getRequestVar('rnd_chk');
     $log_msg = "";
@@ -165,9 +164,15 @@ if(!empty($user) && !empty($iamhim))
         
     if ($allow_login)
     {
-        $sql = "SELECT uid, hits, hide_offline, theme, language_file FROM tf_users WHERE user_id=".$db->qstr($user)." AND password=".$db->qstr(md5($iamhim));
-        $result = $db->Execute($sql);
-        showError($db,$sql);
+    	$auth = new Class_User_Authentication($user, $iamhim);
+    	$result = $auth->checkLogin();
+    	
+    	//print_r($result);
+    	//var_dump($result);
+    	//exit;
+       // $sql = "SELECT uid, hits, hide_offline, theme, language_file FROM tf_users WHERE user_id=".$db->qstr($user)." AND password=".$db->qstr(md5($iamhim));
+       // $result = $db->Execute($sql);
+       // showError($db,$sql);
     
         list(
         $uid,
@@ -223,7 +228,6 @@ if(!empty($user) && !empty($iamhim))
     }
 }
 ?>
-
 <!doctype html>
 <html>
 <head>
@@ -301,9 +305,4 @@ $(document).ready(function() {
 </script>
 </body>
 </html>
-
-
-<?php
-ob_end_flush();
-?>
-
+<?php ob_end_flush(); ?>
