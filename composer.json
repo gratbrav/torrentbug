@@ -4,6 +4,6 @@
     },
     "require": {
         "components/jquery": "2.1.4",
-        "twitter/bootstrap": "3.3.5"
+        "twitter/bootstrap": "4.0.0-alpha"
     }
 }
