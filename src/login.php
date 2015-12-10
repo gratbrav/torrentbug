@@ -32,78 +32,32 @@ $db = getdb();
 
 loadSettings();
 
-if (!defined("IMG_JPG")) define("IMG_JPG", 2);
-    
-
-if (in_array("gfx", $_REQUEST) && $_REQUEST["gfx"] == "gfx" && file_exists("images/code_bg.jpg"))
-{
-    // Check gd is loaded AND that jpeg image type is supported:
-    if (extension_loaded('gd') && (imagetypes() & IMG_JPG))
-    {
-        $code = getCode($_REQUEST["rnd"]);
-
-        $image = ImageCreateFromJPEG("images/code_bg.jpg");
-        $text_color = ImageColorAllocate($image, 80, 80, 80);
-        
-        Header("Content-type: image/jpeg");
-        ImageString ($image, 5, 12, 2, $code, $text_color);
-        ImageJPEG($image, '', 75);
-        ImageDestroy($image);
-        die();
-    }
-    else
-    {
-        header("Content-type: application/octet-stream\n");
-        header("Content-transfer-encoding: binary\n");
-
-        $fp = popen("cat images/red.gif", "r");
-        fpassthru($fp);
-        pclose($fp);
-
-        die();
-    }
-}
-
 session_name("TorrentFlux");
 session_start();
 include_once("config.php");
 include("themes/".$cfg["default_theme"]."/index.php");
 global $cfg;
-if(isset($_SESSION['user']))
-{
-    header("location: index.php");
-    exit;
-}
-ob_start();
-?>
 
-<?php
+	if(isset($_SESSION['user'])) {
+	    header("location: index.php");
+	    exit;
+	}
+	
+	ob_start();
+
+
 	$loginFailed = 0;
  	$user = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
  	$iamhim = filter_input(INPUT_POST, 'iamhim', FILTER_SANITIZE_STRING);
 
-$create_time = time();
+	$create_time = time();
 
-// Check for user
+	// Check for user
 	if(!empty($user) && !empty($iamhim)) {
 		
-    $sec_code = getRequestVar('security');
-    $rnd_number = getRequestVar('rnd_chk');
-    $log_msg = "";
-    $allow_login = true;
-        
-    if (extension_loaded('gd') && (imagetypes() & IMG_JPG) && array_key_exists("security_code",$cfg) && $cfg["security_code"])
-    {
-        if ($sec_code == getCode($rnd_number))
-        {
-            $allow_login = true;
-        }
-        else
-        {
-            $allow_login = false;
-            $log_msg = "Invalid Security Code: ". $sec_code . " for " . $user;
-        }
-    }
+		$log_msg = "";
+		$allow_login = true;
+
     
     /* First User check */
     $next_loc = "index.php";
@@ -166,14 +120,8 @@ $create_time = time();
     {
     	$auth = new Class_User_Authentication($user, $iamhim);
     	$result = $auth->checkLogin();
+    	showError($db,$sql);
     	
-    	//print_r($result);
-    	//var_dump($result);
-    	//exit;
-       // $sql = "SELECT uid, hits, hide_offline, theme, language_file FROM tf_users WHERE user_id=".$db->qstr($user)." AND password=".$db->qstr(md5($iamhim));
-       // $result = $db->Execute($sql);
-       // showError($db,$sql);
-    
         list(
         $uid,
         $hits,
@@ -221,8 +169,7 @@ $create_time = time();
         }
     }
     
-    if (!$allow_login)
-    {
+    if (!$allow_login) {
         AuditAction($cfg["constants"]["access_denied"], $log_msg);
         $loginFailed = 1;
     }
