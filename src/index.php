@@ -67,7 +67,7 @@ if (checkQManager() == 0 )
             }
             else
             {
-                $messages .= "<b>Error</b> TorrentFlux settings are not correct (path is not valid) -- please contact an admin.<br>";
+                $messages .= "<strong>Error</strong> TorrentFlux settings are not correct (path is not valid) -- please contact an admin.<br>";
             }
         }
     }
@@ -105,7 +105,7 @@ if(!empty($torrent))
             }
             else
             {
-                $messages .= "<b>Error</b> TorrentFlux settings are not correct (path to python script is not valid) -- please contact an admin.<br>";
+                $messages .= "<strong>Error</strong> TorrentFlux settings are not correct (path to python script is not valid) -- please contact an admin.<br>";
             }
         }
 
@@ -235,7 +235,7 @@ if(!empty($torrent))
                 }
                 else
                 {
-                    $messages .= "<b>Error</b> TorrentFlux settings are not correct (path is not writable) -- please contact an admin.<br>";
+                    $messages .= "<strong>Error</strong> TorrentFlux settings are not correct (path is not writable) -- please contact an admin.<br>";
                 }
             }
         }
@@ -307,7 +307,7 @@ if(!empty($torrent))
             // Must be using the Original BitTorrent Client
             // This is now being required to allow Queing functionality
             //$command = "cd " . $cfg["path"] . $owner . "; nohup " . $cfg["btphpbin"] . " ".$runtime." ".$sharekill." ".$cfg["torrent_file_path"].$alias.".stat ".$owner." --responsefile \"".$cfg["torrent_file_path"].$torrent."\" --display_interval 5 --max_download_rate ". $drate ." --max_upload_rate ".$rate." --max_uploads ".$maxuploads." --minport ".$minport." --maxport ".$maxport." --rerequest_interval ".$rerequest." ".$cfg["cmd_options"]." > /dev/null &";
-            $messages .= "<b>Error</b> BitTornado is only supported Client at this time.<br>";
+            $messages .= "<strong>Error</strong> BitTornado is only supported Client at this time.<br>";
         }
 
         // write the session to close so older version of PHP will not hang
@@ -416,7 +416,7 @@ if(! $url_upload == '')
         if (is_file($cfg["torrent_file_path"].$file_name))
         {
             // Error
-            $messages .= "<b>Error</b> with (<b>".htmlentities($file_name)."</b>), the file already exists on the server.<br><center><a href=\"".$_SERVER['PHP_SELF']."\">[Refresh]</a></center>";
+            $messages .= "<strong>Error</strong> with (<b>".htmlentities($file_name)."</b>), the file already exists on the server.<br><center><a href=\"".$_SERVER['PHP_SELF']."\">[Refresh]</a></center>";
             $ext_msg = "DUPLICATE :: ";
         }
         else
@@ -429,7 +429,7 @@ if(! $url_upload == '')
     }
     else
     {
-        $messages .= "<b>Error</b> Getting the File (<b>".htmlentities($file_name)."</b>), Could be a Dead URL.<br><center><a href=\"".$_SERVER['PHP_SELF']."\">[Refresh]</a></center>";
+        $messages .= "<strong>Error</strong> Getting the File (<b>".htmlentities($file_name)."</b>), Could be a Dead URL.<br><center><a href=\"".$_SERVER['PHP_SELF']."\">[Refresh]</a></center>";
     }
 
     if ($messages == "")
@@ -462,7 +462,7 @@ if(!empty($_FILES['upload_file']['name']))
             if (is_file($cfg["torrent_file_path"].$file_name))
             {
                 // Error
-                $messages .= "<b>Error</b> with (<b>".htmlentities($file_name)."</b>), the file already exists on the server.<br><center><a href=\"".$_SERVER['PHP_SELF']."\">[Refresh]</a></center>";
+                $messages .= "<strong>Error</strong> with (<b>".htmlentities($file_name)."</b>), the file already exists on the server.<br><center><a href=\"".$_SERVER['PHP_SELF']."\">[Refresh]</a></center>";
                 $ext_msg = "DUPLICATE :: ";
             }
             else
@@ -662,7 +662,13 @@ $drivespace = getDriveSpace($cfg["path"]);
     <title><?php echo $cfg["pagetitle"] ?></title>
     <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
-    <LINK REL="StyleSheet" HREF="themes/<?php echo $cfg["theme"] ?>/style.css" TYPE="text/css">
+	<link rel="stylesheet" href="./plugins/twitter/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
+	<link rel="styleSheet" href="themes/<?php echo $cfg["theme"] ?>/style.css" type="text/css">
+	
+	<script src="./plugins/components/jquery/jquery.min.js"></script>
+	<script src="./plugins/twitter/bootstrap/dist/js/bootstrap.min.js"></script>   
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <META HTTP-EQUIV="Pragma" CONTENT="no-cache" charset="<?php echo _CHARSET ?>">
 <?php
     if(!isset($_SESSION['prefresh']) || ($_SESSION['prefresh'] == true))
@@ -706,96 +712,99 @@ function ConfirmDelete(file)
 }
 </script>
 </head>
-
+<style>
+.bd-example {
+	margin-left: 0;
+	margin-right: 0;
+	margin-bottom: 0;
+	padding: 1.5rem;
+	border-width: .2rem;
+	position: relative;
+	padding: 1rem;
+	margin: 1rem -1rem;
+	border: solid white;
+}
+</style>
 <body onLoad="UpdateRefresh();" topmargin="8" bgcolor="<?php echo $cfg["main_bgcolor"] ?>">
 
-<div align="center">
+<?php
+	// Does the user have messages?
+	$sql = "select count(*) from tf_messages where to_user='".$cfg['user']."' and IsNew=1";
+	
+	$number_messages = $db->GetOne($sql);
+	showError($db,$sql);
+	$countMessages = '';
+	if ($number_messages > 0) {
+		$countMessages = ' (' . $number_messages . ')';
+	}
+?>
 
-<?php
-if ($messages != "")
-{
-?>
-<table border="1" cellpadding="10" bgcolor="#ff9b9b">
-<tr>
-    <td><div align="center"><?php echo $messages ?></div></td>
-</tr>
-</table><br><br>
-<?php
-}
-?>
-<table border="0" cellpadding="0" cellspacing="0" width="760">
-<tr>
-    <td>
-<table border="1" bordercolor="<?php echo $cfg["table_border_dk"] ?>" cellpadding="4" cellspacing="0" width="100%">
-<tr>
-    <td colspan="2" background="themes/<?php echo $cfg["theme"] ?>/images/bar.gif">
-    <?php DisplayTitleBar($cfg["pagetitle"]); ?>
-    </td>
-</tr>
-<tr>
-    <td bgcolor="<?php echo $cfg["table_header_bg"] ?>">
-    <table width="100%" cellpadding="3" cellspacing="0" border="0">
-    <tr>
-        <form name="form_file" action="index.php" method="post" enctype="multipart/form-data">
-        <td>
-        <?php echo _SELECTFILE ?>:<br>
-        <input type="File" name="upload_file" size="40">
-        <input type="Submit" value="<?php echo _UPLOAD ?>">
-        </td>
-        </form>
-    </tr>
-    <tr>
-        <form name="form_url" action="index.php" method="post">
-        <td>
-        <hr>
-        <?php echo _URLFILE ?>:<br>
-        <input type="text" name="url_upload" size="50">
-        <input type="Submit" value="<?php echo _GETFILE ?>">
-        </td>
-        </form>
-    </tr>
-<?php
-if ($cfg["enable_search"])
-{
-?>
-    <tr>
-        <form name="form_search" action="torrentSearch.php" method="get">
-        <td>
-        <hr>
-        Torrent <?php echo _SEARCH ?>:<br>
-        <input type="text" name="searchterm" size="30" maxlength="50">
-<?php
-        echo buildSearchEngineDDL($cfg["searchEngine"])
-?>
-        <input type="Submit" value="<?php echo _SEARCH ?>">
-        </td>
-        </form>
-    </tr>
-<?php
-}
-?>
-    </table>
-
-    </td>
-    <td bgcolor="<?php echo $cfg["table_data_bg"] ?>" width="310" valign="top">
-        <table width="100%" cellpadding="1" border="0">
-        <tr>
-        <td valign="top">
-        <b><?php echo _TORRENTLINKS ?>:</b><br>
-<?php
-        $arLinks = GetLinks();
-        if (is_array($arLinks))
-        {
-            foreach($arLinks as $link)
-            {
-                echo "<a href=\"".$link['url']."\" target=\"_blank\"><img src=\"images/arrow.gif\" width=9 height=9 title=\"".$link['url']."\" border=0 align=\"baseline\">".$link['sitename']."</a><br>\n";
-            }
-        }
-        echo "</ul></td>";
+<div class="container">
+	<div class="row">
+		<nav class="navbar navbar-light " style="background-color: #e3f2fd;">
+			<div class="col-sm-12 nav navbar-nav">
+				<a class="nav-item nav-link active" href="index.php"><?php echo _TORRENTS ?> <span class="sr-only">(current)</span></a>
+				<a class="nav-item nav-link" href="dir.php"><?php echo _DIRECTORYLIST ?></a>
+				<a class="nav-item nav-link" href="history.php"><?php echo _UPLOADHISTORY ?></a>
+				<a class="nav-item nav-link" href="profile.php"><?php echo _MYPROFILE ?></a>
+				<a class="nav-item nav-link" href="readmsg.php"><?php echo _MESSAGES ?><?php echo $countMessages ?></a>
+				<?php if (IsAdmin()) { ?>
+					<a class="nav-item nav-link" href="admin.php"><?php echo _ADMINISTRATION ?></a>
+				<?php } ?>
+				<a class="nav-item nav-link pull-right" href="logout.php">Logout</a>
+			</div>
+			
+			<div class="col-sm-12 nav navbar-nav" style="margin-left:16px;">
+				<a class="nav-item nav-link" href="readrss.php"><small>RSS Torrents</small></a>
+				<a class="nav-item nav-link" href="drivespace.php"><small><?php echo _DRIVESPACE ?></small></a>
+				<a class="nav-item nav-link" href="who.php"><small><?php echo _SERVERSTATS ?></small></a>
+				<a class="nav-item nav-link" href="all_services.php"><small><?php echo _ALL ?></small></a>
+				<a class="nav-item nav-link" href="dir.php"><small><?php echo _DIRECTORYLIST ?></small></a>
+				<a class="nav-item nav-link" href="dir.php?dir=<?php echo $cfg["user"] ?>"><small>My Directory</small></a>
+			</div>
+		</nav>
 
         $arUsers = GetUsers();
         $arOnlineUsers = array();
         $arOfflineUsers = array();
+
+<div class="container">
+	<div class="row">
+		<div class="col-sm-6">
+		 
+			<fieldset class="form-group bd-example" style="margin-right:-10px">
+				<form name="form_file" action="index.php" method="post" enctype="multipart/form-data">
+	    			<label for="upload_file"><?php echo _SELECTFILE ?></label>
+   	 				<input type="file" name="upload_file" id="upload_file" class="form-control" />
+   		 			<input type="submit" value="<?php echo _UPLOAD ?>" class="btn btn-primary pull-right" style="margin-top:6px;" />
+    			</form>
+  			</fieldset>
+  			
+  			<fieldset class="form-group bd-example" style="margin-right:-10px">
+  				<form name="form_url" action="index.php" method="post">
+    				<label for="url_upload"><?php echo _URLFILE ?></label>
+    				<input type="text" name="url_upload" id="url_upload" class="form-control" />
+    				<input type="submit" value="<?php echo _UPLOAD ?>" class="btn btn-primary pull-right" style="margin-top:6px;" />
+    			</form>
+  			</fieldset>
+  			
+  			<?php if ($cfg["enable_search"]) { ?>
+			<fieldset class="form-group bd-example" style="margin-right:-10px">
+				<form name="form_search" action="torrentSearch.php" method="get">
+    				<label for="searchterm">Torrent <?php echo _SEARCH ?></label>
+    				<input type="text" name="searchterm" id="searchterm" class="form-control" />
+    				<?php echo buildSearchEngineDDL($cfg["searchEngine"]) ?>
+    				<input type="submit" value="<?php echo _SEARCH ?>" class="btn btn-primary pull-right" style="margin-top:6px;" />
+    			</form>
+  			</fieldset>
+  			<?php } ?>
+
+		</div>
+		<div class="col-sm-6">
+		<?php 
+			$arUsers = GetUsers();
+			$arOnlineUsers = array();
+			$arOfflineUsers = array();
 
         for($inx = 0; $inx < count($arUsers); $inx++)
         {
@@ -808,214 +817,192 @@ if ($cfg["enable_search"])
                 array_push($arOfflineUsers, $arUsers[$inx]);
             }
         }
+		
+		?>
+  			<fieldset class="form-group bd-example" style="margin-left:-10px">
+  				<table class="table table-striped">
+  				<thead>
+    				<tr>
+      					<th style="color:#5CB85C"><?php echo _ONLINE ?></th>
+				    </tr>
+  				</thead>
+  				<tbody>
+  				<?php for($inx = 0; $inx < count($arOnlineUsers); $inx++) { ?>
+	                <tr>
+						<td scope="row">
+							<a href="message.php?to_user=<?php echo $arOnlineUsers[$inx] ?>">
+								<?php echo $arOnlineUsers[$inx] ?>
+							</a>
+						</td>
+					</tr>
+    
+    			<?php } ?>
+				</tbody>
+				</table>
+				
+				<table class="table table-striped">
+  				<thead>
+    				<tr>
+      					<th style="color:#D9534F"><?php echo _OFFLINE ?></th>
+				    </tr>
+  				</thead>
+  				<tbody>
+  				<?php for($inx = 0; $inx < count($arOfflineUsers); $inx++) { ?>
+	                <tr>
+						<td scope="row">
+							<a href="message.php?to_user=<?php echo $arOfflineUsers[$inx] ?>">
+								<?php echo $arOfflineUsers[$inx] ?>
+							</a>
+						</td>
+					</tr>
+    
+    			<?php } ?>
+				</tbody>
+				</table>
+			</fieldset>
+			
+  			<fieldset class="form-group bd-example" style="margin-left:-10px">
+  				<table class="table table-striped">
+  				<thead>
+    				<tr>
+      					<th><?php echo _TORRENTLINKS ?></th>
+				    </tr>
+  				</thead>
+  				<tbody>
+  				<?php
+  					$arLinks = GetLinks();
+        			if (is_array($arLinks)) {
+            			foreach($arLinks as $link) { 
+            		?>
+					<tr>
+						<td scope="row">
+							<a href="<?php echo $link['url'] ?>" target="_blank" title="<?php echo $link['url'] ?>">
+								<?php echo $link['sitename'] ?>
+							</a>
+						</td>
+					</tr>
+           			<?php
+            				}
+        				}
+  					?>
+				</tbody>
+				</table>
+			</fieldset>
+		</div>
+	</div>
+</div>
 
-        echo "<td bgcolor=\"".$cfg["table_data_bg"]."\" valign=\"top\">";
-        echo "<b>"._ONLINE.":</b><br>";
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+			<?php displayDriveSpaceBar($drivespace); ?>
+		</div>
+	</div>
+</div>
 
-        for($inx = 0; $inx < count($arOnlineUsers); $inx++)
-        {
-            echo "<a href=\"message.php?to_user=".$arOnlineUsers[$inx]."\">";
-            echo "<img src=\"images/user.gif\" width=17 height=14 title=\"\" border=0 align=\"bottom\">". $arOnlineUsers[$inx];
-            echo "</a><br>\n";
-        }
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+  			<fieldset class="form-group bd-example">
+				<?php getDirList($cfg["torrent_file_path"]); ?>
+				
+			    <table class="table table-striped">
+   					<tr>
+       					<td><img src="images/properties.png" width="18" height="13" title="<?php echo _TORRENTDETAILS ?>"></td>
+       					<td class="tiny"><?php echo _TORRENTDETAILS ?>&nbsp;&nbsp;&nbsp;</td>
+       					<td><img src="images/run_on.gif" width="16" height="16" title="<?php echo _RUNTORRENT ?>"></td>
+       					<td class="tiny"><?php echo _RUNTORRENT ?>&nbsp;&nbsp;&nbsp;</td>
+       					<td><img src="images/kill.gif" width="16" height="16" title="<?php echo _STOPDOWNLOAD ?>"></td>
+       					<td class="tiny"><?php echo _STOPDOWNLOAD ?>&nbsp;&nbsp;&nbsp;</td>
+       					<?php if ($cfg["AllowQueing"]) { ?>
+       						<td><img src="images/queued.gif" width="16" height="16" title="<?php echo _DELQUEUE ?>"></td>
+       						<td class="tiny"><?php echo _DELQUEUE ?>&nbsp;&nbsp;&nbsp;</td>
+       					<?php } ?>
+       					<td><img src="images/seed_on.gif" width="16" height="16" title="<?php echo _SEEDTORRENT ?>"></td>
+       					<td class="tiny"><?php echo _SEEDTORRENT ?>&nbsp;&nbsp;&nbsp;</td>
+       					<td><img src="images/delete_on.gif" width="16" height="16" title="<?php echo _DELETE ?>"></td>
+       					<td class="tiny"><?php echo _DELETE ?></td>
+       					<?php if ($cfg["enable_torrent_download"]) { ?>
+       						<td>&nbsp;&nbsp;&nbsp;<img src="images/down.gif" width="9" height="9" title="Download Torrent meta file"></td>
+       						<td class="tiny">Download Torrent</td>
+       					<?php } ?>
+   					</tr>
+   				</table>
+    
+				<table class="table table-striped">
+    				<tr>
+        				<td width="33%">
+            				<div class="tiny">
+								<?php
+    							if(checkQManager() > 0) {
+         							echo "<img src=\"images/green.gif\" align=\"absmiddle\" title=\"Queue Manager Running\" align=\"absmiddle\"> Queue Manager Running<br>";
+         							echo "<strong>".strval(getRunningTorrentCount())."</strong> torrent(s) running and <strong>".strval(getNumberOfQueuedTorrents())."</strong> queued.<br>";
+         							echo "Total torrents server will run: <strong>".$cfg["maxServerThreads"]."</strong><br>";
+         							echo "Total torrents a user may run: <strong>".$cfg["maxUserThreads"]."</strong><br>";
+         							echo "* Torrents are queued when limits are met.<br>";
+    							} else {
+        							echo "<img src=\"images/black.gif\" title=\"Queue Manager Off\" align=\"absmiddle\"> Queue Manager Off<br><br>";
+    							}
+								?>
+            				</div>
+        				</td>
+        				<td width="33%" valign="bottom">
+            				<div align="center" class="tiny">
+								<?php
+							    if(!isset($_SESSION['prefresh']) || ($_SESSION['prefresh'] == true)) {
+        							echo "*** "._PAGEWILLREFRESH." <span id='span_refresh'>".$cfg["page_refresh"]."</span> "._SECONDS." ***<br>";
+        							echo "<a href=\"".$_SERVER['PHP_SELF']."?pagerefresh=false\"><font class=\"tiny\">"._TURNOFFREFRESH."</font></a>";
+    							} else {
+        							echo "<a href=\"".$_SERVER['PHP_SELF']."?pagerefresh=true\"><font class=\"tiny\">"._TURNONREFRESH."</font></a>";
+    							}
 
-        // Does the user want to see offline users?
-        if ($cfg["hide_offline"] == false)
-        {
-            echo "<b>"._OFFLINE.":</b></br>";
-            // Show offline users
+    							if($drivespace >= 98) {
+							        echo "\n\n<script  language=\"JavaScript\">\n alert(\""._WARNING.": ".$drivespace."% "._DRIVESPACEUSED."\")\n </script>";
+    							}
 
-            for($inx = 0; $inx < count($arOfflineUsers); $inx++)
-            {
-                echo "<a href=\"message.php?to_user=".$arOfflineUsers[$inx]."\">";
-                echo "<img src=\"images/user_offline.gif\" width=17 height=14 title=\"\" border=0 align=\"bottom\">".$arOfflineUsers[$inx];
-                echo "</a><br>\n";
-            }
-        }
+    							if (!array_key_exists("total_download",$cfg)) $cfg["total_download"] = 0;
+    							if (!array_key_exists("total_upload",$cfg)) $cfg["total_upload"] = 0;
+								?>
+            				</div>
+        				</td>
+        				<td valign="top" width="33%" align="right">
 
-        echo "</td>";
-?>
-        </tr>
-        </table>
-    </td>
-</tr>
-<tr>
-    <td bgcolor="<?php echo $cfg["table_header_bg"] ?>" colspan="2">
-<?php
-    displayDriveSpaceBar($drivespace);
-?>
-    </td>
-</tr>
-<tr>
-    <td bgcolor="<?php echo $cfg["table_data_bg"] ?>" colspan="2">
-    <div align="center">
-    <font face="Arial" size="2">
-    <a href="readrss.php">
-    <img src="images/download_owner.gif" width="16" height="16" border="0" title="RSS Torrents" align="absmiddle">RSS Torrents</a>
-     |
-    <a href="drivespace.php">
-    <img src="images/hdd.gif" width="16" height="16" border="0" title="<?php echo $drivespace ?>% Used" align="absmiddle"><?php echo _DRIVESPACE ?></a>
-     |
-    <a href="who.php">
-    <img src="images/who.gif" width="16" height="16" title="" border="0" align="absmiddle"><?php echo _SERVERSTATS ?></a>
-     |
-    <a href="all_services.php">
-    <img src="images/all.gif" width="16" height="16" title="" border="0" align="absmiddle"><?php echo _ALL ?></a>
-     |
-    <a href="dir.php">
-    <img src="images/folder.gif" width="16" height="16" title="" border="0" align="absmiddle"><?php echo _DIRECTORYLIST ?></a>
-     |
-    <a href="dir.php?dir=<?php echo $cfg["user"] ?>"><img src="images/folder.gif" width="16" height="16" title="My Directory" border="0" align="absmiddle">My Directory</a>
-    </font>
-    </div>
-    </td>
-</tr>
-</table>
-<?php
-    getDirList($cfg["torrent_file_path"]);
-?>
-<tr><td bgcolor="<?php echo $cfg["table_header_bg"] ?>" colspan="6">
+            			<table>
+            				<tr>
+                				<td class="tiny" align="right"><?php echo _CURRENTDOWNLOAD ?>:</td>
+                				<td class="tiny"><strong><?php echo number_format($cfg["total_download"], 2); ?></strong> kB/s</td>
+            				</tr>
+            				<tr>
+                				<td class="tiny" align="right"><?php echo _CURRENTUPLOAD ?>:</td>
+                				<td class="tiny"><strong><?php echo number_format($cfg["total_upload"], 2); ?></strong> kB/s</td>
+            				</tr>
+            				<tr>
+                				<td class="tiny" align="right"><?php echo _FREESPACE ?>:</td>
+                				<td class="tiny"><strong><?php echo formatFreeSpace($cfg["free_space"]) ?></strong></td>
+            				</tr>
+            				<tr>
+                				<td class="tiny" align="right"><?php echo _SERVERLOAD ?>:</td>
+                				<td class="tiny">
+        							<?php
+            						if ($cfg["show_server_load"] && @isFile($cfg["loadavg_path"])) {
+                						$loadavg_array = explode(" ", exec("cat ".escapeshellarg($cfg["loadavg_path"])));
+                						$loadavg = $loadavg_array[2];
+                						echo "<strong>".$loadavg."</strong>";
+            						} else {
+            	    					echo "<strong>n/a</strong>";
+            						}
+        							?>
+                				</td>
+            				</tr>
+            			</table>
 
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tr>
-    <td valign="top">
-
-    <div align="center">
-
-    <table>
-    <tr>
-        <td><img src="images/properties.png" width="18" height="13" title="<?php echo _TORRENTDETAILS ?>"></td>
-        <td class="tiny"><?php echo _TORRENTDETAILS ?>&nbsp;&nbsp;&nbsp;</td>
-        <td><img src="images/run_on.gif" width="16" height="16" title="<?php echo _RUNTORRENT ?>"></td>
-        <td class="tiny"><?php echo _RUNTORRENT ?>&nbsp;&nbsp;&nbsp;</td>
-        <td><img src="images/kill.gif" width="16" height="16" title="<?php echo _STOPDOWNLOAD ?>"></td>
-        <td class="tiny"><?php echo _STOPDOWNLOAD ?>&nbsp;&nbsp;&nbsp;</td>
-        <?php
-        if ($cfg["AllowQueing"])
-        {
-        ?>
-        <td><img src="images/queued.gif" width="16" height="16" title="<?php echo _DELQUEUE ?>"></td>
-        <td class="tiny"><?php echo _DELQUEUE ?>&nbsp;&nbsp;&nbsp;</td>
-        <?php
-        }
-        ?>
-        <td><img src="images/seed_on.gif" width="16" height="16" title="<?php echo _SEEDTORRENT ?>"></td>
-        <td class="tiny"><?php echo _SEEDTORRENT ?>&nbsp;&nbsp;&nbsp;</td>
-        <td><img src="images/delete_on.gif" width="16" height="16" title="<?php echo _DELETE ?>"></td>
-        <td class="tiny"><?php echo _DELETE ?></td>
-        <?php
-        if ($cfg["enable_torrent_download"])
-        {
-        ?>
-        <td>&nbsp;&nbsp;&nbsp;<img src="images/down.gif" width="9" height="9" title="Download Torrent meta file"></td>
-        <td class="tiny">Download Torrent</td>
-        <?php
-        }
-        ?>
-    </tr>
-    </table>
-
-
-    <table width="100%" cellpadding="5">
-    <tr>
-        <td width="33%">
-            <div class="tiny">
-<?php
-    if(checkQManager() > 0)
-    {
-         echo "<img src=\"images/green.gif\" align=\"absmiddle\" title=\"Queue Manager Running\" align=\"absmiddle\"> Queue Manager Running<br>";
-         echo "<strong>".strval(getRunningTorrentCount())."</strong> torrent(s) running and <strong>".strval(getNumberOfQueuedTorrents())."</strong> queued.<br>";
-         echo "Total torrents server will run: <strong>".$cfg["maxServerThreads"]."</strong><br>";
-         echo "Total torrents a user may run: <strong>".$cfg["maxUserThreads"]."</strong><br>";
-         echo "* Torrents are queued when limits are met.<br>";
-    }
-    else
-    {
-        echo "<img src=\"images/black.gif\" title=\"Queue Manager Off\" align=\"absmiddle\"> Queue Manager Off<br><br>";
-    }
-?>
-            </div>
-        </td>
-        <td width="33%" valign="bottom">
-            <div align="center" class="tiny">
-<?php
-
-    if(!isset($_SESSION['prefresh']) || ($_SESSION['prefresh'] == true))
-    {
-        echo "*** "._PAGEWILLREFRESH." <span id='span_refresh'>".$cfg["page_refresh"]."</span> "._SECONDS." ***<br>";
-        echo "<a href=\"".$_SERVER['PHP_SELF']."?pagerefresh=false\"><font class=\"tiny\">"._TURNOFFREFRESH."</font></a>";
-    }
-    else
-    {
-        echo "<a href=\"".$_SERVER['PHP_SELF']."?pagerefresh=true\"><font class=\"tiny\">"._TURNONREFRESH."</font></a>";
-    }
-
-
-    if($drivespace >= 98)
-    {
-
-        echo "\n\n<script  language=\"JavaScript\">\n alert(\""._WARNING.": ".$drivespace."% "._DRIVESPACEUSED."\")\n </script>";
-    }
-
-    if (!array_key_exists("total_download",$cfg)) $cfg["total_download"] = 0;
-    if (!array_key_exists("total_upload",$cfg)) $cfg["total_upload"] = 0;
-
-
-?>
-            </div>
-        </td>
-        <td valign="top" width="33%" align="right">
-
-            <table>
-            <tr>
-                <td class="tiny" align="right"><?php echo _CURRENTDOWNLOAD ?>:</td>
-                <td class="tiny"><strong><?php echo number_format($cfg["total_download"], 2); ?></strong> kB/s</td>
-            </tr>
-            <tr>
-                <td class="tiny" align="right"><?php echo _CURRENTUPLOAD ?>:</td>
-                <td class="tiny"><strong><?php echo number_format($cfg["total_upload"], 2); ?></strong> kB/s</td>
-            </tr>
-            <tr>
-                <td class="tiny" align="right"><?php echo _FREESPACE ?>:</td>
-                <td class="tiny"><strong><?php echo formatFreeSpace($cfg["free_space"]) ?></strong></td>
-            </tr>
-            <tr>
-                <td class="tiny" align="right"><?php echo _SERVERLOAD ?>:</td>
-                <td class="tiny">
-        <?php
-            if ($cfg["show_server_load"] && @isFile($cfg["loadavg_path"]))
-            {
-                $loadavg_array = explode(" ", exec("cat ".escapeshellarg($cfg["loadavg_path"])));
-                $loadavg = $loadavg_array[2];
-                echo "<strong>".$loadavg."</strong>";
-            }
-            else
-            {
-                echo "<strong>n/a</strong>";
-            }
-        ?>
-                </td>
-            </tr>
-            </table>
-
-        </td>
-    </tr>
-    </table>
-
-
-
-
-
-    </div>
-
-    </td>
-</tr>
-</table>
-
-
-
-</td></tr>
-</table>
+        				</td>
+    				</tr>
+    			</table>
+			</fieldset>
+		</div>
+	</div>
+</div>
 
 <?php
     echo DisplayTorrentFluxLink();
@@ -1034,9 +1021,5 @@ if ($cfg["enable_search"])
 <?php
     }
 ?>
-
-    </td>
-</tr>
-</table>
 </body>
 </html>

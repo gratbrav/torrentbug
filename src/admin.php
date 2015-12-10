@@ -1607,7 +1607,7 @@ function configSettings()
             Requires users to enter a security code from a generated graphic to login (if enabled automated logins will NOT work):
             </td>
             <td valign="top">
-                <select name="security_code">
+                <select name="security_code" disabled>
                         <option value="1">true</option>
                         <option value="0" <?php
                             if (!$cfg["security_code"])

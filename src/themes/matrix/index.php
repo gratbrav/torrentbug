@@ -1,6 +1,6 @@
 <?php
 
-$cfg["main_bgcolor"] = "#606060";
+$cfg["main_bgcolor"] = "#f5f5f5";
 $cfg["table_data_bg"] = "#EEEEEE";
 $cfg["table_border_dk"] = "#808080";
 $cfg["table_header_bg"] = "#c0c0c0";

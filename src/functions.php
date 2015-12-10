@@ -999,8 +999,8 @@ function buildSearchEngineDDL($selectedEngine = 'PirateBay', $autoSubmit = false
     {
          $output .= "onchange=\"this.form.submit();\" ";
     }
-    $output .= " STYLE=\"width: 125px\">";
-
+	$output .= " STYLE=\"margin-top:6px;\" ";
+	$output .= " class=\"form-control\" >";
     $handle = opendir("./searchEngines");
     while($entry = readdir($handle))
     {
@@ -1405,25 +1405,18 @@ function displayDriveSpaceBar($drivespace)
 {
     global $cfg;
     $freeSpace = "";
-
-    if ($drivespace > 20)
-    {
+	$barClass = 'progress-success';
+	
+    if ($drivespace > 20) {
         $freeSpace = " (".formatFreeSpace($cfg["free_space"])." Free)";
+    } else if($drivespace >= 98) {
+    	$barClass = 'progress-danger';
     }
 ?>
-    <table width="100%" border="0" cellpadding="0" cellspacing="0">
-    <tr nowrap>
-        <td width="2%"><div class="tiny"><?php echo _STORAGE ?>:</div></td>
-        <td width="80%">
-            <table width="100%" border="0" cellpadding="0" cellspacing="0">
-            <tr>
-                <td background="themes/<?php echo $cfg["theme"] ?>/images/proglass.gif" width="<?php echo $drivespace ?>%"><div class="tinypercent" align="center"><?php echo $drivespace."%".$freeSpace ?></div></td>
-                <td background="themes/<?php echo $cfg["theme"] ?>/images/noglass.gif" width="<?php echo (100 - $drivespace) ?>%"><img src="images/blank.gif" width="1" height="3" border="0"></td>
-            </tr>
-            </table>
-        </td>
-    </tr>
-    </table>
+	<div class="bd-example">
+		<label><?php echo _STORAGE ?>: <?php echo $drivespace ?>% <?php echo $freeSpace ?></label>
+		<progress class="progress <?php echo $barClass; ?>" value="25" max="100" style="margin-bottom:0px">25%</progress>
+	</div>
 <?php
 }
 
@@ -2630,16 +2623,16 @@ function getDirList($dirName)
     closedir($handle);
 
     // Now spit out the junk
-    echo "<table bgcolor=\"".$cfg["table_data_bg"]."\" width=\"100%\" bordercolor=\"".$cfg["table_border_dk"]."\" border=1 cellpadding=3 cellspacing=0>";
+    echo "<table class=\"table table-striped\">";
 
     if (sizeof($arUserTorrent) > 0)
     {
-        echo "<tr><td background=\"themes/".$cfg["theme"]."/images/bar.gif\" bgcolor=\"".$cfg["table_header_bg"]."\"><div align=center class=\"title\">".$cfg["user"].": "._TORRENTFILE."</div></td>";
-        echo "<td background=\"themes/".$cfg["theme"]."/images/bar.gif\" bgcolor=\"".$cfg["table_header_bg"]."\"><div align=center class=\"title\">Size</div></td>";
-        echo "<td background=\"themes/".$cfg["theme"]."/images/bar.gif\" bgcolor=\"".$cfg["table_header_bg"]."\"><div align=center class=\"title\">"._USER."</div></td>";
-        echo "<td background=\"themes/".$cfg["theme"]."/images/bar.gif\" bgcolor=\"".$cfg["table_header_bg"]."\"><div align=center class=\"title\">"._STATUS."</div></td>";
-        echo "<td background=\"themes/".$cfg["theme"]."/images/bar.gif\" bgcolor=\"".$cfg["table_header_bg"]."\"><div align=center class=\"title\">"._ESTIMATEDTIME."</div></td>";
-        echo "<td background=\"themes/".$cfg["theme"]."/images/bar.gif\" bgcolor=\"".$cfg["table_header_bg"]."\"><div align=center class=\"title\">"._ADMIN."</div></td>";
+        echo "<tr><th>".$cfg["user"].": "._TORRENTFILE."</th>";
+        echo "<th>Size</th>";
+        echo "<th>"._USER."</th>";
+        echo "<th>"._STATUS."</th>";
+        echo "<th>"._ESTIMATEDTIME."</th>";
+        echo "<th>"._ADMIN."</th>";
         echo "</tr>\n";
         foreach($arUserTorrent as $torrentrow)
         {
