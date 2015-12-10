@@ -1003,7 +1003,7 @@ function ConfirmDelete(file)
 		</div>
 	</div>
 </div>
-
+ 
 <?php
     echo DisplayTorrentFluxLink();
     // At this point Any User actions should have taken place
