@@ -763,10 +763,8 @@ function ConfirmDelete(file)
 				<a class="nav-item nav-link" href="dir.php?dir=<?php echo $cfg["user"] ?>"><small>My Directory</small></a>
 			</div>
 		</nav>
-
-        $arUsers = GetUsers();
-        $arOnlineUsers = array();
-        $arOfflineUsers = array();
+	</div>
+</div>
 
 <div class="container">
 	<div class="row">
