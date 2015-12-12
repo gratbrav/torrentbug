@@ -30,31 +30,77 @@ require_once("metaInfo.php");
 global $cfg;
 
 $torrent = SecurityClean(getRequestVar('torrent'));
-
-DisplayHead(_TORRENTDETAILS);
-
-echo "<table width=\"740\" border=0 cellpadding=0 cellspacing=0><tr><td>";
-
-echo displayDriveSpaceBar(getDriveSpace($cfg["path"]));
-
-echo "</td></tr></table>";
-echo "<br>";
-echo "<div align=\"left\" id=\"BodyLayer\" name=\"BodyLayer\" style=\"border: thin solid ";
-echo $cfg["main_bgcolor"];
-echo "; position:relative; width:740; height:500; padding-left: 5px; padding-right: 5px; z-index:1; overflow: scroll; visibility: visible\">";
-
-$als = getRequestVar('als');
-if($als == "false")
-{
-       showMetaInfo($torrent,false);
-}
-else
-{
-    showMetaInfo($torrent,true);
-}
-
-echo "</div>";
-
-DisplayFoot();
-
 ?>
+<!doctype html>
+<html>
+<head>
+	<TITLE><?php echo $percentdone.$cfg["pagetitle"] ?></TITLE>
+	<link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="./plugins/twitter/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
+    <LINK REL="StyleSheet" HREF="themes/<?php echo $cfg["theme"] ?>/style.css" TYPE="text/css">
+	<META HTTP-EQUIV="Pragma" CONTENT="no-cache" charset="<?php echo _CHARSET ?>">
+<style>
+.bd-example {
+	margin-left: 0;
+	margin-right: 0;
+	margin-bottom: 0;
+	padding: 1.5rem;
+	border-width: .2rem;
+	position: relative;
+	padding: 1rem;
+	margin: 1rem -1rem;
+	border: solid white;
+}
+</style>
+</head>
+<body topmargin="8" bgcolor="<?php echo $cfg["main_bgcolor"] ?>">
+
+<?php
+	// Does the user have messages?
+	$sql = "select count(*) from tf_messages where to_user='".$cfg['user']."' and IsNew=1";
+	
+	$number_messages = $db->GetOne($sql);
+	showError($db,$sql);
+	$countMessages = '';
+	if ($number_messages > 0) {
+		$countMessages = ' (' . $number_messages . ')';
+	}
+?>
+
+<div class="container">
+	<div class="row">
+		<nav class="navbar navbar-light " style="background-color: #e3f2fd;">
+			<?php include_once 'menu.php' ?>
+		</nav>
+	</div>
+</div>
+
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+			<?php displayDriveSpaceBar(getDriveSpace($cfg["path"])); ?>
+		</div>
+	</div>
+</div>
+
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+			<fieldset class="form-group bd-example">
+				<?php 
+					$als = getRequestVar('als');
+					if($als == "false") {
+       					showMetaInfo($torrent,false);
+					} else {
+    					showMetaInfo($torrent,true);
+					}
+				?>
+			</fieldset>
+		</div>
+	</div>
+</div>
+
+<div style="text-align:center">[<a href="index.php"><?php echo _RETURNTOTORRENTS ?></a>]</div>
+
+<?php echo DisplayTorrentFluxLink(); ?>
