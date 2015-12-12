@@ -1280,29 +1280,6 @@ function DisplayTitleBar($pageTitleText, $showButtons=true)
 
 // ***************************************************************************
 // ***************************************************************************
-// Dipslay dropdown list to send message to a user
-function DisplayMessageList()
-{
-    global $cfg;
-    $users = GetUsers();
-
-    echo '<div align="center">'.
-    '<table border="0" cellpadding="0" cellspacing="0">'.
-    '<form name="formMessage" action="message.php" method="post">'.
-    '<tr><td>' . _SENDMESSAGETO ;
-
-    echo '<select name="to_user">';
-        for($inx = 0; $inx < sizeof($users); $inx++)
-        {
-        echo '<option>'.htmlentities($users[$inx], ENT_QUOTES).'</option>';
-        }
-    echo '</select>';
-    echo '<input type="Submit" value="' . _COMPOSE .'">';
-    echo '</td></tr></form></table></div>';
-}
-
-// ***************************************************************************
-// ***************************************************************************
 // Removes HTML from Messages
 function check_html ($str, $strip="")
 {
