@@ -93,10 +93,10 @@ function displayActivity($min=0)
         $morelink .= "<font class=\"TinyWhite\">["._SHOWMORE."&gt;&gt;</font></a>";
     }
 
-    echo "<table width=\"760\" border=1 bordercolor=\"".$cfg["table_admin_border"]."\" cellpadding=\"2\" cellspacing=\"0\" bgcolor=\"".$cfg["table_data_bg"]."\">";
-    echo "<tr><td colspan=6 bgcolor=\"".$cfg["table_header_bg"]."\" background=\"themes/".$cfg["theme"]."/images/bar.gif\">";
-    echo "<table width=\"100%\" cellpadding=0 cellspacing=0 border=0><tr><td>";
-    echo "<img src=\"images/properties.png\" width=18 height=13 border=0>&nbsp;&nbsp;<strong><font class=\"title\">"._UPLOADACTIVITY." (".$cfg["days_to_keep"]." "._DAYS.")</font></strong>";
+    echo "<table class=\"table table-striped\">";
+    echo "<tr><td colspan=6 >";
+    echo "<table class=\"table table-striped\" style=\"margin-bottom:0px\"><tr><td>";
+    echo "<img src=\"images/properties.png\" width=18 height=13 border=0>&nbsp;&nbsp;<strong><font>"._UPLOADACTIVITY." (".$cfg["days_to_keep"]." "._DAYS.")</font></strong>";
 
     if(!empty($prevlink) && !empty($morelink))
     echo "</td><td align=\"right\">".$prevlink.$morelink."</td></tr></table>";
@@ -109,9 +109,9 @@ function displayActivity($min=0)
 
     echo "</td></tr>";
     echo "<tr>";
-    echo "<td bgcolor=\"".$cfg["table_header_bg"]."\"><div align=center class=\"title\">"._USER."</div></td>";
-    echo "<td bgcolor=\"".$cfg["table_header_bg"]."\"><div align=center class=\"title\">"._FILE."</div></td>";
-    echo "<td bgcolor=\"".$cfg["table_header_bg"]."\" width=\"15%\"><div align=center class=\"title\">"._TIMESTAMP."</div></td>";
+    echo "<th>"._USER."</th>";
+    echo "<th>"._FILE."</th>";
+    echo "<th>"._TIMESTAMP."</th>";
     echo "</tr>";
 
     echo $output;
@@ -128,31 +128,51 @@ function displayActivity($min=0)
     }
 
     echo "</table>";
-
 }
-
-
-
-
-
-//****************************************************************************
-//****************************************************************************
-//****************************************************************************
-//****************************************************************************
-// TRAFFIC CONTROLER
-if(!isset($op)) $op =  "";
-
-switch ($op) {
-
-    default:
-    if(!isset($min)) $min = 0;
-        showIndex($min);
-    break;
-
-}
-//****************************************************************************
-//****************************************************************************
-//****************************************************************************
-//****************************************************************************
 
 ?>
+<!doctype html>
+<html>
+<head>
+	<TITLE><?php echo $percentdone.$cfg["pagetitle"] ?></TITLE>
+	<link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="./plugins/twitter/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
+    <LINK REL="StyleSheet" HREF="themes/<?php echo $cfg["theme"] ?>/style.css" TYPE="text/css">
+	<META HTTP-EQUIV="Pragma" CONTENT="no-cache" charset="<?php echo _CHARSET ?>">
+<style>
+.bd-example {
+	margin-left: 0;
+	margin-right: 0;
+	margin-bottom: 0;
+	padding: 1.5rem;
+	border-width: .2rem;
+	position: relative;
+	padding: 1rem;
+	margin: 1rem -1rem;
+	border: solid white;
+}
+</style>
+</head>
+<body topmargin="8" bgcolor="<?php echo $cfg["main_bgcolor"] ?>">
+
+<div class="container">
+	<div class="row">
+		<nav class="navbar navbar-light " style="background-color: #e3f2fd;">
+			<?php include_once 'menu.php' ?>
+		</nav>
+	</div>
+</div>
+
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+			<fieldset class="form-group bd-example">
+				<?php     // Display Activity
+    displayActivity($min); ?>
+			</fieldset>
+		</div>
+	</div>
+</div>
+    
+<?php echo DisplayTorrentFluxLink(); ?>
