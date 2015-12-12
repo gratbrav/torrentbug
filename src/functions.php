@@ -1415,7 +1415,7 @@ function displayDriveSpaceBar($drivespace)
 ?>
 	<div class="bd-example">
 		<label><?php echo _STORAGE ?>: <?php echo $drivespace ?>% <?php echo $freeSpace ?></label>
-		<progress class="progress <?php echo $barClass; ?>" value="25" max="100" style="margin-bottom:0px">25%</progress>
+		<progress class="progress <?php echo $barClass; ?>" value="<?php echo $drivespace ?>" max="100" style="margin-bottom:0px"><?php echo $drivespace ?>%</progress>
 	</div>
 <?php
 }

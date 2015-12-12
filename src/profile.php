@@ -31,185 +31,123 @@ function showIndex()
 {
     global $cfg, $db;
 
-    $hideChecked = "";
-
-    if ($cfg["hide_offline"] == 1)
-    {
-        $hideChecked = "checked";
-    }
-
-    DisplayHead($cfg["user"]."'s "._PROFILE);
-
-    echo "<div align=\"center\">";
-    echo "<table border=1 bordercolor=\"".$cfg["table_admin_border"]."\" cellpadding=\"2\" cellspacing=\"0\" width=\"760\">";
-    echo "<tr><td colspan=6 bgcolor=\"".$cfg["table_data_bg"]."\" background=\"themes/".$cfg["theme"]."/images/bar.gif\">";
-    echo "<img src=\"images/properties.png\" width=18 height=13 border=0>&nbsp;&nbsp;<font class=\"title\">".$cfg["user"]."'s "._PROFILE."</font>";
-    echo "</td></tr><tr><td align=\"center\">";
-
-    $total_activity = GetActivityCount();
-
-    $sql= "SELECT user_id, hits, last_visit, time_created, user_level FROM tf_users WHERE user_id=".$db->qstr($cfg["user"]);
-    list($user_id, $hits, $last_visit, $time_created, $user_level) = $db->GetRow($sql);
-
-    $user_type = _NORMALUSER;
-    if (IsAdmin())
-    {
-        $user_type = _ADMINISTRATOR;
-    }
-    if (IsSuperAdmin())
-    {
-        $user_type = _SUPERADMIN;
-    }
-
-
-    $user_activity = GetActivityCount($cfg["user"]);
-
-    if ($user_activity == 0)
-    {
-        $user_percent = 0;
-    }
-    else
-    {
-        $user_percent = number_format(($user_activity/$total_activity)*100);
-    }
-
+    $hideChecked = ($cfg['hide_offline'] == 1) ? 'checked' : '';
 ?>
 
-    <table width="100%" border="0" cellpadding="3" cellspacing="0">
-    <tr>
-        <td width="50%" bgcolor="<?php echo $cfg["table_data_bg"] ?>" valign="top">
+<div class="container">
+	<div class="row">
+		<div class="col-sm-6">
+		<?php 
+   			$total_activity = GetActivityCount();
+			$sql= "SELECT user_id, hits, last_visit, time_created, user_level FROM tf_users WHERE user_id=".$db->qstr($cfg["user"]);
+    		list($user_id, $hits, $last_visit, $time_created, $user_level) = $db->GetRow($sql);
 
-        <div align="center">
-        <table border="0" cellpadding="0" cellspacing="0">
-        <tr>
-            <td align="right"><?php echo _JOINED ?>:&nbsp;</td>
-            <td><strong><?php echo date(_DATETIMEFORMAT, $time_created) ?></strong></td>
-        </tr>
-        <tr>
-            <td colspan="2" align="center">&nbsp;</td>
-        </tr>
-        <tr>
-            <td align="right"><?php echo _UPLOADPARTICIPATION ?>:&nbsp;</td>
-            <td>
-                <table width="200" border="0" cellpadding="0" cellspacing="0">
-                <tr>
-                    <td background="themes/<?php echo $cfg["theme"] ?>/images/proglass.gif" width="<?php echo $user_percent*2 ?>"><img src="images/blank.gif" width="1" height="12" border="0"></td>
-                    <td background="themes/<?php echo $cfg["theme"] ?>/images/noglass.gif" width="<?php echo (200 - ($user_percent*2)) ?>"><img src="images/blank.gif" width="1" height="12" border="0"></td>
-                </tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td align="right"><?php echo _UPLOADS ?>:&nbsp;</td>
-            <td><strong><?php echo $user_activity ?></strong></td>
-        </tr>
-        <tr>
-            <td align="right"><?php echo _PERCENTPARTICIPATION ?>:&nbsp;</td>
-            <td><strong><?php echo $user_percent ?>%</strong></td>
-        </tr>
-        <tr>
-            <td colspan="2" align="center"><div align="center" class="tiny">(<?php echo _PARTICIPATIONSTATEMENT. " ".$cfg['days_to_keep']." "._DAYS ?>)</div><br></td>
-        </tr>
-        <tr>
-            <td align="right"><?php echo _TOTALPAGEVIEWS ?>:&nbsp;</td>
-            <td><strong><?php echo $hits ?></strong></td>
-        </tr>
-        <tr>
-            <td align="right"><?php echo _USERTYPE ?>:&nbsp;</td>
-            <td><strong><?php echo $user_type ?></strong></td>
-        </tr>
-        <tr>
-            <td colspan="2" align="center">
-                <table>
-                    <tr>
-                        <td align="center">
-                            <BR />[ <a href="?op=showCookies">Cookie Management</a> ]
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        </table>
-        </div>
+    		$user_type = _NORMALUSER;
+			if (IsSuperAdmin()) {
+        		$user_type = _SUPERADMIN;
+    		} else if (IsAdmin()) {
+        		$user_type = _ADMINISTRATOR;
+    		}
 
-        </td>
-        <td valign="top">
-        <div align="center">
-        <table cellpadding="5" cellspacing="0" border="0">
-        <form name="theForm" action="profile.php?op=updateProfile" method="post" onsubmit="return validateProfile()">
-        <tr>
-            <td align="right"><?php echo _USER ?>:</td>
-            <td>
-            <input readonly="true" type="Text" value="<?php echo $cfg["user"] ?>" size="15">
-            </td>
-        </tr>
-        <tr>
-            <td align="right"><?php echo _NEWPASSWORD ?>:</td>
-            <td>
-            <input name="pass1" type="Password" value="" size="15">
-            </td>
-        </tr>
-        <tr>
-            <td align="right"><?php echo _CONFIRMPASSWORD ?>:</td>
-            <td>
-            <input name="pass2" type="Password" value="" size="15">
-            </td>
-        </tr>
-        <tr>
-            <td align="right"><?php echo _THEME ?>:</td>
-            <td>
-            <select name="theme">
-<?php
-    $arThemes = GetThemes();
-    for($inx = 0; $inx < sizeof($arThemes); $inx++)
-    {
-        $selected = "";
-        if ($cfg["theme"] == $arThemes[$inx])
-        {
-            $selected = "selected";
-        }
-        echo "<option value=\"".$arThemes[$inx]."\" ".$selected.">".$arThemes[$inx]."</option>";
-    }
-?>
-            </select>
-            </td>
-        </tr>
-                <tr>
-            <td align="right"><?php echo _LANGUAGE ?>:</td>
-            <td>
-            <select name="language">
-<?php
-    $arLanguage = GetLanguages();
-    for($inx = 0; $inx < sizeof($arLanguage); $inx++)
-    {
-        $selected = "";
-        if ($cfg["language_file"] == $arLanguage[$inx])
-        {
-            $selected = "selected";
-        }
-        echo "<option value=\"".$arLanguage[$inx]."\" ".$selected.">".GetLanguageFromFile($arLanguage[$inx])."</option>";
-    }
-?>
-            </select>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-            <input name="hideOffline" type="Checkbox" value="1" <?php echo $hideChecked ?>> <?php echo _HIDEOFFLINEUSERS ?><br>
-            </td>
-        </tr>
-        <tr>
-            <td align="center" colspan="2">
-            <input type="Submit" value="<?php echo _UPDATE ?>">
-            </td>
-        </tr>
-        </form>
-        </table>
-        </div>
-        </td>
-    </tr>
-    </table>
-
+    		$user_activity = GetActivityCount($cfg["user"]);
+    		if ($user_activity == 0) {
+        		$user_percent = 0;
+    		} else {
+        		$user_percent = number_format(($user_activity/$total_activity)*100);
+    		}
+		?>
+			<fieldset class="form-group bd-example" style="margin-right:-10px">
+		        <table class="table table-striped">
+		        <tr>
+		            <td align="right"><?php echo $cfg["user"] ?> <?php echo _JOINED ?>:&nbsp;</td>
+		            <td><strong><?php echo date(_DATETIMEFORMAT, $time_created) ?></strong></td>
+		        </tr>
+		        <tr>
+		            <td align="right"><?php echo _UPLOADPARTICIPATION ?>:&nbsp;</td>
+		            <td><progress class="progress progress-success" value="<?php echo $user_percent ?>" max="100" style="margin-bottom:0px"><?php echo $user_percent*2 ?>%</progress></td>
+		        </tr>
+		        <tr>
+		            <td align="right"><?php echo _UPLOADS ?>:&nbsp;</td>
+		            <td><strong><?php echo $user_activity ?></strong></td>
+		        </tr>
+		        <tr>
+		            <td align="right"><?php echo _PERCENTPARTICIPATION ?>:&nbsp;</td>
+		            <td><strong><?php echo $user_percent ?>%</strong></td>
+		        </tr>
+		        <tr>
+		            <td colspan="2" align="center"><div align="center" class="tiny">(<?php echo _PARTICIPATIONSTATEMENT. " ".$cfg['days_to_keep']." "._DAYS ?>)</div><br></td>
+		        </tr>
+		        <tr>
+		            <td align="right"><?php echo _TOTALPAGEVIEWS ?>:&nbsp;</td>
+		            <td><strong><?php echo $hits ?></strong></td>
+		        </tr>
+		        <tr>
+		            <td align="right"><?php echo _USERTYPE ?>:&nbsp;</td>
+		            <td><strong><?php echo $user_type ?></strong></td>
+		        </tr>
+		        <tr>
+		            <td colspan="2" align="center">[ <a href="?op=showCookies">Cookie Management</a> ]</td>
+		        </tr>
+		        </table>
+  			</fieldset>
+		</div>
+		
+		<div class="col-sm-6">
+			<fieldset class="form-group bd-example" style="margin-left:-10px">
+				<form name="theForm" action="profile.php?op=updateProfile" method="post" onsubmit="return validateProfile()">
+			        <table class="table table-striped">
+				        <tr>
+				            <td align="right"><?php echo _USER ?>:</td>
+				            <td><input readonly="true" type="Text" value="<?php echo $cfg["user"] ?>" class="form-control"></td>
+				        </tr>
+				        <tr>
+				            <td align="right"><?php echo _NEWPASSWORD ?>:</td>
+				            <td><input name="pass1" type="Password" value="" class="form-control"></td>
+				        </tr>
+				        <tr>
+				            <td align="right"><?php echo _CONFIRMPASSWORD ?>:</td>
+				            <td><input name="pass2" type="Password" value="" class="form-control"></td>
+				        </tr>
+				        <tr>
+				            <td align="right"><?php echo _THEME ?>:</td>
+				            <td>
+				            	<select name="theme" class="form-control">
+									<?php
+									    $themes = GetThemes();
+									    foreach ($themes AS $theme) {
+									        $selected = ($cfg['theme'] == $theme) ? 'selected' : '';
+									        echo "<option value=\"".$theme."\" ".$selected.">".$theme."</option>";
+									    }
+									?>
+				            	</select>
+				            </td>
+				        </tr>
+				        <tr>
+				            <td align="right"><?php echo _LANGUAGE ?>:</td>
+				            <td>
+				        	    <select name="language" class="form-control">
+									<?php
+									    $languages = GetLanguages();
+								    	foreach ($languages AS $language) {
+									        $selected = ($cfg['language_file'] == $language) ? 'selected' : '';
+									        echo "<option value=\"".$language."\" ".$selected.">".GetLanguageFromFile($language)."</option>";
+									    }
+									?>
+				            	</select>
+				            </td>
+				        </tr>
+				        <tr>
+				            <td colspan="2"><input name="hideOffline" type="Checkbox" value="1" <?php echo $hideChecked ?> /> <?php echo _HIDEOFFLINEUSERS ?></td>
+				        </tr>
+				        <tr>
+				            <td align="center" colspan="2"><input type="Submit" value="<?php echo _UPDATE ?>" class="btn btn-primary" /></td>
+				        </tr>
+				    </table>
+        		</form>
+			</fieldset>
+		</div>
+	</div>
+</div>
 
     <script language="JavaScript">
     function validateProfile()
@@ -244,10 +182,7 @@ function showIndex()
     </script>
 
 <?php
-    echo "</td></tr>";
-    echo "</table></div><br><br>";
 
-    DisplayFoot();
 }
 
 
@@ -257,29 +192,24 @@ function updateProfile($pass1, $pass2, $hideOffline, $theme, $language)
 {
     Global $cfg;
 
-    if ($pass1 != "")
-    {
+    if ($pass1 != "") {
         $_SESSION['user'] = md5($cfg["pagetitle"]);
     }
 
     UpdateUserProfile($cfg["user"], $pass1, $hideOffline, $theme, $language);
-
-    DisplayHead($cfg["user"]."'s "._PROFILE);
-
-    echo "<div align=\"center\">";
-    echo "<table border=1 bordercolor=\"".$cfg["table_admin_border"]."\" cellpadding=\"2\" cellspacing=\"0\" bgcolor=\"".$cfg["table_data_bg"]."\" width=\"760\">";
-    echo "<tr><td colspan=6 background=\"themes/".$cfg["theme"]."/images/bar.gif\">";
-    echo "<img src=\"images/properties.png\" width=18 height=13 border=0>&nbsp;&nbsp;<font class=\"title\">".$cfg["user"]."'s "._PROFILE."</font>";
-    echo "</td></tr><tr><td align=\"center\">";
 ?>
-    <br>
-    <?php echo _PROFILEUPDATEDFOR." ".$cfg["user"] ?>
-    <br><br>
-<?php
-    echo "</td></tr>";
-    echo "</table></div><br><br>";
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+			<fieldset class="form-group bd-example" style="text-align:center">
+				<?php echo _PROFILEUPDATEDFOR . " " . $cfg["user"] ?>
+			</fieldset>
+		</div>
+	</div>
+</div>
 
-    DisplayFoot();
+<?php
+
 }
 
 
@@ -288,14 +218,12 @@ function updateProfile($pass1, $pass2, $hideOffline, $theme, $language)
 function ShowCookies()
 {
     global $cfg, $db;
-    DisplayHead($cfg["user"] . "'s "._PROFILE);
 
     $cid = getRequestVar("cid"); // Cookie ID
 
     // Used for when editing a cookie
     $hostvalue = $datavalue = "";
-    if( !empty( $cid ) )
-    {
+    if (!empty($cid)) {
         // Get cookie information from database
         $cookie = getCookie( $cid );
         $hostvalue = " value=\"" . $cookie['host'] . "\"";
@@ -304,122 +232,110 @@ function ShowCookies()
 
 ?>
 <SCRIPT LANGUAGE="JavaScript">
-    <!-- Begin
+    <!--
     function popUp(name_file)
     {
         window.open (name_file,'help','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=800,height=600')
     }
-    // End -->
+    // -->
 </script>
-<div align="center">[<a href="?">Return to Profile</a>]</div>
-<br />
-<div align="center">
-    <form action="?op=<?php echo ( !empty( $cid ) ) ? "modCookie" : "addCookie"; ?>"" method="post">
-    <input type="hidden" name="cid" value="<?php echo $cid;?>" />
-    <table border="1" bordercolor="<?php echo $cfg["table_admin_border"];?>" cellpadding="2" cellspacing="0" bgcolor="<?php echo $cfg["table_data_bg"];?>">
-        <tr>
-            <td colspan="3" bgcolor="<?php echo $cfg["table_header_bg"];?>" background="themes/<? echo $cfg["theme"] ?>/images/bar.gif">
-                <img src="images/properties.png" width=18 height=13 border=0 align="absbottom">&nbsp;<font class="title">Cookie Management</font>
-            </td>
-        </tr>
-        <tr>
-            <td width="80" align="right">&nbsp;Host:</td>
-            <td>
-                <input type="Text" size="50" maxlength="255" name="host"<?php echo $hostvalue;?>><BR />
-            </td>
-            <td>
-                www.host.com
-            </td>
-        </tr>
-        <tr>
-            <td width="80" align="right">&nbsp;Data:</td>
-            <td>
-                <input type="Text" size="50" maxlength="255" name="data"<?php echo $datavalue;?>><BR />
-            </td>
-            <td>
-                uid=123456;pass=a1b2c3d4e5f6g7h8i9j1
-            </td>
-        </tr>
-        <tr>
-            <td>&nbsp;</td>
-            <td colspan="2">
-                <input type="Submit" value="<?php echo ( !empty( $cid ) ) ? _UPDATE : "Add"; ?>">
-            </td>
-        </tr>
+
+<div style="text-align:center">[<a href="?">Return to Profile</a>]</div>
+
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+			<fieldset class="form-group bd-example">
+			    <form action="?op=<?php echo ( !empty( $cid ) ) ? "modCookie" : "addCookie"; ?>"" method="post">
+			    <input type="hidden" name="cid" value="<?php echo $cid;?>" />
+			    <table class="table table-striped">
+			        <tr>
+			            <th colspan="3">
+			                <img src="images/properties.png" width=18 height=13 border=0 align="absbottom">&nbsp;Cookie Management
+			            </th>
+			        </tr>
+			        <tr>
+			            <td width="80" align="right">&nbsp;Host:</td>
+			            <td><input type="Text" class="form-control" maxlength="255" name="host" <?php echo $hostvalue;?> /></td>
+			            <td>www.host.com</td>
+			        </tr>
+			        <tr>
+			            <td width="80" align="right">&nbsp;Data:</td>
+			            <td><input type="Text" class="form-control" maxlength="255" name="data" <?php echo $datavalue;?> /></td>
+			            <td>uid=123456;pass=a1b2c3d4e5f6g7h8i9j1</td>
+			        </tr>
+			        <tr>
+			            <td>&nbsp;</td>
+			            <td colspan="2"><input type="Submit" value="<?php echo ( !empty( $cid ) ) ? _UPDATE : "Add"; ?>" class="btn btn-primary" /></td>
+			        </tr>
+					<?php
+					    // We are editing a cookie, so have a link back to cookie list
+					    if( !empty( $cid ) ) {
+					?>
+				        <tr>
+				            <td colspan="3">
+				                <center>[ <a href="?op=editCookies">back</a> ]</center>
+				            </td>
+				        </tr>
+					<?php } else { ?>
+			        <tr>
+			            <td colspan="3">
+			                <table class="table table-striped">
+			                    <tr>
+			                        <td style="font-weight: bold; padding-left: 3px;" width="50">Action</td>
+			                        <td style="font-weight: bold; padding-left: 3px;">Host</td>
+			                        <td style="font-weight: bold; padding-left: 3px;">Data</td>
+			                    </tr>
+								<?php
+							        // Output the list of cookies in the database
+							        $dat = getAllCookies($cfg["user"]);
+							        if( empty( $dat ) )
+							        {
+								?>
+			                	<tr>
+			                    	<td colspan="3">No cookie entries exist.</td>
+			                	</tr>
+								<?php
+							        } else {
+							        	
+							            foreach ( $dat as $cookie ) {
+									?>
+					                    <tr>
+					                        <td>
+					                            <a href="?op=deleteCookie&cid=<?php echo $cookie["cid"];?>"><img src="images/delete_on.gif" width=16 height=16 border=0 title="<?php echo _DELETE . " " . $cookie["host"]; ?>" align="absmiddle"></a>
+					                            <a href="?op=editCookies&cid=<?php echo $cookie["cid"];?>"><img src="images/properties.png" width=18 height=13 border=0 title="<?php echo _EDIT . " " . $cookie["host"]; ?>" align="absmiddle"></a>
+					                        </td>
+					                        <td><?php echo $cookie["host"];?></td>
+					                        <td><?php echo $cookie["data"];?></td>
+					                    </tr>
+									<?php
+								            }
+								        }
+									?>
+			                </table>
+			            </td>
+			        </tr>
+				<?php
+				    }
+				?>
+			        <tr>
+			            <td colspan="3">
+			                <div align="center">
+			                	<a href="javascript:popUp('cookiehelp.php')">How to get cookie information....</a>
+			                </div>
+			            </td>
+			        </tr>
+		        </table>
+		        </form>
+			</fieldset>
+		</div>
+	</div>
+</div>
+
 <?php
-    // We are editing a cookie, so have a link back to cookie list
-    if( !empty( $cid ) )
-    {
-?>
-        <tr>
-            <td colspan="3">
-                <center>[ <a href="?op=editCookies">back</a> ]</center>
-            </td>
-        </tr>
-<?php
-    }
-    else
-    {
-?>
-        <tr>
-            <td colspan="3">
-                <table border="1" bordercolor="<?php echo $cfg["table_admin_border"];?>" cellpadding="2" cellspacing="0" bgcolor="<?php echo $cfg["table_data_bg"];?>" width="100%">
-                    <tr>
-                        <td style="font-weight: bold; padding-left: 3px;" width="50">Action</td>
-                        <td style="font-weight: bold; padding-left: 3px;">Host</td>
-                        <td style="font-weight: bold; padding-left: 3px;">Data</td>
-                    </tr>
-<?php
-        // Output the list of cookies in the database
-        $dat = getAllCookies($cfg["user"]);
-        if( empty( $dat ) )
-        {
-?>
-                <tr>
-                    <td colspan="3">No cookie entries exist.</td>
-                </tr>
-<?php
-        }
-        else
-        {
-            foreach( $dat as $cookie )
-            {
-?>
-                    <tr>
-                        <td>
-                            <a href="?op=deleteCookie&cid=<?php echo $cookie["cid"];?>"><img src="images/delete_on.gif" width=16 height=16 border=0 title="<?php echo _DELETE . " " . $cookie["host"]; ?>" align="absmiddle"></a>
-                            <a href="?op=editCookies&cid=<?php echo $cookie["cid"];?>"><img src="images/properties.png" width=18 height=13 border=0 title="<?php echo _EDIT . " " . $cookie["host"]; ?>" align="absmiddle"></a>
-                        </td>
-                        <td><?php echo $cookie["host"];?></td>
-                        <td><?php echo $cookie["data"];?></td>
-                    </tr>
-<?php
-            }
-        }
-?>
-                </table>
-            </td>
-        </tr>
-<?php
-    }
-?>
-        <tr>
-            <td colspan="3">
-                <br>
-                <div align="center">
-                <A HREF="javascript:popUp('cookiehelp.php')">How to get cookie information....</A>
-                </div>
-            </td>
-        </tr>
-        </table>
-        </form>
-    </div>
-    <br />
-    <br />
-    <br />
-<?php
-    DisplayFoot();
+
 }
+
 
 //****************************************************************************
 // addCookie -- adding a Cookie Host Information
@@ -458,6 +374,28 @@ function modCookie($cid,$newCookie)
     header("location: profile.php?op=showCookies");
 }
 
+?>
+<!doctype html>
+<html>
+<head>
+	<title><?php echo $cfg["pagetitle"] ?></title>
+	<link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="./plugins/twitter/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
+    <link rel="styleSheet" HREF="themes/<?php echo $cfg["theme"] ?>/style.css" type="text/css" />
+	<META HTTP-EQUIV="Pragma" CONTENT="no-cache" charset="<?php echo _CHARSET ?>">
+</head>
+<body>
+
+<div class="container">
+	<div class="row">
+		<nav class="navbar navbar-light " style="background-color: #e3f2fd;">
+			<?php include_once 'menu.php' ?>
+		</nav>
+	</div>
+</div>
+
+<?php
 //****************************************************************************
 //****************************************************************************
 //****************************************************************************
@@ -517,3 +455,7 @@ switch ($op)
 //****************************************************************************
 
 ?>
+
+<div style="text-align:center">[<a href="index.php"><?php echo _RETURNTOTORRENTS ?></a>]</div>
+
+<?php echo DisplayTorrentFluxLink(); ?>
