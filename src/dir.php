@@ -233,26 +233,49 @@ if (isset($dir))
         $dir = $dir."/";
     }
 }
-
-// DisplayHead(_DIRECTORYLIST);
 ?>
+<!doctype html>
+<html>
+<head>
+	<TITLE><?php echo $percentdone.$cfg["pagetitle"] ?></TITLE>
+	<link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="./plugins/twitter/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
+    <LINK REL="StyleSheet" HREF="themes/<?php echo $cfg["theme"] ?>/style.css" TYPE="text/css">
+	<META HTTP-EQUIV="Pragma" CONTENT="no-cache" charset="<?php echo _CHARSET ?>">
+<style>
+.bd-example {
+	margin-left: 0;
+	margin-right: 0;
+	margin-bottom: 0;
+	padding: 1.5rem;
+	border-width: .2rem;
+	position: relative;
+	padding: 1rem;
+	margin: 1rem -1rem;
+	border: solid white;
+}
+</style>
+</head>
+<body topmargin="8" bgcolor="<?php echo $cfg["main_bgcolor"] ?>">
+
 <div class="container">
 	<div class="row">
 		<nav class="navbar navbar-light " style="background-color: #e3f2fd;">
-			<div class="col-sm-12 nav navbar-nav">
-				<a class="nav-item nav-link active" href="index.php"><?php echo _TORRENTS ?> <span class="sr-only">(current)</span></a>
-				<a class="nav-item nav-link" href="dir.php"><?php echo _DIRECTORYLIST ?></a>
-				<a class="nav-item nav-link" href="history.php"><?php echo _UPLOADHISTORY ?></a>
-				<a class="nav-item nav-link" href="profile.php"><?php echo _MYPROFILE ?></a>
-				<a class="nav-item nav-link" href="readmsg.php"><?php echo _MESSAGES ?><?php echo $countMessages ?></a>
-				<?php if (IsAdmin()) { ?>
-					<a class="nav-item nav-link" href="admin.php"><?php echo _ADMINISTRATION ?></a>
-				<?php } ?>
-				<a class="nav-item nav-link pull-right" href="logout.php">Logout</a>
-			</div>
+			<?php include_once 'menu.php' ?>
 		</nav>
 	</div>
 </div>
+
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+			<?php displayDriveSpaceBar(getDriveSpace($cfg["path"])); ?>
+		</div>
+	</div>
+</div>
+
+
 <script language="JavaScript">
 function MakeTorrent(name_file)
 {
@@ -277,24 +300,27 @@ function checkCheck(thisIn)
 }
 
 </script>
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+			<fieldset class="form-group bd-example">
+				<?php 
+					if(!isset($dir)) $dir = "";
+
+					if (!file_exists($cfg["path"].$dir)) {
+    					echo "<strong>".htmlentities($dir)."</strong> could not be found or is not valid.";
+					} else {
+    					ListDirectory($cfg["path"].$dir);
+					}
+				?>
+			</fieldset>
+		</div>
+	</div>
+</div>
+
+<?php echo DisplayTorrentFluxLink(); ?>
 
 <?php
-
-displayDriveSpaceBar(getDriveSpace($cfg["path"]));
-echo "<br>";
-
-if(!isset($dir)) $dir = "";
-
-if (!file_exists($cfg["path"].$dir))
-{
-    echo "<strong>".htmlentities($dir)."</strong> could not be found or is not valid.";
-}
-else
-{
-    ListDirectory($cfg["path"].$dir);
-}
-
-DisplayFoot();
 
 
 //**************************************************************************
@@ -323,7 +349,7 @@ function ListDirectory($dirName)
             $parentURL="dir.php?dir=" . urlencode($matches[1]);
         }
 
-        echo "<table cellpadding=2 width=740>";
+        echo "<table class=\"table table-striped\">";
         echo '<form action="multi.php" method="post" name="multidir">';
         echo '<input type="hidden" name="action" value="fileDelete" />';
         echo '<tr><td colspan="2">';

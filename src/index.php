@@ -756,6 +756,19 @@ function ConfirmDelete(file)
 	</div>
 </div>
 
+<?php if ($messages != '') { ?>
+<div class="container">
+	<div class="row">
+		<div class="alert alert-danger alert-dismissible fade in" role="alert" style="margin-bottom:0px;margin-top:16px;">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+			</button>
+			<?php echo $messages ?>
+		</div>
+	</div>
+</div>
+<?php } ?>
+
 <div class="container">
 	<div class="row">
 		<div class="col-sm-6">
