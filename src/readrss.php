@@ -28,39 +28,32 @@ include_once("lastRSS.php");
 
 // check http://varchars.com/rss/ for feeds
 
-// The following is for PHP < 4.3
-if (!function_exists('html_entity_decode'))
-{
-    function html_entity_decode($string, $opt = ENT_COMPAT)
-    {
-        $trans_tbl = get_html_translation_table (HTML_ENTITIES);
-        $trans_tbl = array_flip ($trans_tbl);
-
-        if ($opt & 1)
-        {
-            // Translating single quotes
-            // Add single quote to translation table;
-            // doesn't appear to be there by default
-            $trans_tbl["&apos;"] = "'";
-        }
-
-        if (!($opt & 2))
-        {
-            // Not translating double quotes
-            // Remove double quote from translation table
-            unset($trans_tbl["&quot;"]);
-        }
-
-        return strtr ($string, $trans_tbl);
-    }
-}
-
 // Just to be safe ;o)
 if (!defined("ENT_COMPAT")) define("ENT_COMPAT", 2);
 if (!defined("ENT_NOQUOTES")) define("ENT_NOQUOTES", 0);
 if (!defined("ENT_QUOTES")) define("ENT_QUOTES", 3);
 
-DisplayHead("RSS Torrents");
+?>
+<!doctype html>
+<html>
+<head>
+	<title><?php echo $cfg["pagetitle"] ?></title>
+	<link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="./plugins/twitter/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
+    <link rel="styleSheet" HREF="themes/<?php echo $cfg["theme"] ?>/style.css" type="text/css" />
+	<meta http-equiv="Pragma" content="no-cache" charset="<?php echo _CHARSET ?>">
+</head>
+<body>
+
+<div class="container">
+	<div class="row">
+		<nav class="navbar navbar-light" style="background-color:#e3f2fd;">
+			<?php include_once 'menu.php' ?>
+		</nav>
+	</div>
+</div>
+<?php
 
 // Get RSS feeds from Database
 $arURL = GetRSSLinks();
@@ -72,10 +65,15 @@ $rss = new lastRSS();
 $rss->cache_dir = $cfg["torrent_file_path"];
 $rss->cache_time = $cfg["rss_cache_min"] * 60; // 1200 = 20 min.  3600 = 1 hour
 $rss->strip_html = false; // don't remove HTML from the description
-
+?>
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+			<fieldset class="form-group bd-example">
+<?php
 echo "<a name=\"top\"></a><div align=\"center\">";
-echo "<table border=1 cellspacing=0 width=\"760\" cellpadding=5><tr>";
-echo "<td bgcolor=\"".$cfg["table_header_bg"]."\">RSS Feeds (jump list):";
+echo "<table class=\"table table-striped\"><tr>";
+echo "<td>RSS Feeds (jump list):";
 echo "<ul>";
 
 $jumpCount = 0;
@@ -163,12 +161,16 @@ if (is_array($arURL))
     }
 }
 
-DisplayFoot();
-
+?>
+			</fieldset>
+		</div>
+	</div>
+</div>
+<?php 
 function displayNews($title, $pageUrl, $content, $rid) {
     global $cfg;
     // Draw the Table
-    echo "<a name=\"".$rid."\"></a><table width=\"760\" border=1 bordercolor=\"".$cfg["table_admin_border"]."\" cellpadding=\"2\" cellspacing=\"0\" bgcolor=\"".$cfg["table_data_bg"]."\">";
+    echo "<a name=\"".$rid."\"></a><table class=\"table table-striped\">";
     echo "<tr><td colspan=2 bgcolor=\"".$cfg["table_header_bg"]."\" background=\"themes/".$cfg["theme"]."/images/bar.gif\">";
     echo "<img src=\"images/properties.png\" width=18 height=13 border=0>&nbsp;&nbsp;<strong><a href=\"".$pageUrl."\" target=\"_blank\"><font class=\"adminlink\">".$title."</font></a>&nbsp;&nbsp;<font class=\"tinywhite\">[<a href=\"#\"><font class=\"tinywhite\">top</font></a>]</font></strong>";
     echo "</td></tr>";

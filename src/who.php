@@ -25,42 +25,59 @@
 include_once("config.php");
 include_once("functions.php");
 
-if (! IsAdmin($cfg["user"])) {
+if (!IsAdmin($cfg["user"])) {
     header("Location:index.php");
 }
 
 $result = shell_exec("w");
 $result2 = shell_exec("free -mo");
-
-
-DisplayHead(_SERVERSTATS);
-echo "<table width=\"740\" border=0 cellpadding=0 cellspacing=0><tr><td>";
-echo displayDriveSpaceBar(getDriveSpace($cfg["path"]));
-echo "</td></tr></table>";
 ?>
+<!doctype html>
+<html>
+<head>
+	<title><?php echo $cfg["pagetitle"] ?></title>
+	<link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="./plugins/twitter/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
+    <link rel="styleSheet" HREF="themes/<?php echo $cfg["theme"] ?>/style.css" type="text/css" />
+	<meta http-equiv="Pragma" content="no-cache" charset="<?php echo _CHARSET ?>">
+</head>
+<body>
 
-<br>
+<div class="container">
+	<div class="row">
+		<nav class="navbar navbar-light" style="background-color:#e3f2fd;">
+			<?php include_once 'menu.php' ?>
+		</nav>
+	</div>
+</div>
 
-<div align="left" id="BodyLayer" name="BodyLayer" style="border: thin solid <?php echo $cfg["main_bgcolor"] ?>; position:relative; width:740; height:500; padding-left: 5px; padding-right: 5px; z-index:1; overflow: scroll; visibility: visible">
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+			<?php echo displayDriveSpaceBar(getDriveSpace($cfg["path"])); ?>
+		</div>
+	</div>
+</div>
 
-<?php
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+			<fieldset class="form-group bd-example">
+				<pre><?php echo $result; ?><hr><?php echo $result2; ?></pre>
+				<?php 
+					if (IsAdmin()) {
+    					echo "<hr>";
+    					echo "<pre>";
+    					RunningProcessInfo();
+    					echo "</pre>";
+					}
+				?>
+			</fieldset>
+		</div>
+	</div>
+</div>
 
-echo "<pre>";
-echo $result;
-echo "<br><hr><br>";
-echo $result2;
-echo "</pre>";
+<div style="text-align:center">[<a href="index.php"><?php echo _RETURNTOTORRENTS ?></a>]</div>
 
-if (IsAdmin())
-{
-    echo "<br><hr><br>";
-    echo "<pre>";
-    RunningProcessInfo();
-    echo "</pre>";
-}
-
-echo "</div>";
-
-DisplayFoot();
-
-?>
+<?php echo DisplayTorrentFluxLink(); ?>

@@ -712,20 +712,7 @@ function ConfirmDelete(file)
 }
 </script>
 </head>
-<style>
-.bd-example {
-	margin-left: 0;
-	margin-right: 0;
-	margin-bottom: 0;
-	padding: 1.5rem;
-	border-width: .2rem;
-	position: relative;
-	padding: 1rem;
-	margin: 1rem -1rem;
-	border: solid white;
-}
-</style>
-<body onLoad="UpdateRefresh();" topmargin="8" bgcolor="<?php echo $cfg["main_bgcolor"] ?>">
+<body onLoad="UpdateRefresh();">
 
 <?php
 	// Does the user have messages?
