@@ -22,11 +22,10 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-include_once("config.php");
-include_once("functions.php");
+include_once 'config.php';
+include_once 'functions.php';
 
-if(!IsAdmin())
-{
+if (!IsAdmin()) {
      // the user probably hit this page direct
     AuditAction($cfg["constants"]["access_denied"], $_SERVER['PHP_SELF']);
     header("location: index.php");
@@ -116,14 +115,7 @@ function addUser($newUser, $pass1, $userType)
     $newUser = strtolower($newUser);
     if (IsUser($newUser))
     {
-        DisplayHead(_ADMINISTRATION);
-
-        // Admin Menu
-        displayMenu();
-
         echo "<br><div align=\"center\">"._TRYDIFFERENTUSERID."<br><strong>".$newUser."</strong> "._HASBEENUSED."</div><br><br><br>";
-
-        DisplayFoot();
     }
     else
     {
@@ -142,16 +134,9 @@ function updateUser($user_id, $org_user_id, $pass1, $userType, $hideOffline)
     $user_id = strtolower($user_id);
     if (IsUser($user_id) && ($user_id != $org_user_id))
     {
-        DisplayHead(_ADMINISTRATION);
-
-        // Admin Menu
-        displayMenu();
-
         echo "<br><div align=\"center\">"._TRYDIFFERENTUSERID."<br><strong>".$user_id."</strong> "._HASBEENUSED."<br><br><br>";
 
         echo "[<a href=\"admin.php?op=editUser&user_id=".$org_user_id."\">"._RETURNTOEDIT." ".$org_user_id."</a>]</div><br><br><br>";
-
-        DisplayFoot();
     }
     else
     {
@@ -209,21 +194,12 @@ function deleteUser($user_id)
 function showIndex($min = 0)
 {
     global $cfg;
-    DisplayHead(_ADMINISTRATION);
-
-    // Admin Menu
-    displayMenu();
 
     // Show User Section
     displayUserSection();
 
-    echo "<br>";
-
     // Display Activity
     displayActivity($min);
-
-    DisplayFoot();
-
 }
 
 
@@ -234,16 +210,8 @@ function showUserActivity($min=0, $user_id="", $srchFile="", $srchAction="")
 {
     global $cfg;
 
-    DisplayHead(_ADMINUSERACTIVITY);
-
-    // Admin Menu
-    displayMenu();
-
     // display Activity for user
     displayActivity($min, $user_id, $srchFile, $srchAction);
-
-    DisplayFoot();
-
 }
 
 
@@ -301,29 +269,6 @@ function backupDatabase()
 
 
 //****************************************************************************
-// displayMenu -- displays Admin Menu
-//****************************************************************************
-function displayMenu()
-{
-    global $cfg;
-    echo "<table width=\"760\" border=1 bordercolor=\"".$cfg["table_admin_border"]."\" cellpadding=\"2\" cellspacing=\"0\">";
-    echo "<tr><td colspan=6 bgcolor=\"".$cfg["table_header_bg"]."\" background=\"themes/".$cfg["theme"]."/images/bar.gif\"><div align=\"center\">";
-    echo "<a href=\"admin.php\"><font class=\"adminlink\">"._ADMIN_MENU."</font></a> | ";
-    echo "<a href=\"admin.php?op=configSettings\"><font class=\"adminlink\">"._SETTINGS_MENU."</font></a> | ";
-    echo "<a href=\"admin.php?op=queueSettings\"><font class=\"adminlink\">"._QMANAGER_MENU."</font></a> | ";
-    echo "<a href=\"admin.php?op=searchSettings\"><font class=\"adminlink\">"._SEARCHSETTINGS_MENU."</font></a> | ";
-    echo "<a href=\"admin.php?op=showUserActivity\"><font class=\"adminlink\">"._ACTIVITY_MENU."</font></a> | ";
-    echo "<a href=\"admin.php?op=editLinks\"><font class=\"adminlink\">"._LINKS_MENU."</font></a> | ";
-    echo "<a href=\"admin.php?op=editRSS\"><font class=\"adminlink\">rss</font></a> | ";
-    echo "<a href=\"admin.php?op=CreateUser\"><font class=\"adminlink\">"._NEWUSER_MENU."</font></a> | ";
-    echo "<a href=\"admin.php?op=backupDatabase\"><font class=\"adminlink\">"._BACKUP_MENU."</font></a>";
-    echo "</div></td></tr>";
-    echo "</table><br>";
-
-}
-
-
-//****************************************************************************
 // displayActivity -- displays Activity
 //****************************************************************************
 function displayActivity($min=0, $user="", $srchFile="", $srchAction="")
@@ -334,22 +279,17 @@ function displayActivity($min=0, $user="", $srchFile="", $srchAction="")
 
     $userdisplay = $user;
 
-    if($user != "")
-    {
+    if ($user != "") {
         $sqlForSearch .= "user_id='".$user."' AND ";
-    }
-    else
-    {
+    } else {
         $userdisplay = _ALLUSERS;
     }
 
-    if($srchFile != "")
-    {
+    if ($srchFile != "") {
         $sqlForSearch .= "file like '%".$srchFile."%' AND ";
     }
 
-    if($srchAction != "")
-    {
+    if ($srchAction != "") {
         $sqlForSearch .= "action like '%".$srchAction."%' AND ";
     }
 
@@ -410,6 +350,117 @@ function displayActivity($min=0, $user="", $srchFile="", $srchAction="")
         $morelink .= "<font class=\"TinyWhite\">["._SHOWMORE."&gt;&gt;</font></a>";
     }
 ?>
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+			<fieldset class="form-group bd-example">
+				<form action="admin.php?op=showUserActivity" name="searchForm" method="post">
+			    	<table class="table table-striped">
+					    <tr>
+        					<td>
+        						<strong><?php echo _ACTIVITYSEARCH ?></strong>&nbsp;&nbsp;&nbsp;
+        						<?php echo _FILE ?>:
+        						<input type="Text" name="srchFile" value="<?php echo $srchFile ?>" width="30"> &nbsp;&nbsp;
+        						<?php echo _ACTION ?>:
+        						<select name="srchAction">
+        							<option value="">-- <?php echo _ALL ?> --</option>
+									<?php
+								        $selected = "";
+								        if(is_array($cfg["constants"])) {
+								            foreach ($cfg["constants"] as $action)
+								            {
+								                $selected = "";
+								                if($action != $cfg["constants"]["hit"])
+								                {
+								                    if($srchAction == $action)
+								                    {
+								                        $selected = "selected";
+								                    }
+								                    echo "<option value=\"".htmlentities($action, ENT_QUOTES)."\" ".$selected.">".htmlentities($action, ENT_QUOTES)."</option>";
+								                }
+								            }
+								        }
+									?>
+								</select>&nbsp;&nbsp;
+								
+        						<?php echo _USER ?>:
+        						<select name="user_id">
+							        <option value="">-- <?php echo _ALL ?> --</option>
+									<?php
+									        $users = GetUsers();
+									        $selected = "";
+									        for($inx = 0; $inx < sizeof($users); $inx++)
+									        {
+									            $selected = "";
+									            if($user == $users[$inx])
+									            {
+									                $selected = "selected";
+									            }
+									            echo "<option value=\"".htmlentities($users[$inx], ENT_QUOTES)."\" ".$selected.">".htmlentities($users[$inx], ENT_QUOTES)."</option>";
+									        }
+									?>
+							  	</select>
+        						<input type="Submit" value="<?php echo _SEARCH ?>">
+
+        					</td>
+    					</tr>
+    				</table>
+     			</form>
+			</fieldset>
+		</div>
+	</div>
+</div>
+
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+			<fieldset class="form-group bd-example">
+    			<table class="table table-striped">
+    				<tr>
+    					<th colspan="4">
+							<img src="images/properties.png" width=18 height=13 border=0>&nbsp;&nbsp;
+    						<?php echo _ACTIVITYLOG . " " . $cfg["days_to_keep"] . " " . _DAYS . " (" . $userdisplay . ")" ?>
+    					</th>
+    					<th align="right">
+						    <?php  
+						    if (!empty($prevlink) && !empty($morelink)) {
+						        echo $prevlink . $morelink;
+						    } else if (!empty($prevlink)) {
+						        echo $prevlink;
+						    } else if (!empty($prevlink)) {
+						        echo $morelink;
+						    } else {
+
+						    } 
+						    ?>
+    					</th>
+    				</tr>
+    				<tr>
+    					<th><?php echo _USER ?></th>
+    					<th><?php echo _ACTION ?></th>
+    					<th><?php echo _FILE ?></th>
+    					<th width="13%"><?php echo _IP ?></th>
+    					<th width="15%"><?php echo _TIMESTAMP ?></th>
+    				</tr>
+					<?php
+					    echo $output;
+					
+					    if(!empty($prevlink) || !empty($morelink))
+					    {
+					        echo "<tr><td colspan=6 bgcolor=\"".$cfg["table_header_bg"]."\">";
+					        echo "<table width=\"100%\" cellpadding=0 cellspacing=0 border=0><tr><td align=\"left\">";
+					        if(!empty($prevlink)) echo $prevlink;
+					        echo "</td><td align=\"right\">";
+					        if(!empty($morelink)) echo $morelink;
+					        echo "</td></tr></table>";
+					        echo "</td></tr>";
+					    } 
+					  ?>
+			    </table>		
+			</fieldset>
+		</div>
+	</div>
+</div>
     <div id="overDiv" style="position:absolute;visibility:hidden;z-index:1000;"></div>
     <script language="JavaScript">
         var ol_closeclick = "1";
@@ -422,98 +473,10 @@ function displayActivity($min=0, $user="", $srchFile="", $srchAction="")
         var ol_cap = "&nbsp;IP Info";
     </script>
     <script src="overlib.js" type="text/javascript"></script>
-    <div align="center">
-    <table>
-    <form action="admin.php?op=showUserActivity" name="searchForm" method="post">
-    <tr>
-        <td>
-        <strong><?php echo _ACTIVITYSEARCH ?></strong>&nbsp;&nbsp;&nbsp;
-        <?php echo _FILE ?>:
-        <input type="Text" name="srchFile" value="<?php echo $srchFile ?>" width="30"> &nbsp;&nbsp;
-        <?php echo _ACTION ?>:
-        <select name="srchAction">
-        <option value="">-- <?php echo _ALL ?> --</option>
-<?php
-        $selected = "";
-        if(is_array($cfg["constants"] ))
-        {
-            foreach ($cfg["constants"] as $action)
-            {
-                $selected = "";
-                if($action != $cfg["constants"]["hit"])
-                {
-                    if($srchAction == $action)
-                    {
-                        $selected = "selected";
-                    }
-                    echo "<option value=\"".htmlentities($action, ENT_QUOTES)."\" ".$selected.">".htmlentities($action, ENT_QUOTES)."</option>";
-                }
-            }
-        }
-?>
-        </select>&nbsp;&nbsp;
-        <?php echo _USER ?>:
-        <select name="user_id">
-        <option value="">-- <?php echo _ALL ?> --</option>
-<?php
-        $users = GetUsers();
-        $selected = "";
-        for($inx = 0; $inx < sizeof($users); $inx++)
-        {
-            $selected = "";
-            if($user == $users[$inx])
-            {
-                $selected = "selected";
-            }
-            echo "<option value=\"".htmlentities($users[$inx], ENT_QUOTES)."\" ".$selected.">".htmlentities($users[$inx], ENT_QUOTES)."</option>";
-        }
-?>
-        </select>
-        <input type="Submit" value="<?php echo _SEARCH ?>">
-
-        </td>
-    </tr>
-    </form>
-    </table>
-    </div>
 
 
 <?php
-    echo "<table width=\"760\" border=1 bordercolor=\"".$cfg["table_admin_border"]."\" cellpadding=\"2\" cellspacing=\"0\" bgcolor=\"".$cfg["table_data_bg"]."\">";
-    echo "<tr><td colspan=6 bgcolor=\"".$cfg["table_header_bg"]."\" background=\"themes/".$cfg["theme"]."/images/bar.gif\">";
-    echo "<table width=\"100%\" cellpadding=0 cellspacing=0 border=0><tr><td>";
-    echo "<img src=\"images/properties.png\" width=18 height=13 border=0>&nbsp;&nbsp;<font class=\"title\">"._ACTIVITYLOG." ".$cfg["days_to_keep"]." "._DAYS." (".$userdisplay.")</font>";
-    if(!empty($prevlink) && !empty($morelink))
-        echo "</td><td align=\"right\">".$prevlink.$morelink."</td></tr></table>";
-    elseif(!empty($prevlink))
-        echo "</td><td align=\"right\">".$prevlink."</td></tr></table>";
-    elseif(!empty($prevlink))
-        echo "</td><td align=\"right\">".$morelink."</td></tr></table>";
-    else
-        echo "</td><td align=\"right\"></td></tr></table>";
-    echo "</td></tr>";
-    echo "<tr>";
-    echo "<td bgcolor=\"".$cfg["table_header_bg"]."\"><div align=center class=\"title\">"._USER."</div></td>";
-    echo "<td bgcolor=\"".$cfg["table_header_bg"]."\"><div align=center class=\"title\">"._ACTION."</div></td>";
-    echo "<td bgcolor=\"".$cfg["table_header_bg"]."\"><div align=center class=\"title\">"._FILE."</div></td>";
-    echo "<td bgcolor=\"".$cfg["table_header_bg"]."\" width=\"13%\"><div align=center class=\"title\">"._IP."</div></td>";
-    echo "<td bgcolor=\"".$cfg["table_header_bg"]."\" width=\"15%\"><div align=center class=\"title\">"._TIMESTAMP."</div></td>";
-    echo "</tr>";
 
-    echo $output;
-
-    if(!empty($prevlink) || !empty($morelink))
-    {
-        echo "<tr><td colspan=6 bgcolor=\"".$cfg["table_header_bg"]."\">";
-        echo "<table width=\"100%\" cellpadding=0 cellspacing=0 border=0><tr><td align=\"left\">";
-        if(!empty($prevlink)) echo $prevlink;
-        echo "</td><td align=\"right\">";
-        if(!empty($morelink)) echo $morelink;
-        echo "</td></tr></table>";
-        echo "</td></tr>";
-    }
-
-    echo "</table>";
 
 }
 
@@ -525,104 +488,105 @@ function displayActivity($min=0, $user="", $srchFile="", $srchAction="")
 function displayUserSection()
 {
     global $cfg, $db;
-
-    echo "<table width=\"760\" border=1 bordercolor=\"".$cfg["table_admin_border"]."\" cellpadding=\"2\" cellspacing=\"0\" bgcolor=\"".$cfg["table_data_bg"]."\">";
-    echo "<tr><td colspan=6 bgcolor=\"".$cfg["table_header_bg"]."\" background=\"themes/".$cfg["theme"]."/images/bar.gif\"><img src=\"images/user_group.gif\" width=17 height=14 border=0>&nbsp;&nbsp;<font class=\"title\">"._USERDETAILS."</font></div></td></tr>";
-    echo "<tr>";
-    echo "<td bgcolor=\"".$cfg["table_header_bg"]."\" width=\"15%\"><div align=center class=\"title\">"._USER."</div></td>";
-    echo "<td bgcolor=\"".$cfg["table_header_bg"]."\" width=\"6%\"><div align=center class=\"title\">"._HITS."</div></td>";
-    echo "<td bgcolor=\"".$cfg["table_header_bg"]."\"><div align=center class=\"title\">"._UPLOADACTIVITY." (".$cfg["days_to_keep"]." "._DAYS.")</div></td>";
-    echo "<td bgcolor=\"".$cfg["table_header_bg"]."\" width=\"6%\"><div align=center class=\"title\">"._JOINED."</div></td>";
-    echo "<td bgcolor=\"".$cfg["table_header_bg"]."\" width=\"15%\"><div align=center class=\"title\">"._LASTVISIT."</div></td>";
-    echo "<td bgcolor=\"".$cfg["table_header_bg"]."\" width=\"8%\"><div align=center class=\"title\">"._ADMIN."</div></td>";
-    echo "</tr>";
-
-    $total_activity = GetActivityCount();
-
-    $sql= "SELECT user_id, hits, last_visit, time_created, user_level FROM tf_users ORDER BY user_id";
-    $result = $db->Execute($sql);
-    while(list($user_id, $hits, $last_visit, $time_created, $user_level) = $result->FetchRow())
-    {
-        $user_activity = GetActivityCount($user_id);
-
-        if ($user_activity == 0)
-        {
-            $user_percent = 0;
-        }
-        else
-        {
-            $user_percent = number_format(($user_activity/$total_activity)*100);
-        }
-        $user_icon = "images/user_offline.gif";
-        if (IsOnline($user_id))
-        {
-            $user_icon = "images/user.gif";
-        }
-
-        echo "<tr>";
-        if (IsUser($user_id))
-        {
-            echo "<td><a href=\"message.php?to_user=".$user_id."\"><img src=\"".$user_icon."\" width=17 height=14 title=\""._SENDMESSAGETO." ".$user_id."\" border=0 align=\"bottom\">".$user_id."</a></td>";
-        }
-        else
-        {
-            echo "<td><img src=\"".$user_icon."\" width=17 height=14 title=\"n/a\" border=0 align=\"bottom\">".$user_id."</td>";
-        }
-        echo "<td><div class=\"tiny\" align=\"right\">".$hits."</div></td>";
-        echo "<td><div align=center>";
 ?>
-        <table width="310" border="0" cellpadding="0" cellspacing="0">
-        <tr>
-        <td width="200">
-            <table width="200" border="0" cellpadding="0" cellspacing="0">
-            <tr>
-                <td background="themes/<?php echo $cfg["theme"] ?>/images/proglass.gif" width="<?php echo $user_percent*2 ?>"><img src="images/blank.gif" width="1" height="12" border="0"></td>
-                <td background="themes/<?php echo $cfg["theme"] ?>/images/noglass.gif" width="<?php echo (200 - ($user_percent*2)) ?>"><img src="images/blank.gif" width="1" height="12" border="0"></td>
-            </tr>
-            </table>
-        </td>
-        <td align="right" width="40"><div class="tiny" align="right"><?php echo $user_activity ?></div></td>
-        <td align="right" width="40"><div class="tiny" align="right"><?php echo $user_percent ?>%</div></td>
-        <td align="right"><a href="admin.php?op=showUserActivity&user_id=<?php echo $user_id ?>"><img src="images/properties.png" width="18" height="13" title="<?php echo $user_id."'s "._USERSACTIVITY ?>" border="0"></a></td>
-        </tr>
-        </table>
-<?php
-        echo "</td>";
-        echo "<td><div class=\"tiny\" align=\"center\">".date(_DATEFORMAT, $time_created)."</div></td>";
-        echo "<td><div class=\"tiny\" align=\"center\">".date(_DATETIMEFORMAT, $last_visit)."</div></td>";
-        echo "<td><div align=\"right\" class=\"tiny\">";
-        $user_image = "images/user.gif";
-        $type_user = _NORMALUSER;
-        if ($user_level == 1)
-        {
-            $user_image = "images/admin_user.gif";
-            $type_user = _ADMINISTRATOR;
-        }
-        if ($user_level == 2)
-        {
-            $user_image = "images/superadmin.gif";
-            $type_user = _SUPERADMIN;
-        }
-        if ($user_level <= 1 || IsSuperAdmin())
-        {
-            echo "<a href=\"admin.php?op=editUser&user_id=".$user_id."\"><img src=\"images/edit.png\" width=12 height=13 title=\""._EDIT." ".$user_id."\" border=0></a>";
-        }
-        echo "<img src=\"".$user_image."\" title=\"".$user_id." - ".$type_user."\">";
-        if ($user_level <= 1)
-        {
-            echo "<a href=\"admin.php?op=deleteUser&user_id=".$user_id."\"><img src=\"images/delete_on.gif\" border=0 width=16 height=16 title=\""._DELETE." ".$user_id."\" onclick=\"return ConfirmDeleteUser('".$user_id."')\"></a>";
-        }
-        else
-        {
-            echo "<img src=\"images/delete_off.gif\" width=16 height=16 title=\"n/a\">";
-        }
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+			<fieldset class="form-group bd-example">
+			    <table class="table table-striped">
+    				<tr>
+    					<th colspan="6">
+    						<img src="images/user_group.gif" width=17 height=14 border=0>&nbsp;&nbsp;
+    						<?php echo _USERDETAILS ?>
+    					</th>
+    				</tr>
+    				<tr>
+    					<th width="15%"><?php echo _USER ?></th>
+					    <th width="6%"><?php echo _HITS ?></th>
+					    <th><?php echo _UPLOADACTIVITY . ' (' . $cfg['days_to_keep'] . ' ' . _DAYS . ')' ?></th>
+					    <th width="6%"><?php echo _JOINED ?></th>
+					    <th width="15%"><?php echo _LASTVISIT ?></th>
+					    <th width="8%"><?php echo _ADMIN ?></th>
+					</tr>
+					<?php 
+					    $total_activity = GetActivityCount();
 
-        echo "</div></td>";
-        echo "</tr>";
-    }
+					    $sql= "SELECT user_id, hits, last_visit, time_created, user_level FROM tf_users ORDER BY user_id";
+					    $result = $db->Execute($sql);
+					    while(list($user_id, $hits, $last_visit, $time_created, $user_level) = $result->FetchRow())
+					    {
+					        $user_activity = GetActivityCount($user_id);
+					
+					        if ($user_activity == 0) {
+					            $user_percent = 0;
+					        } else {
+					            $user_percent = number_format(($user_activity/$total_activity)*100);
+					        }
+					        
+					        $user_icon = "images/user_offline.gif";
+					        if (IsOnline($user_id)) {
+					            $user_icon = "images/user.gif";
+					        }
+					
+					        echo "<tr>";
+					        if (IsUser($user_id)) {
+					            echo "<td><a href=\"message.php?to_user=".$user_id."\"><img src=\"".$user_icon."\" width=17 height=14 title=\""._SENDMESSAGETO." ".$user_id."\" border=0 align=\"bottom\">".$user_id."</a></td>";
+					        } else {
+					            echo "<td><img src=\"".$user_icon."\" width=17 height=14 title=\"n/a\" border=0 align=\"bottom\">".$user_id."</td>";
+					        }
+					        
+					        echo "<td><div class=\"tiny\" align=\"right\">".$hits."</div></td>";
+					        echo "<td>";
+					       ?>
+						        <table class="table table-striped">
+							        <tr>
+								        <td width="200">
+								        	<progress class="progress progress-success" value="<?php echo $user_percent ?>" max="100" style="margin-bottom:0px"><?php echo $user_percent ?>%</progress>
+								        </td>
+								        <td align="right" width="40"><div class="tiny" align="right"><?php echo $user_activity ?></div></td>
+								        <td align="right" width="40"><div class="tiny" align="right"><?php echo $user_percent ?>%</div></td>
+								        <td align="right"><a href="admin.php?op=showUserActivity&user_id=<?php echo $user_id ?>"><img src="images/properties.png" width="18" height="13" title="<?php echo $user_id."'s "._USERSACTIVITY ?>" border="0"></a></td>
+							        </tr>
+						        </table>
+					        
+					        
+					        </td>
+        					<td class="tiny" align="center"><?php echo date(_DATEFORMAT, $time_created) ?></td>
+        					<td  class="tiny" align="center"><?php echo date(_DATETIMEFORMAT, $last_visit) ?></td>
+        					<td><div align="right" class="tiny">
+							<?php
+						        $user_image = "images/user.gif";
+						        $type_user = _NORMALUSER;
+						        if ($user_level == 1) {
+						            $user_image = "images/admin_user.gif";
+						            $type_user = _ADMINISTRATOR;
+						        }
+						        
+						        if ($user_level == 2) {
+						            $user_image = "images/superadmin.gif";
+						            $type_user = _SUPERADMIN;
+						        }
+						        
+						        if ($user_level <= 1 || IsSuperAdmin()) {
+						            echo "<a href=\"admin.php?op=editUser&user_id=".$user_id."\"><img src=\"images/edit.png\" width=12 height=13 title=\""._EDIT." ".$user_id."\" border=0></a>";
+						        }
+						        
+						        echo "<img src=\"".$user_image."\" title=\"".$user_id." - ".$type_user."\">";
+						        if ($user_level <= 1) {
+						            echo "<a href=\"admin.php?op=deleteUser&user_id=".$user_id."\"><img src=\"images/delete_on.gif\" border=0 width=16 height=16 title=\""._DELETE." ".$user_id."\" onclick=\"return ConfirmDeleteUser('".$user_id."')\"></a>";
+						        } else {
+						            echo "<img src=\"images/delete_off.gif\" width=16 height=16 title=\"n/a\">";
+						        }
+							?>
+        					</div></td>
+        				</tr>
+        			<?php } ?>
+				</table>
+			</fieldset>
+		</div>
+	</div>
+</div>
 
-    echo "</table>";
-?>
     <script language="JavaScript">
     function ConfirmDeleteUser(user)
     {
@@ -639,16 +603,12 @@ function displayUserSection()
 function editUser($user_id)
 {
     global $cfg, $db;
-    DisplayHead(_USERADMIN);
 
     $editUserImage = "images/user.gif";
     $selected_n = "selected";
     $selected_a = "";
 
     $hide_checked = "";
-
-    // Admin Menu
-    displayMenu();
 
     $total_activity = GetActivityCount();
 
@@ -858,8 +818,6 @@ function editUser($user_id)
     displayUserSection();
 
     echo "<br><br>";
-
-    DisplayFoot();
 }
 
 
@@ -869,56 +827,51 @@ function editUser($user_id)
 function CreateUser()
 {
     global $cfg;
-    DisplayHead(_USERADMIN);
-
-    // Admin Menu
-    displayMenu();
-    echo "<div align=\"center\">";
-    echo "<table border=1 bordercolor=\"".$cfg["table_admin_border"]."\" cellpadding=\"2\" cellspacing=\"0\" bgcolor=\"".$cfg["table_data_bg"]."\">";
-    echo "<tr><td colspan=6 bgcolor=\"".$cfg["table_header_bg"]."\" background=\"themes/".$cfg["theme"]."/images/bar.gif\">";
-    echo "<img src=\"images/user.gif\" width=17 height=14 border=0>&nbsp;&nbsp;&nbsp;<font class=\"title\">"._NEWUSER."</font>";
-    echo "</td></tr><tr><td align=\"center\">";
 ?>
-    <div align="center">
-        <table cellpadding="5" cellspacing="0" border="0">
-        <form name="theForm" action="admin.php?op=addUser" method="post" onsubmit="return validateProfile()">
-        <tr>
-            <td align="right"><?php echo _USER ?>:</td>
-            <td>
-            <input name="newUser" type="Text" value="" size="15">
-            </td>
-        </tr>
-        <tr>
-            <td align="right"><?php echo _PASSWORD ?>:</td>
-            <td>
-            <input name="pass1" type="Password" value="" size="15">
-            </td>
-        </tr>
-        <tr>
-            <td align="right"><?php echo _CONFIRMPASSWORD ?>:</td>
-            <td>
-            <input name="pass2" type="Password" value="" size="15">
-            </td>
-        </tr>
-        <tr>
-            <td align="right"><?php echo _USERTYPE ?>:</td>
-            <td>
-            <select name="userType">
-                <option value="0"><?php echo _NORMALUSER ?></option>
-                <option value="1"><?php echo _ADMINISTRATOR ?></option>
-            </select>
-            </td>
-        </tr>
-        <tr>
-            <td align="center" colspan="2">
-            <input type="Submit" value="<?php echo _CREATE ?>">
-            </td>
-        </tr>
-        </form>
-        </table>
-        </div>
-
-    <br>
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+			<fieldset class="form-group bd-example">
+				<form name="theForm" action="admin.php?op=addUser" method="post" onsubmit="return validateProfile()">
+					<table class="table table-striped">
+	    				<tr>
+	    					<th colspan="2">
+	    						<img src="images/user.gif" width=17 height=14 border=0>&nbsp;&nbsp;&nbsp;
+	    						<?php echo _NEWUSER ?>
+	    					</th>
+	    				</tr>
+	    				<tr>
+				            <td align="right"><?php echo _USER ?>:</td>
+				            <td><input name="newUser" type="Text" value="" size="15"></td>
+				        </tr>
+				        <tr>
+				            <td align="right"><?php echo _PASSWORD ?>:</td>
+				            <td><input name="pass1" type="Password" value="" size="15"></td>
+				        </tr>
+				        <tr>
+				            <td align="right"><?php echo _CONFIRMPASSWORD ?>:</td>
+				            <td><input name="pass2" type="Password" value="" size="15"></td>
+				        </tr>
+				        <tr>
+				            <td align="right"><?php echo _USERTYPE ?>:</td>
+				            <td>
+					            <select name="userType">
+					                <option value="0"><?php echo _NORMALUSER ?></option>
+					                <option value="1"><?php echo _ADMINISTRATOR ?></option>
+					            </select>
+				            </td>
+				        </tr>
+				        <tr>
+				            <td align="center" colspan="2">
+				            	<input type="Submit" value="<?php echo _CREATE ?>" class="btn btn-primary">
+				            </td>
+				        </tr>
+					</table>
+		        </form>
+			</fieldset>
+		</div>
+	</div>
+</div>
 
     <script language="JavaScript">
     function validateProfile()
@@ -963,16 +916,11 @@ function CreateUser()
     </script>
 
 <?php
-    echo "</td></tr>";
-    echo "</table></div>";
-    echo "<br><br>";
 
     // Show User Section
     displayUserSection();
 
     echo "<br><br>";
-
-    DisplayFoot();
 }
 
 //****************************************************************************
@@ -981,79 +929,92 @@ function CreateUser()
 function editLinks()
 {
     global $cfg;
-    DisplayHead(_ADMINEDITLINKS);
-
-    // Admin Menu
-    displayMenu();
-    echo "<div align=\"center\">";
-    echo "<table border=1 bordercolor=\"".$cfg["table_admin_border"]."\" cellpadding=\"2\" cellspacing=\"0\" bgcolor=\"".$cfg["table_data_bg"]."\">";
-    echo "<tr><td colspan=\"2\" bgcolor=\"".$cfg["table_header_bg"]."\" background=\"themes/".$cfg["theme"]."/images/bar.gif\">";
-    echo "<img src=\"images/properties.png\" width=18 height=13 border=0>&nbsp;&nbsp;<font class=\"title\">"._ADMINEDITLINKS."</font>";
-    echo "</td></tr><tr><td colspan=2 align=\"center\">";
 ?>
-    <form action="admin.php?op=addLink" method="post">
-    <?php echo _FULLURLLINK ?>:
-    <input type="Text" size="30" maxlength="255" name="newLink">
-    Site Name:
-    <input type="Text" size="30" maxlength="255" name="newSite">
-    <input type="Submit" value="<?php echo _UPDATE ?>"><br>
-    </form>
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+			<fieldset class="form-group bd-example">
+				<table class="table table-striped">
+    				<tr>
+    					<th colspan="2">
+    						<img src="images/properties.png" width=18 height=13 border=0>&nbsp;&nbsp;
+    						<?php echo _ADMINEDITLINKS ?>
+    					</th>
+    				</tr>
+    				<tr>
+    					<td colspan=2 align="center">
+    					    <form action="admin.php?op=addLink" method="post">
+							    <?php echo _FULLURLLINK ?>:
+							    <input type="Text" size="30" maxlength="255" name="newLink">
+							    Site Name:
+							    <input type="Text" size="30" maxlength="255" name="newSite">
+							    <input type="Submit" value="<?php echo _UPDATE ?>"><br>
+						    </form>
+						 </td>
+					</tr>
+					<?php
+					    $arLinks = GetLinks();
+					
+					    if (is_array($arLinks)) {
+					        $arLid = Array_Keys($arLinks);
+					        $inx = 0;
+					        $link_count = count($arLinks);
+					
+					        foreach($arLinks as $link)
+					        {
+					            $lid = $arLid[$inx++];
+					            $ed = getRequestVar("edit");
+					            if (!empty($ed) && $ed == $link['lid']) {
+								    ?>
+								    	<tr>
+					    					<td colspan="2">
+											      <form action="admin.php?op=editLink" method="post">
+												      <?php echo _FULLURLLINK ?>:
+												      <input type="Text" size="30" maxlength="255" name="editLink" value="<?php echo $link['url'] ?>">
+												      Site Name:
+												      <input type="Text" size="30" maxlength="255" name="editSite" value="<?php echo $link['sitename'] ?>">
+												      <input type="hidden" name="lid" value="<?php echo $lid ?>">
+												      <input type="Submit" value="<?php echo _UPDATE ?>"><br>
+											      </form>
+											 </td>
+										</tr>
+								<?php } else { ?>
+                					<tr>
+                						<td>
+							                <a href="admin.php?op=deleteLink&lid=<?php echo $lid ?>"><img src="images/delete_on.gif" width=16 height=16 border=0 title="<?php echo _DELETE . " " . $lid ?>" align="absmiddle"></a>&nbsp;
+							                <a href="admin.php?op=editLinks&edit=<?php echo $lid ?>"><img src="images/properties.png" width=18 height=13 border=0 title="<?php echo _EDIT . " " . $lid ?>" align="absmiddle"></a>&nbsp;
+							                <a href="<?php echo $link['url'] ?>" target="_blank"><?php echo $link['sitename'] ?></a>
+							            </td>
+						                <td align=center width='36'>
+
+							                <?php if ($inx > 1 ){
+							                    // Only put an 'up' arrow if this isn't the first entry:
+							                    echo "<a href='admin.php?op=moveLink&amp;direction=up&amp;lid=".$lid."'>";
+							                    echo "<img src='images/uparrow.png' width='16' height='16' ";
+							                    echo "border='0' title='Move link up' align='absmiddle' alt='Up'></a>";
+							                }
+							
+							                if ($inx != count($arLinks)) {
+							                    // Only put a 'down' arrow if this isn't the last item:
+							                    echo "<a href='admin.php?op=moveLink&amp;direction=down&amp;lid=".$lid."'>";
+							                    echo "<img src='images/downarrow.png' width='16' height='16' ";
+							                    echo "border='0' title='Move link down' align='absmiddle' alt='Down'></a>";
+							                }
+							                ?>
+                						</td>
+                					</tr>
+					                <?php
+					            }
+					        }
+					    } 
+					    ?>
+    			</table>
+			</fieldset>
+		</div>
+	</div>
+</div>
+
 <?php
-    echo "</td></tr>";
-    $arLinks = GetLinks();
-
-    if (is_array($arLinks))
-    {
-        $arLid = Array_Keys($arLinks);
-        $inx = 0;
-        $link_count = count($arLinks);
-
-        foreach($arLinks as $link)
-        {
-            $lid = $arLid[$inx++];
-            $ed = getRequestVar("edit");
-            if (!empty($ed) && $ed == $link['lid'])
-            {
-                echo "<tr><td colspan=\"2\">";
-    ?>
-      <form action="admin.php?op=editLink" method="post">
-      <?php echo _FULLURLLINK ?>:
-      <input type="Text" size="30" maxlength="255" name="editLink" value="<?php echo $link['url'] ?>">
-      Site Name:
-      <input type="Text" size="30" maxlength="255" name="editSite" value="<?php echo $link['sitename'] ?>">
-      <input type="hidden" name="lid" value="<?php echo $lid ?>">
-      <input type="Submit" value="<?php echo _UPDATE ?>"><br>
-      </form>
-    <?php
-            }
-            else
-            {
-                echo "<tr><td>";
-                echo "<a href=\"admin.php?op=deleteLink&lid=".$lid."\"><img src=\"images/delete_on.gif\" width=16 height=16 border=0 title=\""._DELETE." ".$lid."\" align=\"absmiddle\"></a>&nbsp;";
-                echo "<a href=\"admin.php?op=editLinks&edit=".$lid."\"><img src=\"images/properties.png\" width=18 height=13 border=0 title=\""._EDIT." ".$lid."\" align=\"absmiddle\"></a>&nbsp;";
-                echo "<a href=\"".$link['url']."\" target=\"_blank\">".$link['sitename']."</a></td>\n";
-                echo "<td align=center width='36'>";
-
-                if ($inx > 1 ){
-                    // Only put an 'up' arrow if this isn't the first entry:
-                    echo "<a href='admin.php?op=moveLink&amp;direction=up&amp;lid=".$lid."'>";
-                    echo "<img src='images/uparrow.png' width='16' height='16' ";
-                    echo "border='0' title='Move link up' align='absmiddle' alt='Up'></a>";
-                }
-
-                if ($inx != count($arLinks)) {
-                    // Only put a 'down' arrow if this isn't the last item:
-                    echo "<a href='admin.php?op=moveLink&amp;direction=down&amp;lid=".$lid."'>";
-                    echo "<img src='images/downarrow.png' width='16' height='16' ";
-                    echo "border='0' title='Move link down' align='absmiddle' alt='Down'></a>";
-                }
-                echo "</td></tr>";
-            }
-        }
-    }
-    echo "</table></div><br><br><br>";
-
-    DisplayFoot();
 
 }
 
@@ -1064,38 +1025,46 @@ function editLinks()
 function editRSS()
 {
     global $cfg;
-    DisplayHead("Administration - RSS");
-
-    // Admin Menu
-    displayMenu();
-    echo "<div align=\"center\">";
-    echo "<table border=1 bordercolor=\"".$cfg["table_admin_border"]."\" cellpadding=\"2\" cellspacing=\"0\" bgcolor=\"".$cfg["table_data_bg"]."\">";
-    echo "<tr><td bgcolor=\"".$cfg["table_header_bg"]."\" background=\"themes/".$cfg["theme"]."/images/bar.gif\">";
-    echo "<img src=\"images/properties.png\" width=18 height=13 border=0>&nbsp;&nbsp;<font class=\"title\">RSS Feeds</font>";
-    echo "</td></tr><tr><td align=\"center\">";
 ?>
-    <form action="admin.php?op=addRSS" method="post">
-    <?php echo _FULLURLLINK ?>:
-    <input type="Text" size="50" maxlength="255" name="newRSS">
-    <input type="Submit" value="<?php echo _UPDATE ?>"><br>
-    </form>
-<?php
-    echo "</td></tr>";
-    $arLinks = GetRSSLinks();
-    $arRid = Array_Keys($arLinks);
-    $inx = 0;
-    if(is_array($arLinks))
-    {
-        foreach($arLinks as $link)
-        {
-            $rid = $arRid[$inx++];
-            echo "<tr><td><a href=\"admin.php?op=deleteRSS&rid=".$rid."\"><img src=\"images/delete_on.gif\" width=16 height=16 border=0 title=\""._DELETE." ".$rid."\" align=\"absmiddle\"></a>&nbsp;";
-            echo "<a href=\"".$link."\" target=\"_blank\">".$link."</a></td></tr>\n";
-        }
-    }
-    echo "</table></div><br><br><br>";
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+			<fieldset class="form-group bd-example">
+				<table class="table table-striped">
+    				<tr>
+    					<th>
+    						<img src="images/properties.png" width=18 height=13 border=0>&nbsp;&nbsp;
+    						RSS Feeds
+    					</th>
+    				</tr>
+    				<tr>
+    					<td align="center">
+    					    <form action="admin.php?op=addRSS" method="post">
+							    <?php echo _FULLURLLINK ?>:
+							    <input type="Text" size="50" maxlength="255" name="newRSS">
+							    <input type="Submit" value="<?php echo _UPDATE ?>">
+						    </form>
+						</td>
+					</tr>
+					<?php
+					    $arLinks = GetRSSLinks();
+					    $arRid = Array_Keys($arLinks);
+					    $inx = 0;
+					    if(is_array($arLinks)) {
+					        foreach($arLinks as $link) {
+					            $rid = $arRid[$inx++];
+					            echo "<tr><td><a href=\"admin.php?op=deleteRSS&rid=".$rid."\"><img src=\"images/delete_on.gif\" width=16 height=16 border=0 title=\""._DELETE." ".$rid."\" align=\"absmiddle\"></a>&nbsp;";
+					            echo "<a href=\"".$link."\" target=\"_blank\">".$link."</a></td></tr>";
+					        }
+					    } 
+					?>
+    			</table>
+			</fieldset>
+		</div>
+	</div>
+</div>
 
-    DisplayFoot();
+<?php
 
 }
 
@@ -1140,19 +1109,6 @@ function configSettings()
     global $cfg;
     include_once("AliasFile.php");
     include_once("RunningTorrent.php");
-
-    DisplayHead("Administration - Settings");
-
-    // Admin Menu
-    displayMenu();
-
-    // Main Settings Section
-    echo "<div align=\"center\">";
-    echo "<table width=\"100%\" border=1 bordercolor=\"".$cfg["table_admin_border"]."\" cellpadding=\"2\" cellspacing=\"0\" bgcolor=\"".$cfg["table_data_bg"]."\">";
-    echo "<tr><td bgcolor=\"".$cfg["table_header_bg"]."\" background=\"themes/".$cfg["theme"]."/images/bar.gif\">";
-    echo "<img src=\"images/properties.png\" width=18 height=13 border=0>&nbsp;&nbsp;<font class=\"title\">TorrentFlux Settings</font>";
-    echo "</td></tr><tr><td align=\"center\">";
-
 ?>
 
     <script language="JavaScript">
@@ -1259,466 +1215,475 @@ function configSettings()
     }
     </script>
 
-    <div align="center">
 
-        <table cellpadding="5" cellspacing="0" border="0" width="100%">
-        <form name="theForm" action="admin.php?op=updateConfigSettings" method="post" onsubmit="return validateSettings()">
-        <input type="Hidden" name="continue" value="configSettings">
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Path</strong><br>
-            Define the PATH where the downloads will go <br>(make sure it ends with a / [slash]).
-            It must be chmod'd to 777:
-            </td>
-            <td valign="top">
-                <input name="path" type="Text" maxlength="254" value="<?php    echo($cfg["path"]); ?>" size="55"><?php echo validatePath($cfg["path"]) ?>
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Python Path</strong><br>
-            Specify the path to the Python binary (usually /usr/bin/python or /usr/local/bin/python):
-            </td>
-            <td valign="top">
-                <input name="pythonCmd" type="Text" maxlength="254" value="<?php    echo($cfg["pythonCmd"]); ?>" size="55"><?php echo validateFile($cfg["pythonCmd"]) ?>
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>btphptornado Path</strong><br>
-            Specify the path to the btphptornado python script:
-            </td>
-            <td valign="top">
-                <input name="btphpbin" type="Text" maxlength="254" value="<?php    echo($cfg["btphpbin"]); ?>" size="55"><?php echo validateFile($cfg["btphpbin"]) ?>
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>btshowmetainfo Path</strong><br>
-            Specify the path to the btshowmetainfo python script:
-            </td>
-            <td valign="top">
-                <input name="btshowmetainfo" type="Text" maxlength="254" value="<?php    echo($cfg["btshowmetainfo"]); ?>" size="55"><?php echo validateFile($cfg["btshowmetainfo"]) ?>
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Use Advanced Start Dialog</strong><br>
-            When enabled, users will be given the advanced start dialog popup when starting a torrent:
-            </td>
-            <td valign="top">
-                <select name="advanced_start">
-                        <option value="1">true</option>
-                        <option value="0" <?php
-                        if (!$cfg["advanced_start"])
-                        {
-                            echo "selected";
-                        }
-                        ?>>false</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Enable File Priority</strong><br>
-            When enabled, users will be allowed to select particular files from the torrent to download:
-            </td>
-            <td valign="top">
-                <select name="enable_file_priority">
-                        <option value="1">true</option>
-                        <option value="0" <?php
-                        if (!$cfg["enable_file_priority"])
-                        {
-                            echo "selected";
-                        }
-                        ?>>false</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Max Upload Rate</strong><br>
-            Set the default value for the max upload rate per torrent:
-            </td>
-            <td valign="top">
-                <input name="max_upload_rate" type="Text" maxlength="5" value="<?php    echo($cfg["max_upload_rate"]); ?>" size="5"> KB/second
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Max Download Rate</strong><br>
-            Set the default value for the max download rate per torrent (0 for no limit):
-            </td>
-            <td valign="top">
-                <input name="max_download_rate" type="Text" maxlength="5" value="<?php    echo($cfg["max_download_rate"]); ?>" size="5"> KB/second
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Max Upload Connections</strong><br>
-            Set the default value for the max number of upload connections per torrent:
-            </td>
-            <td valign="top">
-                <input name="max_uploads" type="Text" maxlength="5" value="<?php    echo($cfg["max_uploads"]); ?>" size="5">
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Port Range</strong><br>
-            Set the default values for the for port range (Min - Max):
-            </td>
-            <td valign="top">
-                <input name="minport" type="Text" maxlength="5" value="<?php    echo($cfg["minport"]); ?>" size="5"> -
-                <input name="maxport" type="Text" maxlength="5" value="<?php    echo($cfg["maxport"]); ?>" size="5">
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Rerequest Interval</strong><br>
-            Set the default value for the rerequest interval to the tracker (default 1800 seconds):
-            </td>
-            <td valign="top">
-                <input name="rerequest_interval" type="Text" maxlength="5" value="<?php    echo($cfg["rerequest_interval"]); ?>" size="5">
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Allow encrypted connections</strong><br>
-            Check to allow the client to accept encrypted connections.
-            </td>
-            <td valign="top">
-                <select name="crypto_allowed">
-                        <option value="1">true</option>
-                        <option value="0" <?php
-                        if (!$cfg["crypto_allowed"])
-                        {
-                            echo "selected";
-                        }
-                        ?>>false</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Only allow encrypted connections</strong><br>
-            Check to force the client to only create and accept encrypted connections.
-            </td>
-            <td valign="top">
-                <select name="crypto_only">
-                        <option value="1">true</option>
-                        <option value="0" <?php
-                        if (!$cfg["crypto_only"])
-                        {
-                            echo "selected";
-                        }
-                        ?>>false</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Stealth crypto</strong><br>
-	    Prevent all non-encrypted connection attempts.  (Note: will result in an effectively firewalled state on older trackers.)
-            <td valign="top">
-                <select name="crypto_stealth">
-                        <option value="1">true</option>
-                        <option value="0" <?php
-                        if (!$cfg["crypto_stealth"])
-                        {
-                            echo "selected";
-                        }
-                        ?>>false</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Extra BitTornado Commandline Options</strong><br>
-            DO NOT include --max_upload_rate, --minport, --maxport, --max_uploads, --crypto_allowed, --crypto_only, --crypto_stealth here as they are included by TorrentFlux settings above:
-            </td>
-            <td valign="top">
-                <input name="cmd_options" type="Text" maxlength="254" value="<?php    echo($cfg["cmd_options"]); ?>" size="55">
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Enable Torrent Search</strong><br>
-            When enabled, users will be allowed to perform torrent searches from the home page:
-            </td>
-            <td valign="top">
-                <select name="enable_search">
-                        <option value="1">true</option>
-                        <option value="0" <?php
-                        if (!$cfg["enable_search"])
-                        {
-                            echo "selected";
-                        }
-                        ?>>false</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Default Torrent Search Engine</strong><br>
-            Select the default search engine for torrent searches:
-            </td>
-            <td valign="top">
-<?php
-                echo buildSearchEngineDDL($cfg["searchEngine"]);
-?>
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Enable Make Torrent</strong><br>
-            When enabled, users will be allowed make torrent files from the directory view:
-            </td>
-            <td valign="top">
-                <select name="enable_maketorrent">
-                        <option value="1">true</option>
-                        <option value="0" <?php
-                        if (!$cfg["enable_maketorrent"])
-                        {
-                            echo "selected";
-                        }
-                        ?>>false</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>btmakemetafile.py Path</strong><br>
-            Specify the path to the btmakemetafile.py python script (used for making torrents):
-            </td>
-            <td valign="top">
-                <input name="btmakemetafile" type="Text" maxlength="254" value="<?php echo($cfg["btmakemetafile"]); ?>" size="55"><?php echo validateFile($cfg["btmakemetafile"]); ?>
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Enable Torrent File Download</strong><br>
-            When enabled, users will be allowed download the torrent meta file from the torrent list view:
-            </td>
-            <td valign="top">
-                <select name="enable_torrent_download">
-                        <option value="1">true</option>
-                        <option value="0" <?php
-                        if (!$cfg["enable_torrent_download"])
-                        {
-                            echo "selected";
-                        }
-                        ?>>false</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Enable File Download</strong><br>
-            When enabled, users will be allowed download from the directory view:
-            </td>
-            <td valign="top">
-                <select name="enable_file_download">
-                        <option value="1">true</option>
-                        <option value="0" <?php
-                        if (!$cfg["enable_file_download"])
-                        {
-                            echo "selected";
-                        }
-                        ?>>false</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Enable Text/NFO Viewer</strong><br>
-            When enabled, users will be allowed to view Text/NFO files from the directory listing:
-            </td>
-            <td valign="top">
-                <select name="enable_view_nfo">
-                        <option value="1">true</option>
-                        <option value="0" <?php
-                        if (!$cfg["enable_view_nfo"])
-                        {
-                            echo "selected";
-                        }
-                        ?>>false</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Download Package Type</strong><br>
-            When File Download is enabled, users will be allowed download from the directory view using
-            a packaging system.  Make sure your server supports the package type you select:
-            </td>
-            <td valign="top">
-                <select name="package_type">
-                        <option value="tar" selected>tar</option>
-                        <option value="zip" <?php
-                        if ($cfg["package_type"] == "zip")
-                        {
-                            echo "selected";
-                        }
-                        ?>>zip</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Show Server Load</strong><br>
-            Enable showing the average server load over the last 15 minutes from <? echo $cfg["loadavg_path"] ?> file:
-            </td>
-            <td valign="top">
-                <select name="show_server_load">
-                        <option value="1">true</option>
-                        <option value="0" <?php
-                        if (!$cfg["show_server_load"])
-                        {
-                            echo "selected";
-                        }
-                        ?>>false</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>loadavg Path</strong><br>
-            Path to the loadavg file:
-            </td>
-            <td valign="top">
-                <input name="loadavg_path" type="Text" maxlength="254" value="<?php    echo($cfg["loadavg_path"]); ?>" size="55"><?php echo validateFile($cfg["loadavg_path"]) ?>
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Days to keep Audit Actions in the Log</strong><br>
-            Number of days that audit actions will be held in the database:
-            </td>
-            <td valign="top">
-                <input name="days_to_keep" type="Text" maxlength="3" value="<?php    echo($cfg["days_to_keep"]); ?>" size="3">
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Minutes to Keep User Online Status</strong><br>
-            Number of minutes before a user status changes to offline after leaving TorrentFlux:
-            </td>
-            <td valign="top">
-                <input name="minutes_to_keep" type="Text" maxlength="2" value="<?php    echo($cfg["minutes_to_keep"]); ?>" size="2">
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Minutes to Cache RSS Feeds</strong><br>
-            Number of minutes to cache the RSS XML feed on server (speeds up reload):
-            </td>
-            <td valign="top">
-                <input name="rss_cache_min" type="Text" maxlength="3" value="<?php    echo($cfg["rss_cache_min"]); ?>" size="3">
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Page Refresh (in seconds)</strong><br>
-            Number of seconds before the torrent list page refreshes:
-            </td>
-            <td valign="top">
-                <input name="page_refresh" type="Text" maxlength="3" value="<?php    echo($cfg["page_refresh"]); ?>" size="3">
-            </td>
-        </tr>
-<?php
-    if (!defined("IMG_JPG")) define("IMG_JPG", 2);
-    // Check gd is loaded AND that jpeg image type is supported:
-    if (extension_loaded('gd') && (imagetypes() & IMG_JPG))
-    {
-?>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Enable Security Code Login</strong><br>
-            Requires users to enter a security code from a generated graphic to login (if enabled automated logins will NOT work):
-            </td>
-            <td valign="top">
-                <select name="security_code" disabled>
-                        <option value="1">true</option>
-                        <option value="0" <?php
-                            if (!$cfg["security_code"])
-                            {
-                                echo "selected";
-                            }
-                        ?>>false</option>
-                </select>
-            </td>
-        </tr>
-<?php
-    }
-?>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Default Theme</strong><br>
-            Select the default theme that users will have (including login screen):
-            </td>
-            <td valign="top">
-                <select name="default_theme">
-<?php
-    $arThemes = GetThemes();
-    for($inx = 0; $inx < sizeof($arThemes); $inx++)
-    {
-        $selected = "";
-        if ($cfg["default_theme"] == $arThemes[$inx])
-        {
-            $selected = "selected";
-        }
-        echo "<option value=\"".$arThemes[$inx]."\" ".$selected.">".$arThemes[$inx]."</option>";
-    }
-?>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Default Language</strong><br>
-            Select the default language that users will have:
-            </td>
-            <td valign="top">
-                <select name="default_language">
-<?php
-    $arLanguage = GetLanguages();
-    for($inx = 0; $inx < sizeof($arLanguage); $inx++)
-    {
-        $selected = "";
-        if ($cfg["default_language"] == $arLanguage[$inx])
-        {
-            $selected = "selected";
-        }
-        echo "<option value=\"".$arLanguage[$inx]."\" ".$selected.">".GetLanguageFromFile($arLanguage[$inx])."</option>";
-    }
-?>
-            </select>
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Show SQL Debug Statements</strong><br>
-            SQL Errors will always be displayed but when this feature is enabled the SQL Statement
-            that caused the error will be displayed as well:
-            </td>
-            <td valign="top">
-                <select name="debug_sql">
-                        <option value="1">true</option>
-                        <option value="0" <?php
-                        if (!$cfg["debug_sql"])
-                        {
-                            echo "selected";
-                        }
-                        ?>>false</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Default Torrent Completion Activity</strong><br>
-            Select whether or not a torrent should keep seeding when download is complete
-            (please seed your torrents):
-            </td>
-            <td valign="top">
-                <select name="torrent_dies_when_done">
-                        <option value="True">Die When Done</option>
-                        <option value="False" <?php
-                        if ($cfg["torrent_dies_when_done"] == "False")
-                        {
-                            echo "selected";
-                        }
-                        ?>>Keep Seeding</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Default Percentage When Seeding should Stop</strong><br>
-            Set the default share pecentage where torrents will shutoff
-            when running torrents that do not die when done.
-            Value '0' will seed forever.
-            </td>
-            <td valign="top">
-                <input name="sharekill" type="Text" maxlength="3" value="<?php    echo($cfg["sharekill"]); ?>" size="3">%
-            </td>
-        </tr>
-        </table>
-        <br>
-        <input type="Submit" value="Update Settings">
-        </form>
-    </div>
-    <br>
-<?php
-    echo "</td></tr>";
-    echo "</table></div>";
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+			<fieldset class="form-group bd-example">
+				<form name="theForm" action="admin.php?op=updateConfigSettings" method="post" onsubmit="return validateSettings()">
+					<input type="Hidden" name="continue" value="configSettings">
+			
+		    			<table class="table table-striped">
+		    				<tr>
+		    					<th colspan="2">
+		    						<img src="images/properties.png" width=18 height=13 border=0>&nbsp;&nbsp;
+		    						TorrentFlux Settings
+		    					</th>
+		    				</tr>
+					        <tr>
+					            <td width="350"><strong>Path</strong><br>
+					            Define the PATH where the downloads will go <br>(make sure it ends with a / [slash]).
+					            It must be chmod'd to 777:
+					            </td>
+					            <td>
+					                <input name="path" type="Text" maxlength="254" value="<?php echo($cfg["path"]); ?>" size="55"><?php echo validatePath($cfg["path"]) ?>
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>Python Path</strong><br>
+					            Specify the path to the Python binary (usually /usr/bin/python or /usr/local/bin/python):
+					            </td>
+					            <td>
+					                <input name="pythonCmd" type="Text" maxlength="254" value="<?php    echo($cfg["pythonCmd"]); ?>" size="55"><?php echo validateFile($cfg["pythonCmd"]) ?>
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>btphptornado Path</strong><br>
+					            Specify the path to the btphptornado python script:
+					            </td>
+					            <td>
+					                <input name="btphpbin" type="Text" maxlength="254" value="<?php    echo($cfg["btphpbin"]); ?>" size="55"><?php echo validateFile($cfg["btphpbin"]) ?>
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>btshowmetainfo Path</strong><br>
+					            Specify the path to the btshowmetainfo python script:
+					            </td>
+					            <td>
+					                <input name="btshowmetainfo" type="Text" maxlength="254" value="<?php    echo($cfg["btshowmetainfo"]); ?>" size="55"><?php echo validateFile($cfg["btshowmetainfo"]) ?>
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>Use Advanced Start Dialog</strong><br>
+					            When enabled, users will be given the advanced start dialog popup when starting a torrent:
+					            </td>
+					            <td>
+					                <select name="advanced_start">
+					                        <option value="1">true</option>
+					                        <option value="0" <?php
+					                        if (!$cfg["advanced_start"])
+					                        {
+					                            echo "selected";
+					                        }
+					                        ?>>false</option>
+					                </select>
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>Enable File Priority</strong><br>
+					            When enabled, users will be allowed to select particular files from the torrent to download:
+					            </td>
+					            <td>
+					                <select name="enable_file_priority">
+					                        <option value="1">true</option>
+					                        <option value="0" <?php
+					                        if (!$cfg["enable_file_priority"])
+					                        {
+					                            echo "selected";
+					                        }
+					                        ?>>false</option>
+					                </select>
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>Max Upload Rate</strong><br>
+					            Set the default value for the max upload rate per torrent:
+					            </td>
+					            <td>
+					                <input name="max_upload_rate" type="Text" maxlength="5" value="<?php    echo($cfg["max_upload_rate"]); ?>" size="5"> KB/second
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>Max Download Rate</strong><br>
+					            Set the default value for the max download rate per torrent (0 for no limit):
+					            </td>
+					            <td>
+					                <input name="max_download_rate" type="Text" maxlength="5" value="<?php    echo($cfg["max_download_rate"]); ?>" size="5"> KB/second
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>Max Upload Connections</strong><br>
+					            Set the default value for the max number of upload connections per torrent:
+					            </td>
+					            <td>
+					                <input name="max_uploads" type="Text" maxlength="5" value="<?php    echo($cfg["max_uploads"]); ?>" size="5">
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>Port Range</strong><br>
+					            Set the default values for the for port range (Min - Max):
+					            </td>
+					            <td>
+					                <input name="minport" type="Text" maxlength="5" value="<?php    echo($cfg["minport"]); ?>" size="5"> -
+					                <input name="maxport" type="Text" maxlength="5" value="<?php    echo($cfg["maxport"]); ?>" size="5">
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>Rerequest Interval</strong><br>
+					            Set the default value for the rerequest interval to the tracker (default 1800 seconds):
+					            </td>
+					            <td>
+					                <input name="rerequest_interval" type="Text" maxlength="5" value="<?php    echo($cfg["rerequest_interval"]); ?>" size="5">
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>Allow encrypted connections</strong><br>
+					            Check to allow the client to accept encrypted connections.
+					            </td>
+					            <td>
+					                <select name="crypto_allowed">
+					                        <option value="1">true</option>
+					                        <option value="0" <?php
+					                        if (!$cfg["crypto_allowed"])
+					                        {
+					                            echo "selected";
+					                        }
+					                        ?>>false</option>
+					                </select>
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>Only allow encrypted connections</strong><br>
+					            Check to force the client to only create and accept encrypted connections.
+					            </td>
+					            <td>
+					                <select name="crypto_only">
+					                        <option value="1">true</option>
+					                        <option value="0" <?php
+					                        if (!$cfg["crypto_only"])
+					                        {
+					                            echo "selected";
+					                        }
+					                        ?>>false</option>
+					                </select>
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>Stealth crypto</strong><br>
+						    	Prevent all non-encrypted connection attempts.  (Note: will result in an effectively firewalled state on older trackers.)
+					            <td>
+					                <select name="crypto_stealth">
+					                        <option value="1">true</option>
+					                        <option value="0" <?php
+					                        if (!$cfg["crypto_stealth"])
+					                        {
+					                            echo "selected";
+					                        }
+					                        ?>>false</option>
+					                </select>
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>Extra BitTornado Commandline Options</strong><br>
+					            DO NOT include --max_upload_rate, --minport, --maxport, --max_uploads, --crypto_allowed, --crypto_only, --crypto_stealth here as they are included by TorrentFlux settings above:
+					            </td>
+					            <td>
+					                <input name="cmd_options" type="Text" maxlength="254" value="<?php    echo($cfg["cmd_options"]); ?>" size="55">
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>Enable Torrent Search</strong><br>
+					            When enabled, users will be allowed to perform torrent searches from the home page:
+					            </td>
+					            <td>
+					                <select name="enable_search">
+					                        <option value="1">true</option>
+					                        <option value="0" <?php
+					                        if (!$cfg["enable_search"])
+					                        {
+					                            echo "selected";
+					                        }
+					                        ?>>false</option>
+					                </select>
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>Default Torrent Search Engine</strong><br>
+					            Select the default search engine for torrent searches:
+					            </td>
+					            <td>
+									<?php echo buildSearchEngineDDL($cfg["searchEngine"]); ?>
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>Enable Make Torrent</strong><br>
+					            When enabled, users will be allowed make torrent files from the directory view:
+					            </td>
+					            <td>
+					                <select name="enable_maketorrent">
+					                        <option value="1">true</option>
+					                        <option value="0" <?php
+					                        if (!$cfg["enable_maketorrent"])
+					                        {
+					                            echo "selected";
+					                        }
+					                        ?>>false</option>
+					                </select>
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>btmakemetafile.py Path</strong><br>
+					            Specify the path to the btmakemetafile.py python script (used for making torrents):
+					            </td>
+					            <td>
+					                <input name="btmakemetafile" type="Text" maxlength="254" value="<?php echo($cfg["btmakemetafile"]); ?>" size="55"><?php echo validateFile($cfg["btmakemetafile"]); ?>
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>Enable Torrent File Download</strong><br>
+					            When enabled, users will be allowed download the torrent meta file from the torrent list view:
+					            </td>
+					            <td>
+					                <select name="enable_torrent_download">
+					                        <option value="1">true</option>
+					                        <option value="0" <?php
+					                        if (!$cfg["enable_torrent_download"])
+					                        {
+					                            echo "selected";
+					                        }
+					                        ?>>false</option>
+					                </select>
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>Enable File Download</strong><br>
+					            When enabled, users will be allowed download from the directory view:
+					            </td>
+					            <td>
+					                <select name="enable_file_download">
+					                        <option value="1">true</option>
+					                        <option value="0" <?php
+					                        if (!$cfg["enable_file_download"])
+					                        {
+					                            echo "selected";
+					                        }
+					                        ?>>false</option>
+					                </select>
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>Enable Text/NFO Viewer</strong><br>
+					            When enabled, users will be allowed to view Text/NFO files from the directory listing:
+					            </td>
+					            <td>
+					                <select name="enable_view_nfo">
+					                        <option value="1">true</option>
+					                        <option value="0" <?php
+					                        if (!$cfg["enable_view_nfo"])
+					                        {
+					                            echo "selected";
+					                        }
+					                        ?>>false</option>
+					                </select>
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>Download Package Type</strong><br>
+					            When File Download is enabled, users will be allowed download from the directory view using
+					            a packaging system.  Make sure your server supports the package type you select:
+					            </td>
+					            <td>
+					                <select name="package_type">
+					                        <option value="tar" selected>tar</option>
+					                        <option value="zip" <?php
+					                        if ($cfg["package_type"] == "zip")
+					                        {
+					                            echo "selected";
+					                        }
+					                        ?>>zip</option>
+					                </select>
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>Show Server Load</strong><br>
+					            Enable showing the average server load over the last 15 minutes from <? echo $cfg["loadavg_path"] ?> file:
+					            </td>
+					            <td>
+					                <select name="show_server_load">
+					                        <option value="1">true</option>
+					                        <option value="0" <?php
+					                        if (!$cfg["show_server_load"])
+					                        {
+					                            echo "selected";
+					                        }
+					                        ?>>false</option>
+					                </select>
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>loadavg Path</strong><br>
+					            Path to the loadavg file:
+					            </td>
+					            <td>
+					                <input name="loadavg_path" type="Text" maxlength="254" value="<?php    echo($cfg["loadavg_path"]); ?>" size="55"><?php echo validateFile($cfg["loadavg_path"]) ?>
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>Days to keep Audit Actions in the Log</strong><br>
+					            Number of days that audit actions will be held in the database:
+					            </td>
+					            <td>
+					                <input name="days_to_keep" type="Text" maxlength="3" value="<?php    echo($cfg["days_to_keep"]); ?>" size="3">
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>Minutes to Keep User Online Status</strong><br>
+					            Number of minutes before a user status changes to offline after leaving TorrentFlux:
+					            </td>
+					            <td>
+					                <input name="minutes_to_keep" type="Text" maxlength="2" value="<?php    echo($cfg["minutes_to_keep"]); ?>" size="2">
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>Minutes to Cache RSS Feeds</strong><br>
+					            Number of minutes to cache the RSS XML feed on server (speeds up reload):
+					            </td>
+					            <td>
+					                <input name="rss_cache_min" type="Text" maxlength="3" value="<?php    echo($cfg["rss_cache_min"]); ?>" size="3">
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>Page Refresh (in seconds)</strong><br>
+					            Number of seconds before the torrent list page refreshes:
+					            </td>
+					            <td>
+					                <input name="page_refresh" type="Text" maxlength="3" value="<?php    echo($cfg["page_refresh"]); ?>" size="3">
+					            </td>
+					        </tr>
+							<?php
+							    if (!defined("IMG_JPG")) define("IMG_JPG", 2);
+							    // Check gd is loaded AND that jpeg image type is supported:
+							    if (extension_loaded('gd') && (imagetypes() & IMG_JPG)) {
+							?>
+							        <tr>
+							            <td><strong>Enable Security Code Login</strong><br>
+							            Requires users to enter a security code from a generated graphic to login (if enabled automated logins will NOT work):
+							            </td>
+							            <td>
+							                <select name="security_code" disabled>
+							                        <option value="1">true</option>
+							                        <option value="0" <?php
+							                            if (!$cfg["security_code"])
+							                            {
+							                                echo "selected";
+							                            }
+							                        ?>>false</option>
+							                </select>
+							            </td>
+							        </tr>
+							<?php } ?>
+							
+					        <tr>
+					            <td ><strong>Default Theme</strong><br>
+					            Select the default theme that users will have (including login screen):
+					            </td>
+					            <td>
+					                <select name="default_theme">
+										<?php
+										    $arThemes = GetThemes();
+										    for($inx = 0; $inx < sizeof($arThemes); $inx++)
+										    {
+										        $selected = "";
+										        if ($cfg["default_theme"] == $arThemes[$inx])
+										        {
+										            $selected = "selected";
+										        }
+										        echo "<option value=\"".$arThemes[$inx]."\" ".$selected.">".$arThemes[$inx]."</option>";
+										    }
+										?>
+					                </select>
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>Default Language</strong><br>
+					            Select the default language that users will have:
+					            </td>
+					            <td>
+					                <select name="default_language">
+										<?php
+										    $arLanguage = GetLanguages();
+										    for($inx = 0; $inx < sizeof($arLanguage); $inx++)
+										    {
+										        $selected = "";
+										        if ($cfg["default_language"] == $arLanguage[$inx])
+										        {
+										            $selected = "selected";
+										        }
+										        echo "<option value=\"".$arLanguage[$inx]."\" ".$selected.">".GetLanguageFromFile($arLanguage[$inx])."</option>";
+										    }
+										?>
+					            </select>
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>Show SQL Debug Statements</strong><br>
+					            SQL Errors will always be displayed but when this feature is enabled the SQL Statement
+					            that caused the error will be displayed as well:
+					            </td>
+					            <td>
+					                <select name="debug_sql">
+					                        <option value="1">true</option>
+					                        <option value="0" <?php
+					                        if (!$cfg["debug_sql"])
+					                        {
+					                            echo "selected";
+					                        }
+					                        ?>>false</option>
+					                </select>
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>Default Torrent Completion Activity</strong><br>
+					            Select whether or not a torrent should keep seeding when download is complete
+					            (please seed your torrents):
+					            </td>
+					            <td>
+					                <select name="torrent_dies_when_done">
+					                        <option value="True">Die When Done</option>
+					                        <option value="False" <?php
+					                        if ($cfg["torrent_dies_when_done"] == "False")
+					                        {
+					                            echo "selected";
+					                        }
+					                        ?>>Keep Seeding</option>
+					                </select>
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>Default Percentage When Seeding should Stop</strong><br>
+					            Set the default share pecentage where torrents will shutoff
+					            when running torrents that do not die when done.
+					            Value '0' will seed forever.
+					            </td>
+					            <td>
+					                <input name="sharekill" type="Text" maxlength="3" value="<?php    echo($cfg["sharekill"]); ?>" size="3">%
+					            </td>
+					        </tr>
+					    </table>
+        
+        			<div style="text-align:center">
+	        			<input type="Submit" value="Update Settings" class="btn btn-primary">
+	        		</div>
+	        	</form>
+			</fieldset>
+		</div>
+	</div>
+</div>    
 
-    DisplayFoot();
+<?php
+
 }
+
 
 //****************************************************************************
 // updateConfigSettings -- updating App Settings
@@ -1784,12 +1749,7 @@ function queueSettings()
     include_once("AliasFile.php");
     include_once("RunningTorrent.php");
 
-    DisplayHead("Administration - Search Settings");
-
-    // Admin Menu
-    displayMenu();
-
-        // Queue Manager Section
+    // Queue Manager Section
     echo "<div align=\"center\">";
     echo "<a name=\"QManager\" id=\"QManager\"></a>";
     echo "<table width=\"100%\" border=1 bordercolor=\"".$cfg["table_admin_border"]."\" cellpadding=\"2\" cellspacing=\"0\" bgcolor=\"".$cfg["table_data_bg"]."\">";
@@ -2058,8 +2018,6 @@ function queueSettings()
         echo "</table>";
 
     }
-
-    DisplayFoot();
 }
 
 
@@ -2072,127 +2030,128 @@ function searchSettings()
     include_once("AliasFile.php");
     include_once("RunningTorrent.php");
     include_once("searchEngines/SearchEngineBase.php");
-
-    DisplayHead("Administration - Search Settings");
-
-    // Admin Menu
-    displayMenu();
-
-    // Main Settings Section
-    echo "<div align=\"center\">";
-    echo "<table width=\"100%\" border=1 bordercolor=\"".$cfg["table_admin_border"]."\" cellpadding=\"2\" cellspacing=\"0\" bgcolor=\"".$cfg["table_data_bg"]."\">";
-    echo "<tr><td bgcolor=\"".$cfg["table_header_bg"]."\" background=\"themes/".$cfg["theme"]."/images/bar.gif\">";
-    echo "<img src=\"images/properties.png\" width=18 height=13 border=0>&nbsp;&nbsp;<font class=\"title\">Search Settings</font>";
-    echo "</td></tr><tr><td align=\"center\">";
-
 ?>
-    <div align="center">
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+			<fieldset class="form-group bd-example">
+				<form name="theForm" action="admin.php?op=searchSettings" method="post">
+	    			<table class="table table-striped">
+	    				<tr>
+	    					<th colspan="2">
+	    						<img src="images/properties.png" width=18 height=13 border=0>&nbsp;&nbsp;
+	    						Search Settings
+	    					</th>
+	    				</tr>
+	    				<tr>
+            				<td>
+            					Select Search Engine
+            				</td>
+	            			<td>
+								<?php
+					                $searchEngine = getRequestVar('searchEngine');
+					                if (empty($searchEngine)) $searchEngine = $cfg["searchEngine"];
+					                echo buildSearchEngineDDL($searchEngine,true)
+								?>
+							</td>
+        				</tr>
+	        		</table>
+        		</form>
+			</fieldset>
+		</div>
+	</div>
+</div>
 
-        <table cellpadding="5" cellspacing="0" border="0" width="100%">
-        <form name="theForm" action="admin.php?op=searchSettings" method="post">
-        <tr>
-            <td align="right" width="350" valign="top"><strong>Select Search Engine</strong><br>
-            </td>
-            <td valign="top">
-<?php
-                $searchEngine = getRequestVar('searchEngine');
-                if (empty($searchEngine)) $searchEngine = $cfg["searchEngine"];
-                echo buildSearchEngineDDL($searchEngine,true)
-?>
-            </td>
-        </tr>
-        </form>
-        </table>
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+			<fieldset class="form-group bd-example">
+				<form name="theSearchEngineSettings" action="admin.php?op=updateSearchSettings" method="post">
+	            	<input type="hidden" name="searchEngine" value="<?php echo $searchEngine ?>">
+		
+		        		<table class="table table-striped">
+		        			<tr>
+		        				<th colspan="2">
+									<?php
+									    if (is_file('searchEngines/'.$searchEngine.'Engine.php')) {
+									        include_once('searchEngines/'.$searchEngine.'Engine.php');
+									        $sEngine = new SearchEngine(serialize($cfg));
+									        if ($sEngine->initialized)
+									        { ?>
+		            							<img src="images/properties.png" width=18 height=13 border=0>&nbsp;&nbsp;
+		            							<?php echo $sEngine->mainTitle ?> Search Settings
+		            			</th>
+		            		</tr>
+		            		<tr>
+					            <td width="350"><strong>Search Engine URL:</strong></td>
+					            <td>
+					                <?php echo "<a href=\"http://".$sEngine->mainURL."\" target=\"_blank\">".$sEngine->mainTitle."</a>"; ?>
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>Search Module Author:</strong></td>
+					            <td>
+					                <?php echo $sEngine->author; ?>
+					            </td>
+					        </tr>
+					        <tr>
+					            <td><strong>Version:</strong></td>
+					            <td>
+					                <?php echo $sEngine->version; ?>
+					            </td>
+					        </tr>
+							<?php if(strlen($sEngine->updateURL)>0) { ?>
+						        <tr>
+						            <td><strong>Update Location:</strong></td>
+						            <td>
+						                <?php echo "<a href=\"".$sEngine->updateURL."\" target=\"_blank\">Check for Update</a>"; ?>
+						            </td>
+						        </tr>
+							<?php
+						        }
+						        
+					            if (! $sEngine->catFilterName == '') {
+							?>
+						        <tr>
+						            <td><strong>Search Filter:</strong><br>
+						            	Select the items that you DO NOT want to show in the torrent search:
+						            </td>
+						            <td>
+									<?php
+									                echo "<select multiple name=\"".$sEngine->catFilterName."[]\" size=\"8\" STYLE=\"width: 125px\">";
+									                echo "<option value=\"-1\">[NO FILTER]</option>";
+									                foreach ($sEngine->getMainCategories(false) as $mainId => $mainName)
+									                {
+									                    echo "<option value=\"".$mainId."\" ";
+									                    if (@in_array($mainId, $sEngine->catFilter))
+									                    {
+									                        echo " selected";
+									                    }
+									                    echo ">".$mainName."</option>";
+									                }
+									                echo "</select>";
+									                ?>
+									</td>
+								</tr>
+			            <?php }
+					        }
+    					} 
+    				?>
 
-        <table cellpadding="0" cellspacing="0" border="0" width="100%">
-        <tr><td>
-<?php
-    if (is_file('searchEngines/'.$searchEngine.'Engine.php'))
-    {
-        include_once('searchEngines/'.$searchEngine.'Engine.php');
-        $sEngine = new SearchEngine(serialize($cfg));
-        if ($sEngine->initialized)
-        {
-            echo "<table width=\"100%\" border=1 bordercolor=\"".$cfg["table_admin_border"]."\" cellpadding=\"2\" cellspacing=\"0\" bgcolor=\"".$cfg["table_data_bg"]."\"><tr>";
-            echo "<td bgcolor=\"".$cfg["table_header_bg"]."\" background=\"themes/".$cfg["theme"]."/images/bar.gif\"><img src=\"images/properties.png\" width=18 height=13 border=0>&nbsp;&nbsp;<font class=\"title\">".$sEngine->mainTitle." Search Settings</font></td>";
-            echo "</tr></table></td>";
-            echo "<form name=\"theSearchEngineSettings\" action=\"admin.php?op=updateSearchSettings\" method=\"post\">\n";
-            echo "<input type=\"hidden\" name=\"searchEngine\" value=\"".$searchEngine."\">";
-?>
-            </td>
-        </tr>
-        <tr>
-            <td>
+					</table>
 
-        <table cellpadding="5" cellspacing="0" border="0" width="100%">
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Search Engine URL:</strong></td>
-            <td valign="top">
-                <?php echo "<a href=\"http://".$sEngine->mainURL."\" target=\"_blank\">".$sEngine->mainTitle."</a>"; ?>
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Search Module Author:</strong></td>
-            <td valign="top">
-                <?php echo $sEngine->author; ?>
-            </td>
-        </tr>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Version:</strong></td>
-            <td valign="top">
-                <?php echo $sEngine->version; ?>
-            </td>
-        </tr>
-<?php
-        if(strlen($sEngine->updateURL)>0)
-        {
-?>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Update Location:</strong></td>
-            <td valign="top">
-                <?php echo "<a href=\"".$sEngine->updateURL."\" target=\"_blank\">Check for Update</a>"; ?>
-            </td>
-        </tr>
-<?php
-        }
-            if (! $sEngine->catFilterName == '')
-            {
-?>
-        <tr>
-            <td align="left" width="350" valign="top"><strong>Search Filter:</strong><br>
-            Select the items that you DO NOT want to show in the torrent search:
-            </td>
-            <td valign="top">
-<?php
-                echo "<select multiple name=\"".$sEngine->catFilterName."[]\" size=\"8\" STYLE=\"width: 125px\">";
-                echo "<option value=\"-1\">[NO FILTER]</option>";
-                foreach ($sEngine->getMainCategories(false) as $mainId => $mainName)
-                {
-                    echo "<option value=\"".$mainId."\" ";
-                    if (@in_array($mainId, $sEngine->catFilter))
-                    {
-                        echo " selected";
-                    }
-                    echo ">".$mainName."</option>";
-                }
-                echo "</select>";
-                echo "            </td>\n";
-                echo "        </tr>\n";
-            }
-        }
-    }
+					<div style="text-align:center">
+    					<input type="Submit" value="Update Settings" class="btn btn-primary">
+    				</div>
+				</form>
+			
+			</fieldset>
+		</div>
+	</div>
+</div>
 
-    echo "        </table>\n";
-    echo "         </td></tr></table>";
-    echo "        <br>\n";
-    echo "        <input type=\"Submit\" value=\"Update Settings\">";
-    echo "        </form>\n";
-    echo "    </div>\n";
-    echo "    <br>\n";
-    echo "</td></tr>";
-    echo "</table></div>";
+<?php
 
-    DisplayFoot();
 }
 
 //****************************************************************************
@@ -2218,6 +2177,39 @@ function updateSearchSettings()
     header("location: admin.php?op=searchSettings&searchEngine=".$searchEngine);
 }
 
+?>
+<!doctype html>
+<html>
+<head>
+	<title><?php echo $cfg["pagetitle"] ?></title>
+	<link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="./plugins/twitter/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
+    <link rel="styleSheet" HREF="themes/<?php echo $cfg["theme"] ?>/style.css" type="text/css" />
+	<meta http-equiv="Pragma" content="no-cache" charset="<?php echo _CHARSET ?>">
+</head>
+<body>
+
+<div class="container">
+	<div class="row">
+		<nav class="navbar navbar-light" style="background-color:#e3f2fd;">
+			<?php include_once 'menu.php' ?>
+			
+			<div class="col-sm-12 nav navbar-nav" style="margin-left:16px;">
+				<a class="nav-item nav-link" href="admin.php"><small><?php echo _ADMIN_MENU ?></small></a> 
+    			<a class="nav-item nav-link" href="admin.php?op=configSettings"><small><?php echo _SETTINGS_MENU ?></small></a> 
+    			<a class="nav-item nav-link" href="admin.php?op=queueSettings"><small><?php echo_QMANAGER_MENU ?></small></a> 
+    			<a class="nav-item nav-link" href="admin.php?op=searchSettings"><small><?php echo _SEARCHSETTINGS_MENU ?></small></a> 
+    			<a class="nav-item nav-link" href="admin.php?op=showUserActivity"><small><?php echo _ACTIVITY_MENU ?></small></a>
+    			<a class="nav-item nav-link" href="admin.php?op=editLinks"><small><?php echo _LINKS_MENU ?></small></a>
+    			<a class="nav-item nav-link" href="admin.php?op=editRSS"><small>rss</small></a>
+    			<a class="nav-item nav-link" href="admin.php?op=CreateUser"><small><?php echo _NEWUSER_MENU ?></small></a> 
+    			<a class="nav-item nav-link" href="admin.php?op=backupDatabase"><small><?php echo _BACKUP_MENU ?></small></a>
+			</div>
+		</nav>
+	</div>
+</div>
+<?php
 //****************************************************************************
 //****************************************************************************
 //****************************************************************************
@@ -2350,3 +2342,7 @@ switch ($op)
 //****************************************************************************
 
 ?>
+
+<div style="text-align:center">[<a href="index.php"><?php echo _RETURNTOTORRENTS ?></a>]</div>
+
+<?php echo DisplayTorrentFluxLink(); ?>
