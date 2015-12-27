@@ -34,25 +34,10 @@ if (!defined("ENT_NOQUOTES")) define("ENT_NOQUOTES", 0);
 if (!defined("ENT_QUOTES")) define("ENT_QUOTES", 3);
 
 ?>
-<!doctype html>
-<html>
-<head>
-	<title><?php echo $cfg["pagetitle"] ?></title>
-	<link rel="icon" href="images/favicon.ico" type="image/x-icon" />
-	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
-	<link rel="stylesheet" href="./plugins/twitter/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
-    <link rel="styleSheet" HREF="themes/<?php echo $cfg["theme"] ?>/style.css" type="text/css" />
-	<meta http-equiv="Pragma" content="no-cache" charset="<?php echo _CHARSET ?>">
-</head>
-<body>
-
-<div class="container">
-	<div class="row">
-		<nav class="navbar navbar-light" style="background-color:#e3f2fd;">
-			<?php include_once 'menu.php' ?>
-		</nav>
-	</div>
-</div>
+<?php 
+	$subMenu = 'index';
+	include_once 'header.php' 
+?>
 <?php
 
 // Get RSS feeds from Database
@@ -68,8 +53,7 @@ $rss->strip_html = false; // don't remove HTML from the description
 ?>
 <div class="container">
 	<div class="row">
-		<div class="col-sm-12">
-			<fieldset class="form-group bd-example">
+		<div class="col-sm-12 bd-example">
 <?php
 echo "<a name=\"top\"></a><div align=\"center\">";
 echo "<table class=\"table table-striped\"><tr>";
@@ -162,7 +146,6 @@ if (is_array($arURL))
 }
 
 ?>
-			</fieldset>
 		</div>
 	</div>
 </div>

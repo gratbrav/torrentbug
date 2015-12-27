@@ -234,49 +234,18 @@ if (isset($dir))
     }
 }
 ?>
-<!doctype html>
-<html>
-<head>
-	<TITLE><?php echo $percentdone.$cfg["pagetitle"] ?></TITLE>
-	<link rel="icon" href="images/favicon.ico" type="image/x-icon" />
-	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
-	<link rel="stylesheet" href="./plugins/twitter/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
-    <LINK REL="StyleSheet" HREF="themes/<?php echo $cfg["theme"] ?>/style.css" TYPE="text/css">
-	<META HTTP-EQUIV="Pragma" CONTENT="no-cache" charset="<?php echo _CHARSET ?>">
-<style>
-.bd-example {
-	margin-left: 0;
-	margin-right: 0;
-	margin-bottom: 0;
-	padding: 1.5rem;
-	border-width: .2rem;
-	position: relative;
-	padding: 1rem;
-	margin: 1rem -1rem;
-	border: solid white;
-}
-</style>
-</head>
-<body topmargin="8" bgcolor="<?php echo $cfg["main_bgcolor"] ?>">
+<?php include_once 'header.php' ?>
 
 <div class="container">
 	<div class="row">
-		<nav class="navbar navbar-light " style="background-color: #e3f2fd;">
-			<?php include_once 'menu.php' ?>
-		</nav>
-	</div>
-</div>
-
-<div class="container">
-	<div class="row">
-		<div class="col-sm-12">
+		<div class="col-sm-12 bd-example" style="padding: 10px;">
 			<?php displayDriveSpaceBar(getDriveSpace($cfg["path"])); ?>
 		</div>
 	</div>
 </div>
 
 
-<script language="JavaScript">
+<script>
 function MakeTorrent(name_file)
 {
     window.open (name_file,'_blank','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=600,height=430')
@@ -302,18 +271,16 @@ function checkCheck(thisIn)
 </script>
 <div class="container">
 	<div class="row">
-		<div class="col-sm-12">
-			<fieldset class="form-group bd-example">
-				<?php 
-					if(!isset($dir)) $dir = "";
+		<div class="col-sm-12 bd-example">
+			<?php 
+				if (!isset($dir)) $dir = "";
 
-					if (!file_exists($cfg["path"].$dir)) {
-    					echo "<strong>".htmlentities($dir)."</strong> could not be found or is not valid.";
-					} else {
-    					ListDirectory($cfg["path"].$dir);
-					}
-				?>
-			</fieldset>
+				if (!file_exists($cfg["path"].$dir)) {
+    				echo "<strong>".htmlentities($dir)."</strong> could not be found or is not valid.";
+				} else {
+    				ListDirectory($cfg["path"].$dir);
+				}
+			?>
 		</div>
 	</div>
 </div>
@@ -349,15 +316,15 @@ function ListDirectory($dirName)
             $parentURL="dir.php?dir=" . urlencode($matches[1]);
         }
 
-        echo "<table class=\"table table-striped\">";
         echo '<form action="multi.php" method="post" name="multidir">';
         echo '<input type="hidden" name="action" value="fileDelete" />';
+        echo "<table class=\"table table-striped\">";
         echo '<tr><td colspan="2">';
-        echo "<a href=\"" . $parentURL . "\"><img src=\"images/up_dir.gif\" width=16 height=16 title=\""._BACKTOPARRENT."\" border=0>["._BACKTOPARRENT."]</a>";
+        echo "<a href=\"" . $parentURL . "\"><img src=\"images/up_dir.gif\" width=16 height=16 title=\""._BACKTOPARRENT."\" alt=\"\">["._BACKTOPARRENT."]</a>";
         echo '</td>';
-        echo '<td align="right">Multi-Delete-&gt;</td>';
-        echo '<td align="right"><a href="javascript:document.multidir.submit()" onclick="return ConfirmDelete(\'Multiple Files\')">';
-        echo '<img src="images/delete_on.gif" title="Delete Multiple Files" border="0" height="16" width="16"></a>';
+        echo '<td style="text-align:right">Multi-Delete-&gt;</td>';
+        echo '<td style="text-align:right"><a href="javascript:document.multidir.submit()" onclick="return ConfirmDelete(\'Multiple Files\')">';
+        echo '<img src="images/delete_on.gif" title="Delete Multiple Files" height="16" width="16" alt=""></a>';
         echo '<input type="checkbox" onclick="checkCheck(this);" /></td></tr>';
     }
 
@@ -374,19 +341,19 @@ function ListDirectory($dirName)
         {
             if (@is_dir($dirName.$entry))
             {
-                echo "<tr bgcolor=\"".$bg."\"><td><a href=\"dir.php?dir=".urlencode($dir.$entry)."\"><img src=\"images/folder2.gif\" width=\"16\" height=\"16\" title=\"".$entry."\" border=\"0\" align=\"absmiddle\">".$entry."</a></td>";
+                echo "<tr><td><a href=\"dir.php?dir=".urlencode($dir.$entry)."\"><img src=\"images/folder2.gif\" width=\"16\" height=\"16\" title=\"".$entry."\" alt=\"\">".$entry."</a></td>";
                 echo "<td>&nbsp;</td>";
                 echo "<td>&nbsp;</td>";
-                echo "<td align=\"right\">";
+                echo "<td style=\"text-align:right\">";
 
                 if ($cfg["enable_maketorrent"])
                 {
-                    echo "<a href=\"JavaScript:MakeTorrent('maketorrent.php?path=".urlencode($dir.$entry)."')\"><img src=\"images/make.gif\" width=16 height=16 title=\"Make Torrent\" border=0></a>";
+                    echo "<a href=\"JavaScript:MakeTorrent('maketorrent.php?path=".urlencode($dir.$entry)."')\"><img src=\"images/make.gif\" width=16 height=16 title=\"Make Torrent\" alt=\"\"></a>";
                 }
 
                 if ($cfg["enable_file_download"])
                 {
-                    echo "<a href=\"dir.php?tar=".urlencode($dir.$entry)."\"><img src=\"images/tar_down.gif\" width=16 height=16 title=\"Download as ".$cfg["package_type"]."\" border=0></a>";
+                    echo "<a href=\"dir.php?tar=".urlencode($dir.$entry)."\"><img src=\"images/tar_down.gif\" width=16 height=16 title=\"Download as ".$cfg["package_type"]."\" alt=\"\"></a>";
                 }
 
                 // The following lines of code were suggested by Jody Steele jmlsteele@stfu.ca
@@ -395,7 +362,7 @@ function ListDirectory($dirName)
                 // the ability to delete sub directories
                 if(IsAdmin($cfg["user"]) || preg_match("/^" . $cfg["user"] . "/",$dir))
                 {
-                    echo "<a href=\"dir.php?del=".urlencode($dir.$entry)."\" onclick=\"return ConfirmDelete('".addslashes($entry)."')\"><img src=\"images/delete_on.gif\" width=16 height=16 title=\""._DELETE."\" border=0></a>";
+                    echo "<a href=\"dir.php?del=".urlencode($dir.$entry)."\" onclick=\"return ConfirmDelete('".addslashes($entry)."')\"><img src=\"images/delete_on.gif\" width=16 height=16 title=\""._DELETE."\" alt=\"\"></a>";
                     echo "<input type=\"checkbox\" name=\"file[]\" value=\"".urlencode($dir.$entry)."\">";
                 }
                 else
@@ -458,7 +425,7 @@ function ListDirectory($dirName)
                     $image = $imageOption;
                 }
 
-                echo "<tr bgcolor=\"".$bg."\">";
+                echo "<tr>";
                 echo "<td>";
 
                 // Can users download files?
@@ -466,36 +433,36 @@ function ListDirectory($dirName)
                 {
                     // Yes, let them download
                     echo "<a href=\"dir.php?down=".urlencode($dir.$entry)."\" >";
-                    echo "<img src=\"".$image."\" width=\"16\" height=\"16\" alt=\"".$entry."\" border=\"0\"></a>";
+                    echo "<img src=\"".$image."\" width=\"16\" height=\"16\" alt=\"".$entry."\"></a>";
                     echo "<a href=\"dir.php?down=".urlencode($dir.$entry)."\" >".$entry."</a>";
                 }
                 else
                 {
                     // No, just show the name
-                    echo "<img src=\"".$image."\" width=\"16\" height=\"16\" alt=\"".$entry."\" border=\"0\">";
+                    echo "<img src=\"".$image."\" width=\"16\" height=\"16\" alt=\"".$entry."\">";
                     echo $entry;
                 }
 
                 echo "</td>";
-                echo "<td align=\"right\">".$fileSize." KB</td>";
+                echo "<td style=\"text-align:right\">".$fileSize." KB</td>";
                 echo "<td>".date("m-d-Y g:i a", $timeStamp)."</td>";
-                echo "<td align=\"right\">";
+                echo "<td style=\"text-align:right\">";
 
                 if( $cfg["enable_view_nfo"] && (( substr( strtolower($entry), -4 ) == ".nfo" ) || ( substr( strtolower($entry), -4 ) == ".txt" ))  )
                 {
-                    echo "<a href=\"viewnfo.php?path=".urlencode(addslashes($dir.$entry))."\"><img src=\"images/view_nfo.gif\" width=16 height=16 title=\"View '$entry'\" border=0></a>";
+                    echo "<a href=\"viewnfo.php?path=".urlencode(addslashes($dir.$entry))."\"><img src=\"images/view_nfo.gif\" width=16 height=16 title=\"View '$entry'\"></a>";
                 }
 
                 if ($cfg["enable_maketorrent"])
                 {
-                    echo "<a href=\"JavaScript:MakeTorrent('maketorrent.php?path=".urlencode($dir.$entry)."')\"><img src=\"images/make.gif\" width=16 height=16 title=\"Make Torrent\" border=0></a>";
+                    echo "<a href=\"JavaScript:MakeTorrent('maketorrent.php?path=".urlencode($dir.$entry)."')\"><img src=\"images/make.gif\" width=16 height=16 title=\"Make Torrent\"></a>";
                 }
 
                 if ($cfg["enable_file_download"])
                 {
                     // Show the download button
                     echo "<a href=\"dir.php?down=".urlencode($dir.$entry)."\" >";
-                    echo "<img src=\"images/download_owner.gif\" width=16 height=16 title=\"Download\" border=0>";
+                    echo "<img src=\"images/download_owner.gif\" width=16 height=16 title=\"Download\" alt=\"\">";
                     echo "</a>";
                 }
 
@@ -505,7 +472,7 @@ function ListDirectory($dirName)
                 // the ability to delete files
                 if(IsAdmin($cfg["user"]) || preg_match("/^" . $cfg["user"] . "/",$dir))
                 {
-                    echo "<a href=\"dir.php?del=".urlencode($dir.$entry)."\" onclick=\"return ConfirmDelete('".addslashes($entry)."')\"><img src=\"images/delete_on.gif\" width=16 height=16 title=\""._DELETE."\" border=0></a>";
+                    echo "<a href=\"dir.php?del=".urlencode($dir.$entry)."\" onclick=\"return ConfirmDelete('".addslashes($entry)."')\"><img src=\"images/delete_on.gif\" width=16 height=16 title=\""._DELETE."\" alt=\"\"></a>";
                     echo "<input type=\"checkbox\" name=\"file[]\" value=\"".urlencode($dir.$entry)."\">";
                 }
                 else
@@ -527,6 +494,7 @@ function ListDirectory($dirName)
     }
     closedir($handle);
     echo "</table>";
+    echo "</form>";
 }
 
 // ***************************************************************************

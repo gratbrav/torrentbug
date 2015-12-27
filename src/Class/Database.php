@@ -1,4 +1,14 @@
 <?php
+/**
+* Database Class
+*
+* Class for database connectiony
+*
+* @package  gratbrav
+* @author   Gratbrav
+* @version  $Revision: 1.0 $
+* @access   public
+*/
 class Class_Database
 {
 	protected $db = '';

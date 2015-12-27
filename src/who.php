@@ -32,29 +32,14 @@ if (!IsAdmin($cfg["user"])) {
 $result = shell_exec("w");
 $result2 = shell_exec("free -mo");
 ?>
-<!doctype html>
-<html>
-<head>
-	<title><?php echo $cfg["pagetitle"] ?></title>
-	<link rel="icon" href="images/favicon.ico" type="image/x-icon" />
-	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
-	<link rel="stylesheet" href="./plugins/twitter/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
-    <link rel="styleSheet" HREF="themes/<?php echo $cfg["theme"] ?>/style.css" type="text/css" />
-	<meta http-equiv="Pragma" content="no-cache" charset="<?php echo _CHARSET ?>">
-</head>
-<body>
+<?php 
+	$subMenu = 'index';
+	include_once 'header.php' 
+?>
 
 <div class="container">
 	<div class="row">
-		<nav class="navbar navbar-light" style="background-color:#e3f2fd;">
-			<?php include_once 'menu.php' ?>
-		</nav>
-	</div>
-</div>
-
-<div class="container">
-	<div class="row">
-		<div class="col-sm-12">
+		<div class="col-sm-12 bd-example" style="padding: 10px;">
 			<?php echo displayDriveSpaceBar(getDriveSpace($cfg["path"])); ?>
 		</div>
 	</div>
@@ -62,18 +47,15 @@ $result2 = shell_exec("free -mo");
 
 <div class="container">
 	<div class="row">
-		<div class="col-sm-12">
-			<fieldset class="form-group bd-example">
-				<pre><?php echo $result; ?><hr><?php echo $result2; ?></pre>
-				<?php 
-					if (IsAdmin()) {
-    					echo "<hr>";
-    					echo "<pre>";
-    					RunningProcessInfo();
-    					echo "</pre>";
-					}
-				?>
-			</fieldset>
+		<div class="col-sm-12 bd-example" style="padding: 10px;">
+			<pre><?php echo $result; ?><hr><?php echo $result2; ?></pre>
+			<?php 
+				if (IsAdmin()) {
+    				echo "<hr>";
+    				echo "<pre>";
+    				RunningProcessInfo();
+   					echo "</pre>";
+				}				?>
 		</div>
 	</div>
 </div>

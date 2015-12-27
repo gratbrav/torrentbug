@@ -29,38 +29,46 @@ if (! IsAdmin($cfg["user"])) {
     header("Location:index.php");
 }
 
-$result = shell_exec("df -h ".$cfg["path"]);
-$result2 = shell_exec("du -sh ".$cfg["path"]."*");
-$result4 = shell_exec("w");
-$result5 = shell_exec("free -mo");
-
-DisplayHead(_ALL);
-echo "<table width=\"740\" border=0 cellpadding=0 cellspacing=0><tr><td>";
-echo displayDriveSpaceBar(getDriveSpace($cfg["path"]));
-echo "</td></tr></table>";
+	$subMenu = 'index';
+	include_once 'header.php'; 
+	
+	$result = shell_exec("df -h ".$cfg["path"]);
+	$result2 = shell_exec("du -sh ".$cfg["path"]."*");
+	$result4 = shell_exec("w");
+	$result5 = shell_exec("free -mo");
 ?>
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12 bd-example" style="padding: 10px;">
+			<?php echo displayDriveSpaceBar(getDriveSpace($cfg["path"])); ?>
+		</div>
+	</div>
+</div>
 
-<br>
-<div align="left" id="BodyLayer" name="BodyLayer" style="border: thin solid <?php echo $cfg["main_bgcolor"] ?>; position:relative; width:740; height:500; padding-left: 5px; padding-right: 5px; z-index:1; overflow: scroll; visibility: visible">
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12 bd-example" style="padding: 10px;">
+			<pre><?php
+				echo "<strong>"._DRIVESPACE."</strong>";
+				
+				echo $result;
+				echo "<hr>";
+				echo $result2;
+				
+				echo "<hr>";
+				
+				echo "<strong>"._SERVERSTATS."</strong>";
+				
+				echo $result4;
+				echo "<hr>";
+				echo $result5;
+				echo "</pre>";
+			
+			?>
+		</div>
+	</div>
+</div>
 
-<?php
-echo "<pre>";
-echo "<strong>"._DRIVESPACE."</strong>\n\n";
+<div style="text-align:center">[<a href="index.php"><?php echo _RETURNTOTORRENTS ?></a>]</div>
 
-echo $result;
-echo "<br><hr><br>";
-echo $result2;
-
-echo "<br><hr><br>";
-
-echo "<strong>"._SERVERSTATS."</strong>\n\n";
-
-echo $result4;
-echo "<br><hr><br>";
-echo $result5;
-echo "</pre>";
-echo "</div>";
-
-DisplayFoot(); 
-
-?>
+<?php echo DisplayTorrentFluxLink(); ?>

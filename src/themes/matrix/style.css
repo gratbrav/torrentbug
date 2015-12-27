@@ -19,7 +19,13 @@ A:hover         {BACKGROUND: none; COLOR: #363636; FONT-SIZE: 12px; FONT-FAMILY:
 .boxtitle 	{BACKGROUND: none; COLOR: #363636; FONT-SIZE: 12px; FONT-WEIGHT: bold; FONT-FAMILY: Verdana, Helvetica; TEXT-DECORATION: none}
 .boxcontent 	{BACKGROUND: none; COLOR: #000000; FONT-SIZE: 12px; FONT-FAMILY: Verdana, Helvetica}
 .option 	{BACKGROUND: none; COLOR: #000000; FONT-SIZE: 12px; FONT-WEIGHT: bold; FONT-FAMILY: Verdana, Helvetica; TEXT-DECORATION: none}
-.tiny		{BACKGROUND: none; COLOR: #000000; FONT-SIZE: 9px; FONT-WEIGHT: normal; FONT-FAMILY: Verdana, Helvetica; TEXT-DECORATION: none}
+.tiny		{BACKGROUND: none; COLOR: #000000; FONT-SIZE: 9px !important; FONT-WEIGHT: normal; FONT-FAMILY: Verdana, Helvetica; TEXT-DECORATION: none}
+table#smallDownloadStats td { font-size: 9px; }
+table#smallDownloadStats td:first-child { text-align:right; }
+table#smallDownloadStats td:nth-child(2) { font-weight:bold; }
+table#torrentList td { text-align:center }
+table#torrentList td:first-child { text-align:left }
+table#torrentList td:nth-child(2) { text-align:right }
 .tinywhite		{BACKGROUND: none; COLOR: #ffffff; FONT-SIZE: 9px; FONT-WEIGHT: normal; FONT-FAMILY: Verdana, Helvetica; TEXT-DECORATION: none}
 .tinyunderline	{BACKGROUND: none; COLOR: #000000; FONT-SIZE: 9px; FONT-WEIGHT: normal; FONT-FAMILY: Verdana, Helvetica; TEXT-DECORATION: underline}
 .title {FONT-FAMILY: Verdana,Helvetica; FONT-WEIGHT: bold; COLOR: #ffffff; FONT-SIZE: 12px}
@@ -30,4 +36,5 @@ A:hover         {BACKGROUND: none; COLOR: #363636; FONT-SIZE: 12px; FONT-FAMILY:
 .overCaption {font-family:arial; color:#ffffff; font-size:9pt; font-weight:bold;}
 .overClose {font-family:arial; background:#E6E6E6; color:#000000; font-size:9pt; font-weight:bold;}
 .overBody {font-family:arial; background:#ffffff; font-size:9pt; font-weight:normal;}
-.bd-example { margin-left: 0; margin-right: 0; margin-bottom: 0; padding: 1.5rem; border-width: .2rem; position: relative; padding: 1rem; margin: 1rem -1rem; border: solid white; }
+.bd-example { border-width: .2rem; position: relative; margin: 8px 0px; padding: 0px; border: solid white; }
+table.table { margin-bottom: 0px; }

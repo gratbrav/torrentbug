@@ -999,6 +999,7 @@ function buildSearchEngineDDL($selectedEngine = 'PirateBay', $autoSubmit = false
     {
          $output .= "onchange=\"this.form.submit();\" ";
     }
+  //  $output .= " STYLE=\"width: 125px\">";
 	$output .= " STYLE=\"margin-top:6px;\" ";
 	$output .= " class=\"form-control\" >";
     $handle = opendir("./searchEngines");
@@ -1215,8 +1216,8 @@ function DisplayTorrentFluxLink()
 {
     global $cfg;
 
-    echo "<div align=\"right\">";
-    echo "<a href=\"http://www.torrentflux.com\" target=\"_blank\"><font class=\"tinywhite\">TorrentFlux ".$cfg["version"]."</font></a>&nbsp;&nbsp;";
+    echo "<div style=\"text-align:right\">";
+    echo "<a href=\"http://www.torrentflux.com\" target=\"_blank\" class=\"tiny\">TorrentFlux ".$cfg["version"]."</a>";
     echo "</div>";
 }
 
@@ -1240,10 +1241,10 @@ function DisplayTitleBar($pageTitleText, $showButtons=true)
         // Top Buttons
         echo "&nbsp;&nbsp;";
 
-        echo "<a href=\"index.php\"><img src=\"themes/".$cfg["theme"]."/images/home.gif\" width=49 height=13 title=\""._TORRENTS."\" border=0></a>&nbsp;";
-        echo "<a href=\"dir.php\"><img src=\"themes/".$cfg["theme"]."/images/directory.gif\" width=49 height=13 title=\""._DIRECTORYLIST."\" border=0></a>&nbsp;";
-        echo "<a href=\"history.php\"><img src=\"themes/".$cfg["theme"]."/images/history.gif\" width=49 height=13 title=\""._UPLOADHISTORY."\" border=0></a>&nbsp;";
-        echo "<a href=\"profile.php\"><img src=\"themes/".$cfg["theme"]."/images/profile.gif\" width=49 height=13 title=\""._MYPROFILE."\" border=0></a>&nbsp;";
+        echo "<a href=\"index.php\"><img src=\"themes/".$cfg["theme"]."/images/home.gif\" width=49 height=13 title=\""._TORRENTS."\"></a>&nbsp;";
+        echo "<a href=\"dir.php\"><img src=\"themes/".$cfg["theme"]."/images/directory.gif\" width=49 height=13 title=\""._DIRECTORYLIST."\"></a>&nbsp;";
+        echo "<a href=\"history.php\"><img src=\"themes/".$cfg["theme"]."/images/history.gif\" width=49 height=13 title=\""._UPLOADHISTORY."\"></a>&nbsp;";
+        echo "<a href=\"profile.php\"><img src=\"themes/".$cfg["theme"]."/images/profile.gif\" width=49 height=13 title=\""._MYPROFILE."\"></a>&nbsp;";
 
         // Does the user have messages?
         $sql = "select count(*) from tf_messages where to_user='".$cfg['user']."' and IsNew=1";
@@ -1261,14 +1262,14 @@ function DisplayTitleBar($pageTitleText, $showButtons=true)
             $message_image = "themes/".$cfg["theme"]."/images/messages_off.gif";
         }
 
-        echo "<a href=\"readmsg.php\"><img src=\"".$message_image."\" width=49 height=13 title=\""._MESSAGES."\" border=0></a>";
+        echo "<a href=\"readmsg.php\"><img src=\"".$message_image."\" width=49 height=13 title=\""._MESSAGES."\"></a>";
 
         if(IsAdmin())
         {
-            echo "&nbsp;<a href=\"admin.php\"><img src=\"themes/".$cfg["theme"]."/images/admin.gif\" width=49 height=13 title=\""._ADMINISTRATION."\" border=0></a>";
+            echo "&nbsp;<a href=\"admin.php\"><img src=\"themes/".$cfg["theme"]."/images/admin.gif\" width=49 height=13 title=\""._ADMINISTRATION."\"></a>";
         }
 
-        echo "&nbsp;<a href=\"logout.php\"><img src=\"images/logout.gif\" width=13 height=12 title=\"Logout\" border=0></a>";
+        echo "&nbsp;<a href=\"logout.php\"><img src=\"images/logout.gif\" width=13 height=12 title=\"Logout\"></a>";
     }
 ?>
             </td>
@@ -1390,10 +1391,8 @@ function displayDriveSpaceBar($drivespace)
     	$barClass = 'progress-danger';
     }
 ?>
-	<div class="bd-example">
-		<label><?php echo _STORAGE ?>: <?php echo $drivespace ?>% <?php echo $freeSpace ?></label>
-		<progress class="progress <?php echo $barClass; ?>" value="<?php echo $drivespace ?>" max="100" style="margin-bottom:0px"><?php echo $drivespace ?>%</progress>
-	</div>
+	<label><?php echo _STORAGE ?>: <?php echo $drivespace ?>% <?php echo $freeSpace ?></label>
+	<progress class="progress <?php echo $barClass; ?>" value="<?php echo $drivespace ?>" max="100" style="margin-bottom:0px"><?php echo $drivespace ?>%</progress>
 <?php
 }
 
@@ -2259,19 +2258,13 @@ function getDirList($dirName)
     $arList = array();
     $file_filter = getFileFilter($cfg["file_types_array"]);
 
-    if (is_dir($dirName))
-    {
+    if (is_dir($dirName)) {
         $handle = opendir($dirName);
-    }
-    else
-    {
+    } else {
         // nothing to read
-        if (IsAdmin())
-        {
+        if (IsAdmin()) {
             echo "<b>ERROR:</b> ".$dirName." Path is not valid. Please edit <a href='admin.php?op=configSettings'>settings</a><br>";
-        }
-        else
-        {
+        } else {
             echo "<b>ERROR:</b> Contact an admin the Path is not valid.<br>";
         }
         return;
@@ -2371,35 +2364,30 @@ function getDirList($dirName)
 
         if ($cfg["enable_torrent_download"])
         {
-            $torrentfilelink = "<a href=\"maketorrent.php?download=".urlencode($entry)."\"><img src=\"images/down.gif\" width=9 height=9 title=\"Download Torrent File\" border=0 align=\"absmiddle\"></a>";
+            $torrentfilelink = "<a href=\"maketorrent.php?download=".urlencode($entry)."\"><img src=\"images/down.gif\" width=9 height=9 title=\"Download Torrent File\" alt=\"\"></a>";
         }
 
         $hd = getStatusImage($af);
 
-        $output .= "<tr><td class=\"tiny\"><img src=\"images/".$hd->image."\" width=16 height=16 title=\"".$hd->title.$entry."\" border=0 align=\"absmiddle\">".$torrentfilelink.$displayname."</td>";
-        $output .= "<td align=\"right\"><font class=\"tiny\">".formatBytesToKBMGGB($af->size)."</font></td>";
-        $output .= "<td align=\"center\"><a href=\"message.php?to_user=".$torrentowner."\"><font class=\"tiny\">".$torrentowner."</font></a></td>";
-        $output .= "<td valign=\"bottom\"><div align=\"center\">";
+        $output .= "<tr><td><img src=\"images/".$hd->image."\" title=\"".$hd->title.$entry."\" alt=\"\">".$torrentfilelink.$displayname."</td>";
+        $output .= "<td>".formatBytesToKBMGGB($af->size)."</td>";
+        $output .= "<td><a href=\"message.php?to_user=".$torrentowner."\">".$torrentowner."</a></td>";
+        $output .= "<td>";
 
-        if ($af->running == "2")
-        {
-            $output .= "<i><font color=\"#32cd32\">"._NEW."</font></i>";
-        }
-        elseif ($af->running == "3" )
-        {
+        if ($af->running == "2") {
+            $output .= "<i style=\"color:#32cd32\">" . _NEW . "</i>";
+            
+        } elseif ($af->running == "3" ) {
             $estTime = "Waiting...";
             $qDateTime = '';
-            if(is_file($dirName."queue/".$alias.".Qinfo"))
-            {
+            if(is_file($dirName."queue/".$alias.".Qinfo")) {
                 $qDateTime = date("m/d/Y H:i:s", strval(filectime($dirName."queue/".$alias.".Qinfo")));
             }
 
-            $output .= "<i><font color=\"#000000\" onmouseover=\"return overlib('"._QUEUED.": ".$qDateTime."<br>', CSSCLASS);\" onmouseout=\"return nd();\">"._QUEUED."</font></i>";
-        }
-        else
-        {
-            if ($af->time_left != "" && $af->time_left != "0")
-            {
+            $output .= "<i stlye=\"color:#000000\" onmouseover=\"return overlib('"._QUEUED.": ".$qDateTime."<br>', CSSCLASS);\" onmouseout=\"return nd();\">"._QUEUED."</i>";
+            
+        } else {
+            if ($af->time_left != "" && $af->time_left != "0") {
                 $estTime = $af->time_left;
             }
 
@@ -2486,15 +2474,15 @@ function getDirList($dirName)
                 $output .= "<font class=\"tiny\"><strong>".$af->percent_done."%</strong> @ ".$af->down_speed."</font></a><br>";
                 $output .= "<table width=\"100\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">";
                 $output .= "<tr><td background=\"themes/".$cfg["theme"]."/images/progressbar.gif\" bgcolor=\"".$progress_color."\"><img src=\"images/blank.gif\" width=\"".$graph_width."\" height=\"".$bar_width."\" border=\"0\"></td>";
-                $output .= "<td bgcolor=\"".$background."\"><img src=\"images/blank.gif\" width=\"".(100 - $graph_width)."\" height=\"".$bar_width."\" border=\"0\"></td>";
+                $output .= "<td bgcolor=\"".$background."\"><img src=\"images/blank.gif\" width=\"".(100 - $graph_width)."\" height=\"".$bar_width."\" border=\"0\" alt=\"\"></td>";
                 $output .= "</tr></table>";
             }
 
         }
 
-        $output .= "</div></td>";
-        $output .= "<td><div class=\"tiny\" align=\"center\">".$estTime."</div></td>";
-        $output .= "<td><div align=center>";
+        $output .= "</td>";
+        $output .= "<td>".$estTime."</td>";
+        $output .= "<td>";
 
         $torrentDetails = _TORRENTDETAILS;
         if ($lastUser != "")
@@ -2507,26 +2495,26 @@ function getDirList($dirName)
         {
             $output .= "&als=false";
         }
-        $output .= "\"><img src=\"images/properties.png\" width=18 height=13 title=\"".$torrentDetails."\" border=0></a>";
+        $output .= "\"><img src=\"images/properties.png\" title=\"".$torrentDetails."\" alt=\"\"></a>";
 
         if ($owner || IsAdmin($cfg["user"]))
         {
             if($kill_id != "" && $af->percent_done >= 0 && $af->running == 1)
             {
-                $output .= "<a href=\"index.php?alias_file=".$alias."&kill=".$kill_id."&kill_torrent=".urlencode($entry)."\"><img src=\"images/kill.gif\" width=16 height=16 title=\""._STOPDOWNLOAD."\" border=0></a>";
-                $output .= "<img src=\"images/delete_off.gif\" width=16 height=16 border=0>";
+                $output .= "<a href=\"index.php?alias_file=".$alias."&kill=".$kill_id."&kill_torrent=".urlencode($entry)."\"><img src=\"images/kill.gif\" width=16 height=16 title=\""._STOPDOWNLOAD."\"></a>";
+                $output .= "<img src=\"images/delete_off.gif\" alt=\"\">";
             }
             else
             {
                 if($torrentowner == "n/a")
                 {
-                    $output .= "<img src=\"images/run_off.gif\" width=16 height=16 border=0 title=\""._NOTOWNER."\">";
+                    $output .= "<img src=\"images/run_off.gif\" title=\""._NOTOWNER."\" alt=\"\">";
                 }
                 else
                 {
                     if ($af->running == "3")
                     {
-                        $output .= "<a href=\"index.php?alias_file=".$alias."&dQueue=".$kill_id."&QEntry=".urlencode($entry)."\"><img src=\"images/queued.gif\" width=16 height=16 title=\""._DELQUEUE."\" border=0></a>";
+                        $output .= "<a href=\"index.php?alias_file=".$alias."&dQueue=".$kill_id."&QEntry=".urlencode($entry)."\"><img src=\"images/queued.gif\" width=16 height=16 title=\""._DELQUEUE."\"></a>";
                     }
                     else
                     {
@@ -2537,11 +2525,11 @@ function getDirList($dirName)
                             {
                                 if($show_run)
                                 {
-                                    $output .= "<a href=\"#\" onclick=\"StartTorrent('startpop.php?torrent=".urlencode($entry)."')\"><img src=\"images/run_on.gif\" width=16 height=16 title=\""._RUNTORRENT."\" border=0></a>";
+                                    $output .= "<a href=\"#\" onclick=\"StartTorrent('startpop.php?torrent=".urlencode($entry)."')\"><img src=\"images/run_on.gif\" width=16 height=16 title=\""._RUNTORRENT."\" alt=\"\"></a>";
                                 }
                                 else
                                 {
-                                    $output .= "<a href=\"#\" onclick=\"StartTorrent('startpop.php?torrent=".urlencode($entry)."')\"><img src=\"images/seed_on.gif\" width=16 height=16 title=\""._SEEDTORRENT."\" border=0></a>";
+                                    $output .= "<a href=\"#\" onclick=\"StartTorrent('startpop.php?torrent=".urlencode($entry)."')\"><img src=\"images/seed_on.gif\" width=16 height=16 title=\""._SEEDTORRENT."\" alt=\"\"></a>";
                                 }
                             }
                             else
@@ -2549,18 +2537,18 @@ function getDirList($dirName)
                                 // Quick Start
                                 if($show_run)
                                 {
-                                    $output .= "<a href=\"".$_SERVER['PHP_SELF']."?torrent=".urlencode($entry)."\"><img src=\"images/run_on.gif\" width=16 height=16 title=\""._RUNTORRENT."\" border=0></a>";
+                                    $output .= "<a href=\"".$_SERVER['PHP_SELF']."?torrent=".urlencode($entry)."\"><img src=\"images/run_on.gif\" width=16 height=16 title=\""._RUNTORRENT."\" alt=\"\"></a>";
                                 }
                                 else
                                 {
-                                    $output .= "<a href=\"".$_SERVER['PHP_SELF']."?torrent=".urlencode($entry)."\"><img src=\"images/seed_on.gif\" width=16 height=16 title=\""._SEEDTORRENT."\" border=0></a>";
+                                    $output .= "<a href=\"".$_SERVER['PHP_SELF']."?torrent=".urlencode($entry)."\"><img src=\"images/seed_on.gif\" width=16 height=16 title=\""._SEEDTORRENT."\" alt=\"\"></a>";
                                 }
                             }
                         }
                         else
                         {
                             // pid file exists so this may still be running or dieing.
-                            $output .= "<img src=\"images/run_off.gif\" width=16 height=16 border=0 title=\""._STOPPING."\">";
+                            $output .= "<img src=\"images/run_off.gif\" title=\""._STOPPING."\">";
                         }
                     }
                 }
@@ -2568,21 +2556,20 @@ function getDirList($dirName)
                 if (!is_file($cfg["torrent_file_path"].$alias.".pid"))
                 {
                     $deletelink = $_SERVER['PHP_SELF']."?alias_file=".$alias."&delfile=".urlencode($entry);
-                    $output .= "<a href=\"".$deletelink."\" onclick=\"return ConfirmDelete('".$entry."')\"><img src=\"images/delete_on.gif\" width=16 height=16 title=\""._DELETE."\" border=0></a>";
+                    $output .= "<a href=\"".$deletelink."\" onclick=\"return ConfirmDelete('".$entry."')\"><img src=\"images/delete_on.gif\" width=16 height=16 title=\""._DELETE."\"></a>";
                 }
                 else
                 {
                     // pid file present so process may be still running. don't allow deletion.
-                    $output .= "<img src=\"images/delete_off.gif\" width=16 height=16 title=\""._STOPPING."\" border=0>";
+                    $output .= "<img src=\"images/delete_off.gif\" title=\""._STOPPING."\">";
                 }
             }
         }
         else
         {
-            $output .= "<img src=\"images/locked.gif\" width=16 height=16 border=0 title=\""._NOTOWNER."\">";
-            $output .= "<img src=\"images/locked.gif\" width=16 height=16 border=0 title=\""._NOTOWNER."\">";
+            $output .= "<img src=\"images/locked.gif\" title=\""._NOTOWNER."\">";
+            $output .= "<img src=\"images/locked.gif\" title=\""._NOTOWNER."\">";
         }
-        $output .= "</div>";
 
         $output .= "</td>";
         $output .= "</tr>\n";
@@ -2600,7 +2587,7 @@ function getDirList($dirName)
     closedir($handle);
 
     // Now spit out the junk
-    echo "<table class=\"table table-striped\">";
+    echo "<table class=\"table table-striped\" id=\"torrentList\">";
 
     if (sizeof($arUserTorrent) > 0)
     {

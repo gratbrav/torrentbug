@@ -1,5 +1,14 @@
 <?php
-
+/**
+* User Authentication Class
+*
+* Class for authentication a user
+*
+* @package  gratbrav
+* @author   Gratbrav
+* @version  $Revision: 1.0 $
+* @access   public
+*/
 class Class_User_Authentication
 {
 	protected $db = null;

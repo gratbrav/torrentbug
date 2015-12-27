@@ -203,8 +203,6 @@ global $cfg;
 	    padding-top: 40px;
 	}
 	</style>
-    <meta http-equiv="pragma" content="no-cache" />
-    <meta content="charset=iso-8859-1" />
     <meta name=viewport content="width=device-width, initial-scale=1">
 </head>
 <body>
@@ -222,7 +220,7 @@ global $cfg;
 </div>
 
 <script src="./plugins/components/jquery/jquery.min.js"></script>
-<script language="JavaScript">
+<script>
 $(document).ready(function() {
 
 	$("form #submit").click(function() {

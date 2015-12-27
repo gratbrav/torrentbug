@@ -65,11 +65,11 @@ function displayActivity($min=0)
         }
 
         $output .= "<tr>";
-        $output .= "<td><a href=\"message.php?to_user=".$user_id."\"><img src=\"".$user_icon."\" width=17 height=14 title=\"".$user_id."\" border=0 align=\"bottom\">".$user_id."</a>&nbsp;&nbsp;</td>";
-        $output .= "<td><div align=center><div class=\"tiny\" align=\"left\">";
+        $output .= "<td><a href=\"message.php?to_user=".$user_id."\"><img src=\"".$user_icon."\" title=\"".$user_id."\" alt=\"\">".$user_id."</a>&nbsp;&nbsp;</td>";
+        $output .= "<td>";
         $output .= $file;
-        $output .= "</div></td>";
-        $output .= "<td><div class=\"tiny\" align=\"center\">".date(_DATETIMEFORMAT, $time)."</div></td>";
+        $output .= "</td>";
+        $output .= "<td style=\"text-align:center;\">".date(_DATETIMEFORMAT, $time)."</td>";
         $output .= "</tr>";
 
         $inx++;
@@ -94,20 +94,20 @@ function displayActivity($min=0)
     }
 
     echo "<table class=\"table table-striped\">";
-    echo "<tr><td colspan=6 >";
-    echo "<table class=\"table table-striped\" style=\"margin-bottom:0px\"><tr><td>";
-    echo "<img src=\"images/properties.png\" width=18 height=13 border=0>&nbsp;&nbsp;<strong><font>"._UPLOADACTIVITY." (".$cfg["days_to_keep"]." "._DAYS.")</font></strong>";
+    echo "<tr><th colspan=\"2\">";
+    echo "<img src=\"images/properties.png\" alt=\"\">&nbsp;&nbsp;" . _UPLOADACTIVITY . " (" . $cfg["days_to_keep"] . " " . _DAYS . ")";
+	echo "</th><th style=\"text-align:right\">";
 
     if(!empty($prevlink) && !empty($morelink))
-    echo "</td><td align=\"right\">".$prevlink.$morelink."</td></tr></table>";
+    echo $prevlink.$morelink;
     elseif(!empty($prevlink))
-        echo "</td><td align=\"right\">".$prevlink."</td></tr></table>";
+        echo $prevlink;
     elseif(!empty($morelink))
-        echo "</td><td align=\"right\">".$morelink."</td></tr></table>";
+        echo $morelink;
     else
-        echo "</td><td align=\"right\"></td></tr></table>";
+        echo "";
 
-    echo "</td></tr>";
+    echo "</th></tr>";
     echo "<tr>";
     echo "<th>"._USER."</th>";
     echo "<th>"._FILE."</th>";
@@ -131,46 +131,12 @@ function displayActivity($min=0)
 }
 
 ?>
-<!doctype html>
-<html>
-<head>
-	<TITLE><?php echo $percentdone.$cfg["pagetitle"] ?></TITLE>
-	<link rel="icon" href="images/favicon.ico" type="image/x-icon" />
-	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
-	<link rel="stylesheet" href="./plugins/twitter/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
-    <LINK REL="StyleSheet" HREF="themes/<?php echo $cfg["theme"] ?>/style.css" TYPE="text/css">
-	<META HTTP-EQUIV="Pragma" CONTENT="no-cache" charset="<?php echo _CHARSET ?>">
-<style>
-.bd-example {
-	margin-left: 0;
-	margin-right: 0;
-	margin-bottom: 0;
-	padding: 1.5rem;
-	border-width: .2rem;
-	position: relative;
-	padding: 1rem;
-	margin: 1rem -1rem;
-	border: solid white;
-}
-</style>
-</head>
-<body topmargin="8" bgcolor="<?php echo $cfg["main_bgcolor"] ?>">
+<?php include_once 'header.php' ?>
 
 <div class="container">
 	<div class="row">
-		<nav class="navbar navbar-light " style="background-color: #e3f2fd;">
-			<?php include_once 'menu.php' ?>
-		</nav>
-	</div>
-</div>
-
-<div class="container">
-	<div class="row">
-		<div class="col-sm-12">
-			<fieldset class="form-group bd-example">
-				<?php     // Display Activity
-    displayActivity($min); ?>
-			</fieldset>
+		<div class="col-sm-12 bd-example">
+			<?php displayActivity($min); ?>
 		</div>
 	</div>
 </div>

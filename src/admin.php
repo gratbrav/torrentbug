@@ -115,7 +115,7 @@ function addUser($newUser, $pass1, $userType)
     $newUser = strtolower($newUser);
     if (IsUser($newUser))
     {
-        echo "<br><div align=\"center\">"._TRYDIFFERENTUSERID."<br><strong>".$newUser."</strong> "._HASBEENUSED."</div><br><br><br>";
+        echo "<br><div style=\"text-align:center\">"._TRYDIFFERENTUSERID."<br><strong>".$newUser."</strong> "._HASBEENUSED."</div><br><br><br>";
     }
     else
     {
@@ -134,7 +134,7 @@ function updateUser($user_id, $org_user_id, $pass1, $userType, $hideOffline)
     $user_id = strtolower($user_id);
     if (IsUser($user_id) && ($user_id != $org_user_id))
     {
-        echo "<br><div align=\"center\">"._TRYDIFFERENTUSERID."<br><strong>".$user_id."</strong> "._HASBEENUSED."<br><br><br>";
+        echo "<br><div style=\"text-align:center\">"._TRYDIFFERENTUSERID."<br><strong>".$user_id."</strong> "._HASBEENUSED."<br><br><br>";
 
         echo "[<a href=\"admin.php?op=editUser&user_id=".$org_user_id."\">"._RETURNTOEDIT." ".$org_user_id."</a>]</div><br><br><br>";
     }
@@ -316,18 +316,18 @@ function displayActivity($min=0, $user="", $srchFile="", $srchAction="")
         $output .= "<tr>";
         if (IsUser($user_id))
         {
-            $output .= "<td><a href=\"message.php?to_user=".$user_id."\"><img src=\"".$user_icon."\" width=17 height=14 title=\""._SENDMESSAGETO." ".$user_id."\" border=0 align=\"bottom\">".$user_id."</a>&nbsp;&nbsp;</td>";
+            $output .= "<td><a href=\"message.php?to_user=".$user_id."\"><img src=\"".$user_icon."\" alt=\"\" title=\""._SENDMESSAGETO." ".$user_id."\" />".$user_id."</a>&nbsp;&nbsp;</td>";
         }
         else
         {
-            $output .= "<td><img src=\"".$user_icon."\" width=17 height=14 title=\"n/a\" border=0 align=\"bottom\">".$user_id."&nbsp;&nbsp;</td>";
+            $output .= "<td><img src=\"".$user_icon."\" alt=\"\" title=\"n/a\" />".$user_id."&nbsp;&nbsp;</td>";
         }
         $output .= "<td><div class=\"tiny\">".htmlentities($action, ENT_QUOTES)."</div></td>";
-        $output .= "<td><div align=center><div class=\"tiny\" align=\"left\">";
+        $output .= "<td><div class=\"tiny\" style=\"text-align:left\">";
         $output .= htmlentities($file, ENT_QUOTES);
         $output .= "</div></td>";
-        $output .= "<td><div class=\"tiny\" align=\"left\"><a href=\"javascript:void(0)\" onclick=\"return overlib('".$ip_info."<br>', STICKY, CSSCLASS);\" onmouseover=\"return overlib('".$ip_info."<br>', CSSCLASS);\" onmouseout=\"return nd();\"><img src=\"images/properties.png\" width=\"18\" height=\"13\" border=\"0\"><font class=tiny>".htmlentities($ip, ENT_QUOTES)."</font></a></div></td>";
-        $output .= "<td><div class=\"tiny\" align=\"center\">".date(_DATETIMEFORMAT, $time)."</div></td>";
+        $output .= "<td><div class=\"tiny\" style=\"text-align:left\"><a href=\"javascript:void(0)\" onclick=\"return overlib('".$ip_info."<br>', STICKY, CSSCLASS);\" onmouseover=\"return overlib('".$ip_info."<br>', CSSCLASS);\" onmouseout=\"return nd();\" class=tiny><img src=\"images/properties.png\" alt=\"\" />".htmlentities($ip, ENT_QUOTES)."</a></div></td>";
+        $output .= "<td><div class=\"tiny\" style=\"text-align:center\">".date(_DATETIMEFORMAT, $time)."</div></td>";
         $output .= "</tr>";
 
         $inx++;
@@ -352,53 +352,52 @@ function displayActivity($min=0, $user="", $srchFile="", $srchAction="")
 ?>
 <div class="container">
 	<div class="row">
-		<div class="col-sm-12">
-			<fieldset class="form-group bd-example">
-				<form action="admin.php?op=showUserActivity" name="searchForm" method="post">
-			    	<table class="table table-striped">
-					    <tr>
-        					<td>
-        						<strong><?php echo _ACTIVITYSEARCH ?></strong>&nbsp;&nbsp;&nbsp;
-        						<?php echo _FILE ?>:
-        						<input type="Text" name="srchFile" value="<?php echo $srchFile ?>" width="30"> &nbsp;&nbsp;
-        						<?php echo _ACTION ?>:
-        						<select name="srchAction">
-        							<option value="">-- <?php echo _ALL ?> --</option>
-									<?php
-								        $selected = "";
-								        if(is_array($cfg["constants"])) {
-								            foreach ($cfg["constants"] as $action)
-								            {
-								                $selected = "";
-								                if($action != $cfg["constants"]["hit"])
-								                {
-								                    if($srchAction == $action)
-								                    {
-								                        $selected = "selected";
-								                    }
-								                    echo "<option value=\"".htmlentities($action, ENT_QUOTES)."\" ".$selected.">".htmlentities($action, ENT_QUOTES)."</option>";
-								                }
-								            }
-								        }
-									?>
+		<div class="col-sm-12 bd-example">
+			<form action="admin.php?op=showUserActivity" name="searchForm" method="post">
+		    	<table class="table table-striped">
+				    <tr>
+       					<td>
+       						<strong><?php echo _ACTIVITYSEARCH ?></strong>&nbsp;&nbsp;&nbsp;
+       						<?php echo _FILE ?>:
+       						<input type="Text" name="srchFile" value="<?php echo $srchFile ?>" style="width:30"> &nbsp;&nbsp;
+       						<?php echo _ACTION ?>:
+       						<select name="srchAction">
+       							<option value="">-- <?php echo _ALL ?> --</option>
+								<?php
+							        $selected = "";
+							        if(is_array($cfg["constants"])) {
+							            foreach ($cfg["constants"] as $action)
+							            {
+							                $selected = "";
+							                if($action != $cfg["constants"]["hit"])
+							                {
+							                    if($srchAction == $action)
+							                    {
+							                        $selected = "selected";
+							                    }
+							                    echo "<option value=\"".htmlentities($action, ENT_QUOTES)."\" ".$selected.">".htmlentities($action, ENT_QUOTES)."</option>";
+							                }
+							            }
+							        }
+								?>
 								</select>&nbsp;&nbsp;
 								
         						<?php echo _USER ?>:
         						<select name="user_id">
 							        <option value="">-- <?php echo _ALL ?> --</option>
-									<?php
-									        $users = GetUsers();
-									        $selected = "";
-									        for($inx = 0; $inx < sizeof($users); $inx++)
-									        {
-									            $selected = "";
-									            if($user == $users[$inx])
-									            {
-									                $selected = "selected";
-									            }
-									            echo "<option value=\"".htmlentities($users[$inx], ENT_QUOTES)."\" ".$selected.">".htmlentities($users[$inx], ENT_QUOTES)."</option>";
-									        }
-									?>
+								<?php
+								        $users = GetUsers();
+								        $selected = "";
+								        for($inx = 0; $inx < sizeof($users); $inx++)
+								        {
+								            $selected = "";
+								            if($user == $users[$inx])
+								            {
+								                $selected = "selected";
+								            }
+								            echo "<option value=\"".htmlentities($users[$inx], ENT_QUOTES)."\" ".$selected.">".htmlentities($users[$inx], ENT_QUOTES)."</option>";
+								        }
+								?>
 							  	</select>
         						<input type="Submit" value="<?php echo _SEARCH ?>">
 
@@ -406,23 +405,21 @@ function displayActivity($min=0, $user="", $srchFile="", $srchAction="")
     					</tr>
     				</table>
      			</form>
-			</fieldset>
 		</div>
 	</div>
 </div>
 
 <div class="container">
 	<div class="row">
-		<div class="col-sm-12">
-			<fieldset class="form-group bd-example">
-    			<table class="table table-striped">
-    				<tr>
-    					<th colspan="4">
-							<img src="images/properties.png" width=18 height=13 border=0>&nbsp;&nbsp;
-    						<?php echo _ACTIVITYLOG . " " . $cfg["days_to_keep"] . " " . _DAYS . " (" . $userdisplay . ")" ?>
-    					</th>
-    					<th align="right">
-						    <?php  
+		<div class="col-sm-12 bd-example">
+   			<table class="table table-striped">
+   				<tr>
+   					<th colspan="4">
+						<img src="images/properties.png" alt="" />&nbsp;&nbsp;
+   						<?php echo _ACTIVITYLOG . " " . $cfg["days_to_keep"] . " " . _DAYS . " (" . $userdisplay . ")" ?>
+   					</th>
+   					<th style="text-align:right">
+					    <?php  
 						    if (!empty($prevlink) && !empty($morelink)) {
 						        echo $prevlink . $morelink;
 						    } else if (!empty($prevlink)) {
@@ -432,37 +429,36 @@ function displayActivity($min=0, $user="", $srchFile="", $srchAction="")
 						    } else {
 
 						    } 
-						    ?>
-    					</th>
-    				</tr>
-    				<tr>
-    					<th><?php echo _USER ?></th>
-    					<th><?php echo _ACTION ?></th>
-    					<th><?php echo _FILE ?></th>
-    					<th width="13%"><?php echo _IP ?></th>
-    					<th width="15%"><?php echo _TIMESTAMP ?></th>
-    				</tr>
-					<?php
-					    echo $output;
+					    ?>
+   					</th>
+   				</tr>
+   				<tr>
+   					<th><?php echo _USER ?></th>
+   					<th><?php echo _ACTION ?></th>
+   					<th><?php echo _FILE ?></th>
+   					<th style="width:13%"><?php echo _IP ?></th>
+   					<th style="width:15%"><?php echo _TIMESTAMP ?></th>
+   				</tr>
+				<?php
+				    echo $output;
 					
-					    if(!empty($prevlink) || !empty($morelink))
-					    {
-					        echo "<tr><td colspan=6 bgcolor=\"".$cfg["table_header_bg"]."\">";
-					        echo "<table width=\"100%\" cellpadding=0 cellspacing=0 border=0><tr><td align=\"left\">";
-					        if(!empty($prevlink)) echo $prevlink;
-					        echo "</td><td align=\"right\">";
-					        if(!empty($morelink)) echo $morelink;
-					        echo "</td></tr></table>";
-					        echo "</td></tr>";
-					    } 
-					  ?>
-			    </table>		
-			</fieldset>
+				    if(!empty($prevlink) || !empty($morelink))
+				    {
+				        echo "<tr><td colspan=6 bgcolor=\"".$cfg["table_header_bg"]."\">";
+				        echo "<table style=\"width:100%\" cellpadding=0 cellspacing=0 border=0><tr><td style=\"text-align:left\">";
+				        if(!empty($prevlink)) echo $prevlink;
+				        echo "</td><td style=\"text-align:right\">";
+				        if(!empty($morelink)) echo $morelink;
+				        echo "</td></tr></table>";
+				        echo "</td></tr>";
+				    } 
+				  ?>
+		    </table>		
 		</div>
 	</div>
 </div>
     <div id="overDiv" style="position:absolute;visibility:hidden;z-index:1000;"></div>
-    <script language="JavaScript">
+    <script>
         var ol_closeclick = "1";
         var ol_close = "<font color=#ffffff><b>X</b></font>";
         var ol_fgclass = "fg";
@@ -472,7 +468,7 @@ function displayActivity($min=0, $user="", $srchFile="", $srchAction="")
         var ol_textfontclass = "overBody";
         var ol_cap = "&nbsp;IP Info";
     </script>
-    <script src="overlib.js" type="text/javascript"></script>
+    <script src="overlib.js"></script>
 
 
 <?php
@@ -491,103 +487,101 @@ function displayUserSection()
 ?>
 <div class="container">
 	<div class="row">
-		<div class="col-sm-12">
-			<fieldset class="form-group bd-example">
-			    <table class="table table-striped">
-    				<tr>
-    					<th colspan="6">
-    						<img src="images/user_group.gif" width=17 height=14 border=0>&nbsp;&nbsp;
-    						<?php echo _USERDETAILS ?>
-    					</th>
-    				</tr>
-    				<tr>
-    					<th width="15%"><?php echo _USER ?></th>
-					    <th width="6%"><?php echo _HITS ?></th>
-					    <th><?php echo _UPLOADACTIVITY . ' (' . $cfg['days_to_keep'] . ' ' . _DAYS . ')' ?></th>
-					    <th width="6%"><?php echo _JOINED ?></th>
-					    <th width="15%"><?php echo _LASTVISIT ?></th>
-					    <th width="8%"><?php echo _ADMIN ?></th>
-					</tr>
-					<?php 
-					    $total_activity = GetActivityCount();
+		<div class="col-sm-12 bd-example">
+			<table class="table table-striped">
+    			<tr>
+    				<th colspan="6">
+    					<img src="images/user_group.gif" alt="" />&nbsp;&nbsp;
+    					<?php echo _USERDETAILS ?>
+    				</th>
+    			</tr>
+    			<tr>
+    				<th style="width:15%"><?php echo _USER ?></th>
+				    <th style="width:6%"><?php echo _HITS ?></th>
+				    <th><?php echo _UPLOADACTIVITY . ' (' . $cfg['days_to_keep'] . ' ' . _DAYS . ')' ?></th>
+				    <th style="width:6%"><?php echo _JOINED ?></th>
+				    <th style="width:15%"><?php echo _LASTVISIT ?></th>
+				    <th style="width:8%"><?php echo _ADMIN ?></th>
+				</tr>
+				<?php 
+				    $total_activity = GetActivityCount();
 
-					    $sql= "SELECT user_id, hits, last_visit, time_created, user_level FROM tf_users ORDER BY user_id";
-					    $result = $db->Execute($sql);
-					    while(list($user_id, $hits, $last_visit, $time_created, $user_level) = $result->FetchRow())
-					    {
-					        $user_activity = GetActivityCount($user_id);
-					
-					        if ($user_activity == 0) {
-					            $user_percent = 0;
-					        } else {
-					            $user_percent = number_format(($user_activity/$total_activity)*100);
-					        }
-					        
-					        $user_icon = "images/user_offline.gif";
-					        if (IsOnline($user_id)) {
-					            $user_icon = "images/user.gif";
-					        }
-					
-					        echo "<tr>";
-					        if (IsUser($user_id)) {
-					            echo "<td><a href=\"message.php?to_user=".$user_id."\"><img src=\"".$user_icon."\" width=17 height=14 title=\""._SENDMESSAGETO." ".$user_id."\" border=0 align=\"bottom\">".$user_id."</a></td>";
-					        } else {
-					            echo "<td><img src=\"".$user_icon."\" width=17 height=14 title=\"n/a\" border=0 align=\"bottom\">".$user_id."</td>";
-					        }
-					        
-					        echo "<td><div class=\"tiny\" align=\"right\">".$hits."</div></td>";
-					        echo "<td>";
-					       ?>
-						        <table class="table table-striped">
-							        <tr>
-								        <td width="200">
-								        	<progress class="progress progress-success" value="<?php echo $user_percent ?>" max="100" style="margin-bottom:0px"><?php echo $user_percent ?>%</progress>
-								        </td>
-								        <td align="right" width="40"><div class="tiny" align="right"><?php echo $user_activity ?></div></td>
-								        <td align="right" width="40"><div class="tiny" align="right"><?php echo $user_percent ?>%</div></td>
-								        <td align="right"><a href="admin.php?op=showUserActivity&user_id=<?php echo $user_id ?>"><img src="images/properties.png" width="18" height="13" title="<?php echo $user_id."'s "._USERSACTIVITY ?>" border="0"></a></td>
+				    $sql= "SELECT user_id, hits, last_visit, time_created, user_level FROM tf_users ORDER BY user_id";
+				    $result = $db->Execute($sql);
+				    while(list($user_id, $hits, $last_visit, $time_created, $user_level) = $result->FetchRow())
+				    {
+				        $user_activity = GetActivityCount($user_id);
+				
+				        if ($user_activity == 0) {
+				            $user_percent = 0;
+				        } else {
+				            $user_percent = number_format(($user_activity/$total_activity)*100);
+				        }
+				        
+				        $user_icon = "images/user_offline.gif";
+				        if (IsOnline($user_id)) {
+				            $user_icon = "images/user.gif";
+				        }
+				
+				        echo "<tr>";
+				        if (IsUser($user_id)) {
+				            echo "<td><a href=\"message.php?to_user=".$user_id."\"><img src=\"".$user_icon."\" alt=\"\" title=\""._SENDMESSAGETO." ".$user_id."\" />".$user_id."</a></td>";
+				        } else {
+				            echo "<td><img src=\"".$user_icon."\" alt=\"\" title=\"n/a\" />".$user_id."</td>";
+				        }
+				        
+				        echo "<td><div class=\"tiny\" style=\"text-align:right\">".$hits."</div></td>";
+				        echo "<td>";
+				       ?>
+					        <table class="table table-striped">
+						        <tr>
+							        <td style="width:200">
+							        	<progress class="progress progress-success" value="<?php echo $user_percent ?>" max="100" style="margin-bottom:0px"><?php echo $user_percent ?>%</progress>
+							        </td>
+							        <td style="text-align:right;width:40"><div class="tiny" style="text-align:right"><?php echo $user_activity ?></div></td>
+							        <td style="text-align:right;width:40"><div class="tiny" style="text-align:right"><?php echo $user_percent ?>%</div></td>
+							        <td style="text-align:right"><a href="admin.php?op=showUserActivity&user_id=<?php echo $user_id ?>"><img src="images/properties.png" alt="" title="<?php echo $user_id."'s "._USERSACTIVITY ?>" /></a></td>
 							        </tr>
 						        </table>
 					        
 					        
 					        </td>
-        					<td class="tiny" align="center"><?php echo date(_DATEFORMAT, $time_created) ?></td>
-        					<td  class="tiny" align="center"><?php echo date(_DATETIMEFORMAT, $last_visit) ?></td>
-        					<td><div align="right" class="tiny">
+        					<td class="tiny" style="text-align:center"><?php echo date(_DATEFORMAT, $time_created) ?></td>
+        					<td class="tiny" style="text-align:center"><?php echo date(_DATETIMEFORMAT, $last_visit) ?></td>
+        					<td><div style="text-align:right" class="tiny">
 							<?php
-						        $user_image = "images/user.gif";
-						        $type_user = _NORMALUSER;
-						        if ($user_level == 1) {
-						            $user_image = "images/admin_user.gif";
-						            $type_user = _ADMINISTRATOR;
-						        }
-						        
-						        if ($user_level == 2) {
-						            $user_image = "images/superadmin.gif";
-						            $type_user = _SUPERADMIN;
-						        }
-						        
-						        if ($user_level <= 1 || IsSuperAdmin()) {
-						            echo "<a href=\"admin.php?op=editUser&user_id=".$user_id."\"><img src=\"images/edit.png\" width=12 height=13 title=\""._EDIT." ".$user_id."\" border=0></a>";
-						        }
-						        
-						        echo "<img src=\"".$user_image."\" title=\"".$user_id." - ".$type_user."\">";
-						        if ($user_level <= 1) {
-						            echo "<a href=\"admin.php?op=deleteUser&user_id=".$user_id."\"><img src=\"images/delete_on.gif\" border=0 width=16 height=16 title=\""._DELETE." ".$user_id."\" onclick=\"return ConfirmDeleteUser('".$user_id."')\"></a>";
-						        } else {
-						            echo "<img src=\"images/delete_off.gif\" width=16 height=16 title=\"n/a\">";
-						        }
-							?>
-        					</div></td>
-        				</tr>
-        			<?php } ?>
-				</table>
-			</fieldset>
+					        $user_image = "images/user.gif";
+					        $type_user = _NORMALUSER;
+					        if ($user_level == 1) {
+					            $user_image = "images/admin_user.gif";
+					            $type_user = _ADMINISTRATOR;
+					        }
+					        
+					        if ($user_level == 2) {
+					            $user_image = "images/superadmin.gif";
+					            $type_user = _SUPERADMIN;
+					        }
+					        
+					        if ($user_level <= 1 || IsSuperAdmin()) {
+					            echo "<a href=\"admin.php?op=editUser&user_id=".$user_id."\"><img src=\"images/edit.png\" alt=\"\" title=\""._EDIT." ".$user_id."\" /></a>";
+					        }
+					        
+					        echo "<img src=\"".$user_image."\" title=\"".$user_id." - ".$type_user."\" alt=\"\" />";
+					        if ($user_level <= 1) {
+					            echo "<a href=\"admin.php?op=deleteUser&user_id=".$user_id."\"><img src=\"images/delete_on.gif\" alt=\"\" title=\""._DELETE." ".$user_id."\" onclick=\"return ConfirmDeleteUser('".$user_id."')\" /></a>";
+					        } else {
+					            echo "<img src=\"images/delete_off.gif\" alt=\"\" title=\"n/a\" />";
+					        }
+						?>
+       					</div></td>
+       				</tr>
+       			<?php } ?>
+			</table>
 		</div>
 	</div>
 </div>
 
-    <script language="JavaScript">
+    <script>
     function ConfirmDeleteUser(user)
     {
         return confirm("<?php echo _WARNING.": "._ABOUTTODELETE ?>: " + user)
@@ -647,100 +641,107 @@ function editUser($user_id)
         $user_percent = number_format(($user_activity/$total_activity)*100);
     }
 
-    echo "<div align=\"center\">";
-    echo "<table width=\"100%\" border=1 bordercolor=\"".$cfg["table_admin_border"]."\" cellpadding=\"2\" cellspacing=\"0\" bgcolor=\"".$cfg["table_data_bg"]."\">";
-    echo "<tr><td colspan=6 bgcolor=\"".$cfg["table_header_bg"]."\" background=\"themes/".$cfg["theme"]."/images/bar.gif\">";
-    echo "<img src=\"".$editUserImage."\" width=17 height=14 border=0>&nbsp;&nbsp;&nbsp;<font class=\"title\">"._EDITUSER.": ".$user_id."</font>";
-    echo "</td></tr><tr><td align=\"center\">";
 ?>
-
-    <table width="100%" border="0" cellpadding="3" cellspacing="0">
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12 bd-example">
+		    <table class="table table-striped">
+    			<tr>
+    				<thd colspan=6>
+    					<img src="<?php echo $editUserImage ?>" alt="" />&nbsp;&nbsp;&nbsp;
+    					<?php echo _EDITUSER . ": " . $user_id ?>
+    				</th>
+    			</tr>
+    			<tr>
+    				<td style="text-align:center">
+    
+    <table style="width:100%" border="0" cellpadding="3" cellspacing="0">
     <tr>
-        <td width="50%" bgcolor="<?php echo $cfg["table_data_bg"]?>" valign="top">
+        <td style="width:50%" bgcolor="<?php echo $cfg["table_data_bg"]?>">
 
-        <div align="center">
+        <div style="text-align:center">
         <table border="0" cellpadding="0" cellspacing="0">
         <tr>
-            <td align="right"><?php echo $user_id." "._JOINED ?>:&nbsp;</td>
+            <td style="text-align:right"><?php echo $user_id." "._JOINED ?>:&nbsp;</td>
             <td><strong><?php echo date(_DATETIMEFORMAT, $time_created) ?></strong></td>
         </tr>
         <tr>
-            <td align="right"><?php echo _LASTVISIT ?>:&nbsp;</td>
+            <td style="text-align:right"><?php echo _LASTVISIT ?>:&nbsp;</td>
             <td><strong><?php echo date(_DATETIMEFORMAT, $last_visit) ?></strong></td>
         </tr>
         <tr>
-            <td colspan="2" align="center">&nbsp;</td>
+            <td colspan="2" style="text-align:center">&nbsp;</td>
         </tr>
         <tr>
-            <td align="right"><?php echo _UPLOADPARTICIPATION ?>:&nbsp;</td>
+            <td style="text-align:right"><?php echo _UPLOADPARTICIPATION ?>:&nbsp;</td>
             <td>
-                <table width="200" border="0" cellpadding="0" cellspacing="0">
+                <table style="width:200" border="0" cellpadding="0" cellspacing="0">
                 <tr>
-                    <td background="themes/<?php echo $cfg["theme"] ?>/images/proglass.gif" width="<?php echo $user_percent*2 ?>"><img src="images/blank.gif" width="1" height="12" border="0"></td>
-                    <td background="themes/<?php echo $cfg["theme"] ?>/images/noglass.gif" width="<?php echo (200 - ($user_percent*2)) ?>"><img src="images/blank.gif" width="1" height="12" border="0"></td>
+                    <td background="themes/<?php echo $cfg["theme"] ?>/images/proglass.gif" style="width:"<?php echo $user_percent*2 ?>"><img src="images/blank.gif" alt=""></td>
+                    <td background="themes/<?php echo $cfg["theme"] ?>/images/noglass.gif" style="width:"<?php echo (200 - ($user_percent*2)) ?>"><img src="images/blank.gif" alt=""></td>
                 </tr>
                 </table>
             </td>
         </tr>
         <tr>
-            <td align="right"><?php echo _UPLOADS ?>:&nbsp;</td>
+            <td style="text-align:right"><?php echo _UPLOADS ?>:&nbsp;</td>
             <td><strong><?php echo $user_activity ?></strong></td>
         </tr>
         <tr>
-            <td align="right"><?php echo _PERCENTPARTICIPATION ?>:&nbsp;</td>
+            <td style="text-align:right"><?php echo _PERCENTPARTICIPATION ?>:&nbsp;</td>
             <td><strong><?php echo $user_percent ?>%</strong></td>
         </tr>
         <tr>
-            <td colspan="2" align="center"><div align="center" class="tiny">(<?php echo _PARTICIPATIONSTATEMENT. " ".$cfg['days_to_keep']." "._DAYS ?>)</div><br></td>
+            <td colspan="2" style="text-align:center"><div style="text-align:center" class="tiny">(<?php echo _PARTICIPATIONSTATEMENT. " ".$cfg['days_to_keep']." "._DAYS ?>)</div><br></td>
         </tr>
         <tr>
-            <td align="right"><?php echo _TOTALPAGEVIEWS ?>:&nbsp;</td>
+            <td style="text-align:right"><?php echo _TOTALPAGEVIEWS ?>:&nbsp;</td>
             <td><strong><?php echo $hits ?></strong></td>
         </tr>
         <tr>
-            <td align="right" valign="top"><?php echo _THEME ?>:&nbsp;</td>
-            <td valign="top"><strong><?php echo $theme ?></strong><br></td>
+            <td style="text-align:right"><?php echo _THEME ?>:&nbsp;</td>
+            <td><strong><?php echo $theme ?></strong><br></td>
         </tr>
         <tr>
-            <td align="right" valign="top"><?php echo _LANGUAGE ?>:&nbsp;</td>
-            <td valign="top"><strong><?php echo GetLanguageFromFile($language_file) ?></strong><br><br></td>
+            <td style="text-align:right"><?php echo _LANGUAGE ?>:&nbsp;</td>
+            <td><strong><?php echo GetLanguageFromFile($language_file) ?></strong><br><br></td>
         </tr>
         <tr>
-            <td align="right" valign="top"><?php echo _USERTYPE ?>:&nbsp;</td>
-            <td valign="top"><strong><?php echo $user_type ?></strong><br></td>
+            <td style="text-align:right"><?php echo _USERTYPE ?>:&nbsp;</td>
+            <td><strong><?php echo $user_type ?></strong><br></td>
         </tr>
         <tr>
-            <td colspan="2" align="center"><div align="center">[<a href="admin.php?op=showUserActivity&user_id=<?php echo $user_id ?>"><?php echo _USERSACTIVITY ?></a>]</div></td>
+            <td colspan="2" style="text-align:center"><div style="text-align:center">[<a href="admin.php?op=showUserActivity&user_id=<?php echo $user_id ?>"><?php echo _USERSACTIVITY ?></a>]</div></td>
         </tr>
         </table>
         </div>
 
         </td>
-        <td valign="top" bgcolor="<?php echo $cfg["body_data_bg"] ?>">
-        <div align="center">
+        <td bgcolor="<?php echo $cfg["body_data_bg"] ?>">
+        <div style="text-align:center">
         <table cellpadding="5" cellspacing="0" border="0">
         <form name="theForm" action="admin.php?op=updateUser" method="post" onsubmit="return validateUser()">
         <tr>
-            <td align="right"><?php echo _USER ?>:</td>
+            <td style="text-align:right"><?php echo _USER ?>:</td>
             <td>
             <input name="user_id" type="Text" value="<?php echo $user_id ?>" size="15">
             <input name="org_user_id" type="Hidden" value="<?php echo $user_id ?>">
             </td>
         </tr>
         <tr>
-            <td align="right"><?php echo _NEWPASSWORD ?>:</td>
+            <td style="text-align:right"><?php echo _NEWPASSWORD ?>:</td>
             <td>
             <input name="pass1" type="Password" value="" size="15">
             </td>
         </tr>
         <tr>
-            <td align="right"><?php echo _CONFIRMPASSWORD ?>:</td>
+            <td style="text-align:right"><?php echo _CONFIRMPASSWORD ?>:</td>
             <td>
             <input name="pass2" type="Password" value="" size="15">
             </td>
         </tr>
         <tr>
-            <td align="right"><?php echo _USERTYPE ?>:</td>
+            <td style="text-align:right"><?php echo _USERTYPE ?>:</td>
             <td>
 <?php if ($user_level <= 1) { ?>
             <select name="userType">
@@ -759,7 +760,7 @@ function editUser($user_id)
             </td>
         </tr>
         <tr>
-            <td align="center" colspan="2">
+            <td style="text-align:center" colspan="2">
             <input type="Submit" value="<?php echo _UPDATE ?>">
             </td>
         </tr>
@@ -769,9 +770,14 @@ function editUser($user_id)
         </td>
     </tr>
     </table>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>
 
-
-    <script language="JavaScript">
+    <script>
     function validateUser()
     {
         var msg = ""
@@ -810,9 +816,6 @@ function editUser($user_id)
     </script>
 
 <?php
-    echo "</td></tr>";
-    echo "</table></div>";
-    echo "<br><br>";
 
     // Show User Section
     displayUserSection();
@@ -830,50 +833,48 @@ function CreateUser()
 ?>
 <div class="container">
 	<div class="row">
-		<div class="col-sm-12">
-			<fieldset class="form-group bd-example">
-				<form name="theForm" action="admin.php?op=addUser" method="post" onsubmit="return validateProfile()">
-					<table class="table table-striped">
-	    				<tr>
-	    					<th colspan="2">
-	    						<img src="images/user.gif" width=17 height=14 border=0>&nbsp;&nbsp;&nbsp;
-	    						<?php echo _NEWUSER ?>
-	    					</th>
-	    				</tr>
-	    				<tr>
-				            <td align="right"><?php echo _USER ?>:</td>
-				            <td><input name="newUser" type="Text" value="" size="15"></td>
-				        </tr>
-				        <tr>
-				            <td align="right"><?php echo _PASSWORD ?>:</td>
-				            <td><input name="pass1" type="Password" value="" size="15"></td>
-				        </tr>
-				        <tr>
-				            <td align="right"><?php echo _CONFIRMPASSWORD ?>:</td>
-				            <td><input name="pass2" type="Password" value="" size="15"></td>
-				        </tr>
-				        <tr>
-				            <td align="right"><?php echo _USERTYPE ?>:</td>
-				            <td>
-					            <select name="userType">
-					                <option value="0"><?php echo _NORMALUSER ?></option>
-					                <option value="1"><?php echo _ADMINISTRATOR ?></option>
-					            </select>
-				            </td>
-				        </tr>
-				        <tr>
-				            <td align="center" colspan="2">
-				            	<input type="Submit" value="<?php echo _CREATE ?>" class="btn btn-primary">
-				            </td>
-				        </tr>
-					</table>
-		        </form>
-			</fieldset>
+		<div class="col-sm-12 bd-example">
+			<form name="theForm" action="admin.php?op=addUser" method="post" onsubmit="return validateProfile()">
+				<table class="table table-striped">
+    				<tr>
+    					<th colspan="2">
+    						<img src="images/user.gif" alt="">&nbsp;&nbsp;&nbsp;
+    						<?php echo _NEWUSER ?>
+    					</th>
+    				</tr>
+    				<tr>
+			            <td style="text-align:right"><?php echo _USER ?>:</td>
+			            <td><input name="newUser" type="Text" value="" size="15"></td>
+			        </tr>
+			        <tr>
+			            <td style="text-align:right"><?php echo _PASSWORD ?>:</td>
+			            <td><input name="pass1" type="Password" value="" size="15"></td>
+			        </tr>
+			        <tr>
+			            <td style="text-align:right"><?php echo _CONFIRMPASSWORD ?>:</td>
+			            <td><input name="pass2" type="Password" value="" size="15"></td>
+			        </tr>
+			        <tr>
+			            <td style="text-align:right"><?php echo _USERTYPE ?>:</td>
+			            <td>
+				            <select name="userType">
+				                <option value="0"><?php echo _NORMALUSER ?></option>
+				                <option value="1"><?php echo _ADMINISTRATOR ?></option>
+				            </select>
+			            </td>
+			        </tr>
+			        <tr>
+			            <td style="text-align:center" colspan="2">
+			            	<input type="Submit" value="<?php echo _CREATE ?>" class="btn btn-primary">
+			            </td>
+			        </tr>
+				</table>
+	        </form>
 		</div>
 	</div>
 </div>
 
-    <script language="JavaScript">
+    <script>
     function validateProfile()
     {
         var msg = ""
@@ -932,22 +933,21 @@ function editLinks()
 ?>
 <div class="container">
 	<div class="row">
-		<div class="col-sm-12">
-			<fieldset class="form-group bd-example">
+		<div class="col-sm-12 bd-example">
 				<table class="table table-striped">
     				<tr>
     					<th colspan="2">
-    						<img src="images/properties.png" width=18 height=13 border=0>&nbsp;&nbsp;
+    						<img src="images/properties.png" alt="">&nbsp;&nbsp;
     						<?php echo _ADMINEDITLINKS ?>
     					</th>
     				</tr>
     				<tr>
-    					<td colspan=2 align="center">
+    					<td colspan=2 style="text-align:center">
     					    <form action="admin.php?op=addLink" method="post">
 							    <?php echo _FULLURLLINK ?>:
-							    <input type="Text" size="30" maxlength="255" name="newLink">
+							    <input type="text" size="30" maxlength="255" name="newLink">
 							    Site Name:
-							    <input type="Text" size="30" maxlength="255" name="newSite">
+							    <input type="text" size="30" maxlength="255" name="newSite">
 							    <input type="Submit" value="<?php echo _UPDATE ?>"><br>
 						    </form>
 						 </td>
@@ -981,24 +981,22 @@ function editLinks()
 								<?php } else { ?>
                 					<tr>
                 						<td>
-							                <a href="admin.php?op=deleteLink&lid=<?php echo $lid ?>"><img src="images/delete_on.gif" width=16 height=16 border=0 title="<?php echo _DELETE . " " . $lid ?>" align="absmiddle"></a>&nbsp;
-							                <a href="admin.php?op=editLinks&edit=<?php echo $lid ?>"><img src="images/properties.png" width=18 height=13 border=0 title="<?php echo _EDIT . " " . $lid ?>" align="absmiddle"></a>&nbsp;
+							                <a href="admin.php?op=deleteLink&lid=<?php echo $lid ?>"><img src="images/delete_on.gif" alt="" title="<?php echo _DELETE . " " . $lid ?>" ></a>&nbsp;
+							                <a href="admin.php?op=editLinks&edit=<?php echo $lid ?>"><img src="images/properties.png" alt="" title="<?php echo _EDIT . " " . $lid ?>" ></a>&nbsp;
 							                <a href="<?php echo $link['url'] ?>" target="_blank"><?php echo $link['sitename'] ?></a>
 							            </td>
-						                <td align=center width='36'>
+						                <td style="text-align:center;width:36">
 
 							                <?php if ($inx > 1 ){
 							                    // Only put an 'up' arrow if this isn't the first entry:
 							                    echo "<a href='admin.php?op=moveLink&amp;direction=up&amp;lid=".$lid."'>";
-							                    echo "<img src='images/uparrow.png' width='16' height='16' ";
-							                    echo "border='0' title='Move link up' align='absmiddle' alt='Up'></a>";
+							                    echo "<img src='images/uparrow.png' title='Move link up' alt='Up'></a>";
 							                }
 							
 							                if ($inx != count($arLinks)) {
 							                    // Only put a 'down' arrow if this isn't the last item:
 							                    echo "<a href='admin.php?op=moveLink&amp;direction=down&amp;lid=".$lid."'>";
-							                    echo "<img src='images/downarrow.png' width='16' height='16' ";
-							                    echo "border='0' title='Move link down' align='absmiddle' alt='Down'></a>";
+							                    echo "<img src='images/downarrow.png' title='Move link down' alt='Down'></a>";
 							                }
 							                ?>
                 						</td>
@@ -1009,7 +1007,6 @@ function editLinks()
 					    } 
 					    ?>
     			</table>
-			</fieldset>
 		</div>
 	</div>
 </div>
@@ -1028,38 +1025,36 @@ function editRSS()
 ?>
 <div class="container">
 	<div class="row">
-		<div class="col-sm-12">
-			<fieldset class="form-group bd-example">
-				<table class="table table-striped">
-    				<tr>
-    					<th>
-    						<img src="images/properties.png" width=18 height=13 border=0>&nbsp;&nbsp;
-    						RSS Feeds
-    					</th>
-    				</tr>
-    				<tr>
-    					<td align="center">
-    					    <form action="admin.php?op=addRSS" method="post">
-							    <?php echo _FULLURLLINK ?>:
-							    <input type="Text" size="50" maxlength="255" name="newRSS">
-							    <input type="Submit" value="<?php echo _UPDATE ?>">
-						    </form>
-						</td>
-					</tr>
-					<?php
-					    $arLinks = GetRSSLinks();
-					    $arRid = Array_Keys($arLinks);
-					    $inx = 0;
-					    if(is_array($arLinks)) {
-					        foreach($arLinks as $link) {
-					            $rid = $arRid[$inx++];
-					            echo "<tr><td><a href=\"admin.php?op=deleteRSS&rid=".$rid."\"><img src=\"images/delete_on.gif\" width=16 height=16 border=0 title=\""._DELETE." ".$rid."\" align=\"absmiddle\"></a>&nbsp;";
-					            echo "<a href=\"".$link."\" target=\"_blank\">".$link."</a></td></tr>";
-					        }
-					    } 
-					?>
+		<div class="col-sm-12 bd-example">
+			<table class="table table-striped">
+    			<tr>
+    				<th>
+    					<img src="images/properties.png" alt="">&nbsp;&nbsp;
+    					RSS Feeds
+    				</th>
+    			</tr>
+    			<tr>
+    				<td style="text-align:center">
+    				    <form action="admin.php?op=addRSS" method="post">
+						    <?php echo _FULLURLLINK ?>:
+						    <input type="Text" size="50" maxlength="255" name="newRSS">
+						    <input type="Submit" value="<?php echo _UPDATE ?>">
+					    </form>
+					</td>
+				</tr>
+				<?php
+				    $arLinks = GetRSSLinks();
+				    $arRid = Array_Keys($arLinks);
+				    $inx = 0;
+				    if(is_array($arLinks)) {
+				        foreach($arLinks as $link) {
+				            $rid = $arRid[$inx++];
+				            echo "<tr><td><a href=\"admin.php?op=deleteRSS&rid=".$rid."\"><img src=\"images/delete_on.gif\" alt=\"\" title=\""._DELETE." ".$rid."\" ></a>&nbsp;";
+				            echo "<a href=\"".$link."\" target=\"_blank\">".$link."</a></td></tr>";
+				        }
+				    } 
+				?>
     			</table>
-			</fieldset>
 		</div>
 	</div>
 </div>
@@ -1073,10 +1068,10 @@ function editRSS()
 //****************************************************************************
 function validateFile($the_file)
 {
-    $msg = "<img src=\"images/red.gif\" align=\"absmiddle\" title=\"Path is not Valid\"><br><font color=\"#ff0000\">Path is not Valid</font>";
+    $msg = "<img src=\"images/red.gif\" alt=\"\" title=\"Path is not Valid\"><br><font color=\"#ff0000\">Path is not Valid</font>";
     if (isFile($the_file))
     {
-        $msg = "<img src=\"images/green.gif\" align=\"absmiddle\" title=\"Valid\">";
+        $msg = "<img src=\"images/green.gif\" alt=\"\" title=\"Valid\">";
     }
     return $msg;
 }
@@ -1086,16 +1081,16 @@ function validateFile($the_file)
 //****************************************************************************
 function validatePath($path)
 {
-    $msg = "<img src=\"images/red.gif\" align=\"absmiddle\" title=\"Path is not Valid\"><br><font color=\"#ff0000\">Path is not Valid</font>";
+    $msg = "<img src=\"images/red.gif\" alt=\"\" title=\"Path is not Valid\"><br><font color=\"#ff0000\">Path is not Valid</font>";
     if (is_dir($path))
     {
         if (is_writable($path))
         {
-            $msg = "<img src=\"images/green.gif\" align=\"absmiddle\" title=\"Valid\">";
+            $msg = "<img src=\"images/green.gif\" alt=\"\" title=\"Valid\">";
         }
         else
         {
-            $msg = "<img src=\"images/red.gif\" align=\"absmiddle\" title=\"Path is not Writable\"><br><font color=\"#ff0000\">Path is not Writable -- make sure you chmod +w this path</font>";
+            $msg = "<img src=\"images/red.gif\" alt=\"\" title=\"Path is not Writable\"><br><font color=\"#ff0000\">Path is not Writable -- make sure you chmod +w this path</font>";
         }
     }
     return $msg;
@@ -1111,7 +1106,7 @@ function configSettings()
     include_once("RunningTorrent.php");
 ?>
 
-    <script language="JavaScript">
+    <script>
     function validateSettings()
     {
         var rtnValue = true;
@@ -1218,20 +1213,19 @@ function configSettings()
 
 <div class="container">
 	<div class="row">
-		<div class="col-sm-12">
-			<fieldset class="form-group bd-example">
+		<div class="col-sm-12 bd-example">
 				<form name="theForm" action="admin.php?op=updateConfigSettings" method="post" onsubmit="return validateSettings()">
 					<input type="Hidden" name="continue" value="configSettings">
 			
 		    			<table class="table table-striped">
 		    				<tr>
 		    					<th colspan="2">
-		    						<img src="images/properties.png" width=18 height=13 border=0>&nbsp;&nbsp;
+		    						<img src="images/properties.png" alt="">&nbsp;&nbsp;
 		    						TorrentFlux Settings
 		    					</th>
 		    				</tr>
 					        <tr>
-					            <td width="350"><strong>Path</strong><br>
+					            <td style="width:350"><strong>Path</strong><br>
 					            Define the PATH where the downloads will go <br>(make sure it ends with a / [slash]).
 					            It must be chmod'd to 777:
 					            </td>
@@ -1494,19 +1488,14 @@ function configSettings()
 					            </td>
 					            <td>
 					                <select name="package_type">
-					                        <option value="tar" selected>tar</option>
-					                        <option value="zip" <?php
-					                        if ($cfg["package_type"] == "zip")
-					                        {
-					                            echo "selected";
-					                        }
-					                        ?>>zip</option>
+					                    <option value="tar" <?php echo ($cfg["package_type"] == "tar") ? 'selected' : '' ?>>tar</option>
+					                    <option value="zip" <?php echo ($cfg["package_type"] == "zip") ? 'selected' : '' ?>>zip</option>
 					                </select>
 					            </td>
 					        </tr>
 					        <tr>
 					            <td><strong>Show Server Load</strong><br>
-					            Enable showing the average server load over the last 15 minutes from <? echo $cfg["loadavg_path"] ?> file:
+					            Enable showing the average server load over the last 15 minutes from <?php echo $cfg["loadavg_path"] ?> file:
 					            </td>
 					            <td>
 					                <select name="show_server_load">
@@ -1675,7 +1664,6 @@ function configSettings()
 	        			<input type="Submit" value="Update Settings" class="btn btn-primary">
 	        		</div>
 	        	</form>
-			</fieldset>
 		</div>
 	</div>
 </div>    
@@ -1750,23 +1738,23 @@ function queueSettings()
     include_once("RunningTorrent.php");
 
     // Queue Manager Section
-    echo "<div align=\"center\">";
+    echo "<div style=\"text-align:center\">";
     echo "<a name=\"QManager\" id=\"QManager\"></a>";
-    echo "<table width=\"100%\" border=1 bordercolor=\"".$cfg["table_admin_border"]."\" cellpadding=\"2\" cellspacing=\"0\" bgcolor=\"".$cfg["table_data_bg"]."\">";
+    echo "<table style=\"width:100%\" border=1 bordercolor=\"".$cfg["table_admin_border"]."\" cellpadding=\"2\" cellspacing=\"0\" bgcolor=\"".$cfg["table_data_bg"]."\">";
     echo "<tr><td bgcolor=\"".$cfg["table_header_bg"]."\" background=\"themes/".$cfg["theme"]."/images/bar.gif\">";
     echo "<font class=\"title\">";
     if(checkQManager() > 0)
     {
-         echo "&nbsp;&nbsp;<img src=\"images/green.gif\" align=\"absmiddle\" align=\"absmiddle\"> Queue Manager Running [PID=".getQManagerPID()." with ".strval(getRunningTorrentCount())." torrent(s)]";
+         echo "&nbsp;&nbsp;<img src=\"images/green.gif\" alt=\"\"> Queue Manager Running [PID=".getQManagerPID()." with ".strval(getRunningTorrentCount())." torrent(s)]";
     }
     else
     {
-        echo "&nbsp;&nbsp;<img src=\"images/black.gif\" align=\"absmiddle\"> Queue Manager Off";
+        echo "&nbsp;&nbsp;<img src=\"images/black.gif\" alt=\"\"> Queue Manager Off";
     }
     echo "</font>";
-    echo "</td></tr><tr><td align=\"center\">";
+    echo "</td></tr><tr><td style=\"text-align:center\">";
 ?>
-    <script language="JavaScript">
+    <script>
     function validateSettings()
     {
         var rtnValue = true;
@@ -1815,13 +1803,13 @@ function queueSettings()
     }
     </script>
 
-    <div align="center">
+    <div style="text-align:center">
 
-         <table cellpadding="5" cellspacing="0" border="0" width="100%">
+         <table cellpadding="5" cellspacing="0" border="0" style="width:100%">
             <form name="theForm" action="admin.php?op=updateConfigSettings" method="post" onsubmit="return validateSettings()">
             <input type="Hidden" name="continue" value="queueSettings">
             <tr>
-                <td align="left" width="350" valign="top"><strong>Enable Queue Manager</strong><br>
+                <td style="text-align:left;width:350"><strong>Enable Queue Manager</strong><br>
                 Enable the Queue Manager to allow users to queue torrents:
                 </td>
                 <td>
@@ -1837,16 +1825,16 @@ function queueSettings()
                 </td>
             </tr>
             <tr>
-                <td align="left" width="350" valign="top"><strong>tfQManager Path</strong><br>
+                <td style="text-align:left;width:350"><strong>tfQManager Path</strong><br>
                 Specify the path to the tfQManager python script:
                 </td>
-                <td valign="top">
+                <td>
                     <input name="tfQManager" type="Text" maxlength="254" value="<?php    echo($cfg["tfQManager"]); ?>" size="55"><?php echo validateFile($cfg["tfQManager"]) ?>
                 </td>
             </tr>
 <!-- Only used for develpment or if you really really know what you are doing
             <tr>
-                <td align="left" width="350" valign="top"><strong>Enable Queue Manager Debugging</strong><br>
+                <td style="text-align:left;width:350"><strong>Enable Queue Manager Debugging</strong><br>
                 Creates huge log files only for debugging.  DO NOT KEEP THIS MODE ON:
                 </td>
                 <td>
@@ -1871,34 +1859,33 @@ function queueSettings()
             </tr>
 -->
             <tr>
-                <td align="left" width="350" valign="top"><strong>Max Server Threads</strong><br>
+                <td style="text-align:left;width:350"><strong>Max Server Threads</strong><br>
                 Specify the maximum number of torrents the server will allow to run at
                 one time (admins may override this):
                 </td>
-                <td valign="top">
-                    <input name="maxServerThreads" type="Text" maxlength="3" value="<?php    echo($cfg["maxServerThreads"]); ?>" size="3">
+                <td>
+                    <input name="maxServerThreads" type="Text" maxlength="3" value="<?php echo($cfg["maxServerThreads"]); ?>" size="3">
                 </td>
             </tr>
             <tr>
-                <td align="left" width="350" valign="top"><strong>Max User Threads</strong><br>
+                <td style="text-align:left;width:350"><strong>Max User Threads</strong><br>
                 Specify the maximum number of torrents a single user may run at
                 one time:
                 </td>
-                <td valign="top">
-                    <input name="maxUserThreads" type="Text" maxlength="3" value="<?php    echo($cfg["maxUserThreads"]); ?>" size="3">
+                <td>
+                    <input name="maxUserThreads" type="Text" maxlength="3" value="<?php echo($cfg["maxUserThreads"]); ?>" size="3">
                 </td>
             </tr>
             <tr>
-                <td align="left" width="350" valign="top"><strong>Polling Interval</strong><br>
+                <td style="text-align:left;width:350"><strong>Polling Interval</strong><br>
                 Number of seconds the Queue Manager will sleep before checking for new torrents to run:
                 </td>
-                <td valign="top">
-                    <input name="sleepInterval" type="Text" maxlength="3" value="<?php    echo($cfg["sleepInterval"]); ?>" size="3">
+                <td>
+                    <input name="sleepInterval" type="Text" maxlength="3" value="<?php echo($cfg["sleepInterval"]); ?>" size="3">
                 </td>
             </tr>
             <tr>
-                <td align="center" colspan="2">
-                <br><br>
+                <td style="text-align:center" colspan="2">
                 <input type="Submit" value="Update Settings">
                 </td>
             </tr>
@@ -1927,16 +1914,16 @@ function queueSettings()
         $output = "";
 
         echo "\n";
-        echo "<table width=\"760\" border=1 bordercolor=\"".$cfg["table_admin_border"]."\" cellpadding=\"2\" cellspacing=\"0\" bgcolor=\"".$cfg["table_data_bg"]."\">";
+        echo "<table style=\"width:760\" border=1 bordercolor=\"".$cfg["table_admin_border"]."\" cellpadding=\"2\" cellspacing=\"0\" bgcolor=\"".$cfg["table_data_bg"]."\">";
         echo "<tr><td colspan=6 bgcolor=\"".$cfg["table_header_bg"]."\" background=\"themes/".$cfg["theme"]."/images/bar.gif\">";
-        echo "<table width=\"100%\" cellpadding=0 cellspacing=0 border=0><tr>";
-        echo "<td><img src=\"images/properties.png\" width=18 height=13 border=0>&nbsp;&nbsp;<font class=\"title\"> Queued Items </font></td>";
+        echo "<table style=\"width:100%\" cellpadding=0 cellspacing=0 border=0><tr>";
+        echo "<td><img src=\"images/properties.png\" alt=\"\">&nbsp;&nbsp;<font class=\"title\"> Queued Items </font></td>";
         echo "</tr></table>";
         echo "</td></tr>";
         echo "<tr>";
-        echo "<td bgcolor=\"".$cfg["table_header_bg"]."\" width=\"15%\"><div align=center class=\"title\">"._USER."</div></td>";
-        echo "<td bgcolor=\"".$cfg["table_header_bg"]."\"><div align=center class=\"title\">"._FILE."</div></td>";
-        echo "<td bgcolor=\"".$cfg["table_header_bg"]."\" width=\"15%\"><div align=center class=\"title\">"._TIMESTAMP."</div></td>";
+        echo "<td bgcolor=\"".$cfg["table_header_bg"]."\" style=\"width:15%\"><div style=\"text-align:center\" class=\"title\">"._USER."</div></td>";
+        echo "<td bgcolor=\"".$cfg["table_header_bg"]."\"><div style=\"text-align:center\" class=\"title\">"._FILE."</div></td>";
+        echo "<td bgcolor=\"".$cfg["table_header_bg"]."\" style=\"width:15%\"><div style=\"text-align:center\" class=\"title\">"._TIMESTAMP."</div></td>";
         echo "</tr>";
         echo "\n";
 
@@ -1962,8 +1949,8 @@ function queueSettings()
                     $af = new AliasFile(str_replace("queue/","",$qDir).str_replace(".Qinfo","",$filename), "");
                     $output .= $af->torrentowner;
                     $output .= "</div></td>";
-                    $output .= "<td><div align=center><div class=\"tiny\" align=\"left\">".str_replace(array(".Qinfo",".stat"),"",$filename)."</div></td>";
-                    $output .= "<td><div class=\"tiny\" align=\"center\">".date(_DATETIMEFORMAT, strval(filectime($qDir.$filename)))."</div></td>";
+                    $output .= "<td><div style=\"text-align:center\"><div class=\"tiny\" style=\"text-align:left\">".str_replace(array(".Qinfo",".stat"),"",$filename)."</div></td>";
+                    $output .= "<td><div class=\"tiny\" style=\"text-align:center\">".date(_DATETIMEFORMAT, strval(filectime($qDir.$filename)))."</div></td>";
                     $output .= "</tr>";
                     $output .= "\n";
                     }
@@ -1974,7 +1961,7 @@ function queueSettings()
 
         if( strlen($output) == 0 )
         {
-            $output = "<tr><td colspan=3><div class=\"tiny\" align=center>Queue is Empty</div></td></tr>";
+            $output = "<tr><td colspan=3><div class=\"tiny\" style=\"text-align:center\">Queue is Empty</div></td></tr>";
         }
         echo $output;
 
@@ -1986,16 +1973,16 @@ function queueSettings()
         $output = "";
 
         echo "\n";
-        echo "<table width=\"760\" border=1 bordercolor=\"".$cfg["table_admin_border"]."\" cellpadding=\"2\" cellspacing=\"0\" bgcolor=\"".$cfg["table_data_bg"]."\">";
+        echo "<table style=\"width:760\" border=1 bordercolor=\"".$cfg["table_admin_border"]."\" cellpadding=\"2\" cellspacing=\"0\" bgcolor=\"".$cfg["table_data_bg"]."\">";
         echo "<tr><td colspan=6 bgcolor=\"".$cfg["table_header_bg"]."\" background=\"themes/".$cfg["theme"]."/images/bar.gif\">";
-        echo "<table width=\"100%\" cellpadding=0 cellspacing=0 border=0><tr>";
-        echo "<td><img src=\"images/properties.png\" width=18 height=13 border=0>&nbsp;&nbsp;<font class=\"title\"> Running Items </font></td>";
+        echo "<table style=\"width:100%\" cellpadding=0 cellspacing=0 border=0><tr>";
+        echo "<td><img src=\"images/properties.png\" alt=\"\">&nbsp;&nbsp;<font class=\"title\"> Running Items </font></td>";
         echo "</tr></table>";
         echo "</td></tr>";
         echo "<tr>";
-        echo "<td bgcolor=\"".$cfg["table_header_bg"]."\" width=\"15%\"><div align=center class=\"title\">"._USER."</div></td>";
-        echo "<td bgcolor=\"".$cfg["table_header_bg"]."\"><div align=center class=\"title\">"._FILE."</div></td>";
-        echo "<td bgcolor=\"".$cfg["table_header_bg"]."\" width=\"1%\"><div align=center class=\"title\">".str_replace(" ","<br>",_FORCESTOP)."</div></td>";
+        echo "<td bgcolor=\"".$cfg["table_header_bg"]."\" style=\"width:15%\"><div style=\"text-align:center\" class=\"title\">"._USER."</div></td>";
+        echo "<td bgcolor=\"".$cfg["table_header_bg"]."\"><div style=\"text-align:center\" class=\"title\">"._FILE."</div></td>";
+        echo "<td bgcolor=\"".$cfg["table_header_bg"]."\" style=\"width:1%\"><div style=\"text-align:center\" class=\"title\">".str_replace(" ","<br>",_FORCESTOP)."</div></td>";
         echo "</tr>";
         echo "\n";
 
@@ -2011,7 +1998,7 @@ function queueSettings()
         }
         if( strlen($output) == 0 )
         {
-            $output = "<tr><td colspan=3><div class=\"tiny\" align=center>No Running Torrents</div></td></tr>";
+            $output = "<tr><td colspan=3><div class=\"tiny\" style=\"text-align:center\">No Running Torrents</div></td></tr>";
         }
         echo $output;
 
@@ -2039,7 +2026,7 @@ function searchSettings()
 	    			<table class="table table-striped">
 	    				<tr>
 	    					<th colspan="2">
-	    						<img src="images/properties.png" width=18 height=13 border=0>&nbsp;&nbsp;
+	    						<img src="images/properties.png" alt="">&nbsp;&nbsp;
 	    						Search Settings
 	    					</th>
 	    				</tr>
@@ -2078,12 +2065,12 @@ function searchSettings()
 									        $sEngine = new SearchEngine(serialize($cfg));
 									        if ($sEngine->initialized)
 									        { ?>
-		            							<img src="images/properties.png" width=18 height=13 border=0>&nbsp;&nbsp;
+		            							<img src="images/properties.png" alt="">&nbsp;&nbsp;
 		            							<?php echo $sEngine->mainTitle ?> Search Settings
 		            			</th>
 		            		</tr>
 		            		<tr>
-					            <td width="350"><strong>Search Engine URL:</strong></td>
+					            <td style="width:350"><strong>Search Engine URL:</strong></td>
 					            <td>
 					                <?php echo "<a href=\"http://".$sEngine->mainURL."\" target=\"_blank\">".$sEngine->mainTitle."</a>"; ?>
 					            </td>
@@ -2118,7 +2105,7 @@ function searchSettings()
 						            </td>
 						            <td>
 									<?php
-									                echo "<select multiple name=\"".$sEngine->catFilterName."[]\" size=\"8\" STYLE=\"width: 125px\">";
+									                echo "<select multiple name=\"".$sEngine->catFilterName."[]\" size=\"8\" style=\"width: 125px\">";
 									                echo "<option value=\"-1\">[NO FILTER]</option>";
 									                foreach ($sEngine->getMainCategories(false) as $mainId => $mainName)
 									                {
@@ -2178,37 +2165,10 @@ function updateSearchSettings()
 }
 
 ?>
-<!doctype html>
-<html>
-<head>
-	<title><?php echo $cfg["pagetitle"] ?></title>
-	<link rel="icon" href="images/favicon.ico" type="image/x-icon" />
-	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
-	<link rel="stylesheet" href="./plugins/twitter/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
-    <link rel="styleSheet" HREF="themes/<?php echo $cfg["theme"] ?>/style.css" type="text/css" />
-	<meta http-equiv="Pragma" content="no-cache" charset="<?php echo _CHARSET ?>">
-</head>
-<body>
-
-<div class="container">
-	<div class="row">
-		<nav class="navbar navbar-light" style="background-color:#e3f2fd;">
-			<?php include_once 'menu.php' ?>
-			
-			<div class="col-sm-12 nav navbar-nav" style="margin-left:16px;">
-				<a class="nav-item nav-link" href="admin.php"><small><?php echo _ADMIN_MENU ?></small></a> 
-    			<a class="nav-item nav-link" href="admin.php?op=configSettings"><small><?php echo _SETTINGS_MENU ?></small></a> 
-    			<a class="nav-item nav-link" href="admin.php?op=queueSettings"><small><?php echo_QMANAGER_MENU ?></small></a> 
-    			<a class="nav-item nav-link" href="admin.php?op=searchSettings"><small><?php echo _SEARCHSETTINGS_MENU ?></small></a> 
-    			<a class="nav-item nav-link" href="admin.php?op=showUserActivity"><small><?php echo _ACTIVITY_MENU ?></small></a>
-    			<a class="nav-item nav-link" href="admin.php?op=editLinks"><small><?php echo _LINKS_MENU ?></small></a>
-    			<a class="nav-item nav-link" href="admin.php?op=editRSS"><small>rss</small></a>
-    			<a class="nav-item nav-link" href="admin.php?op=CreateUser"><small><?php echo _NEWUSER_MENU ?></small></a> 
-    			<a class="nav-item nav-link" href="admin.php?op=backupDatabase"><small><?php echo _BACKUP_MENU ?></small></a>
-			</div>
-		</nav>
-	</div>
-</div>
+<?php 
+	$subMenu = 'admin';
+	include_once 'header.php' 
+?>
 <?php
 //****************************************************************************
 //****************************************************************************
