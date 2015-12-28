@@ -233,7 +233,7 @@ $(document).ready(function() {
 	        $("form input[name='username']").focus();
 	    }
 	    
-	    if (pass.length<1) {
+	    if (pass.length < 1) {
 	        msg = msg + "* Password is required\n";
 	        if (user.length > 0) {
 	        	$("form input[name='iamhim']").focus();

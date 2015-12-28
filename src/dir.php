@@ -246,27 +246,25 @@ if (isset($dir))
 
 
 <script>
-function MakeTorrent(name_file)
-{
-    window.open (name_file,'_blank','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=600,height=430')
-}
 
-function ConfirmDelete(file)
-{
-    return confirm("<?php echo _ABOUTTODELETE ?>: " + file)
-}
+$(document).ready(function() {
 
-function checkCheck(thisIn)
-{
-    var form = thisIn.form, i = 0;
-    for(i=0; i < form.length; i++)
-    {
-        if(form[i].type == 'checkbox' && form[i].name != 'checkall')
-        {
-            form[i].checked = thisIn.checked;
-        }
-    }
-}
+	$(".makeTorrent").click(function() {
+		var specs = 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=600,height=430';
+	    window.open (name_file, '_blank', specs);
+
+		return false;
+	});
+
+	$(".delete").click(function() {
+		return confirm("<?php echo _ABOUTTODELETE ?>: " + $(this).data('file'));
+	});
+
+	$(".selectAll").click(function() {
+		$(".selectFile").prop('checked', $(this).prop("checked"));
+	});
+
+});
 
 </script>
 <div class="container">
@@ -323,9 +321,9 @@ function ListDirectory($dirName)
         echo "<a href=\"" . $parentURL . "\"><img src=\"images/up_dir.gif\" width=16 height=16 title=\""._BACKTOPARRENT."\" alt=\"\">["._BACKTOPARRENT."]</a>";
         echo '</td>';
         echo '<td style="text-align:right">Multi-Delete-&gt;</td>';
-        echo '<td style="text-align:right"><a href="javascript:document.multidir.submit()" onclick="return ConfirmDelete(\'Multiple Files\')">';
+        echo '<td style="text-align:right"><a class=\"delete\" href="javascript:document.multidir.submit()" data-file=\"Multiple Files\")">';
         echo '<img src="images/delete_on.gif" title="Delete Multiple Files" height="16" width="16" alt=""></a>';
-        echo '<input type="checkbox" onclick="checkCheck(this);" /></td></tr>';
+        echo '<input class="selectAll" type="checkbox" /></td></tr>';
     }
 
     $handle = opendir($dirName);
@@ -348,12 +346,12 @@ function ListDirectory($dirName)
 
                 if ($cfg["enable_maketorrent"])
                 {
-                    echo "<a href=\"JavaScript:MakeTorrent('maketorrent.php?path=".urlencode($dir.$entry)."')\"><img src=\"images/make.gif\" width=16 height=16 title=\"Make Torrent\" alt=\"\"></a>";
+                    echo "<a class=\"makeTorrent\" href=\"maketorrent.php?path=".urlencode($dir.$entry)."\"><img src=\"images/make.gif\" title=\"Make Torrent\" alt=\"\"></a>";
                 }
 
                 if ($cfg["enable_file_download"])
                 {
-                    echo "<a href=\"dir.php?tar=".urlencode($dir.$entry)."\"><img src=\"images/tar_down.gif\" width=16 height=16 title=\"Download as ".$cfg["package_type"]."\" alt=\"\"></a>";
+                    echo "<a href=\"dir.php?tar=".urlencode($dir.$entry)."\"><img src=\"images/tar_down.gif\" title=\"Download as ".$cfg["package_type"]."\" alt=\"\"></a>";
                 }
 
                 // The following lines of code were suggested by Jody Steele jmlsteele@stfu.ca
@@ -362,8 +360,8 @@ function ListDirectory($dirName)
                 // the ability to delete sub directories
                 if(IsAdmin($cfg["user"]) || preg_match("/^" . $cfg["user"] . "/",$dir))
                 {
-                    echo "<a href=\"dir.php?del=".urlencode($dir.$entry)."\" onclick=\"return ConfirmDelete('".addslashes($entry)."')\"><img src=\"images/delete_on.gif\" width=16 height=16 title=\""._DELETE."\" alt=\"\"></a>";
-                    echo "<input type=\"checkbox\" name=\"file[]\" value=\"".urlencode($dir.$entry)."\">";
+                    echo "<a class=\"delete\" href=\"dir.php?del=".urlencode($dir.$entry)."\" data-file=\"".addslashes($entry)."\"><img src=\"images/delete_on.gif\" title=\""._DELETE."\" alt=\"\"></a>";
+                    echo "<input class=\"selectFile\" type=\"checkbox\" name=\"file[]\" value=\"".urlencode($dir.$entry)."\">";
                 }
                 else
                 {
@@ -455,7 +453,7 @@ function ListDirectory($dirName)
 
                 if ($cfg["enable_maketorrent"])
                 {
-                    echo "<a href=\"JavaScript:MakeTorrent('maketorrent.php?path=".urlencode($dir.$entry)."')\"><img src=\"images/make.gif\" width=16 height=16 title=\"Make Torrent\"></a>";
+                    echo "<a class=\"makeTorrent\" href=\"maketorrent.php?path=".urlencode($dir.$entry)."\"><img src=\"images/make.gif\" width=16 height=16 title=\"Make Torrent\"></a>";
                 }
 
                 if ($cfg["enable_file_download"])
@@ -472,8 +470,8 @@ function ListDirectory($dirName)
                 // the ability to delete files
                 if(IsAdmin($cfg["user"]) || preg_match("/^" . $cfg["user"] . "/",$dir))
                 {
-                    echo "<a href=\"dir.php?del=".urlencode($dir.$entry)."\" onclick=\"return ConfirmDelete('".addslashes($entry)."')\"><img src=\"images/delete_on.gif\" width=16 height=16 title=\""._DELETE."\" alt=\"\"></a>";
-                    echo "<input type=\"checkbox\" name=\"file[]\" value=\"".urlencode($dir.$entry)."\">";
+                    echo "<a class=\"delete\" href=\"dir.php?del=".urlencode($dir.$entry)."\" data-file=\"".addslashes($entry)."\"><img src=\"images/delete_on.gif\" title=\""._DELETE."\" alt=\"\"></a>";
+                    echo "<input class=\"selectFile\" type=\"checkbox\" name=\"file[]\" value=\"".urlencode($dir.$entry)."\">";
                 }
                 else
                 {

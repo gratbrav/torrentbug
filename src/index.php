@@ -664,22 +664,46 @@ $drivespace = getDriveSpace($cfg["path"]);
 
 <script>
 <?php if (!isset($_SESSION['prefresh']) || ($_SESSION['prefresh'] == true)) { ?>
-    var var_refresh = <?php echo $cfg["page_refresh"] ?>;
-    function UpdateRefresh() {
-      span_refresh.innerHTML = String(var_refresh--);
-      setTimeout("UpdateRefresh();", 1000);
 
-      if (var_refresh == -1) {
-          location.href = 'index.php';
-      }
-    }
+	var refreshTime = <?php echo $cfg["page_refresh"] ?>;
+	
+	function updateRefresh() {
+		$('#span_refresh').html(refreshTime--);
+	
+		if (refreshTime < 0) {
+	    	location.href = 'index.php';
+		} else {
+			setTimeout("updateRefresh();", 1000);
+	  	}
+	}
 
 $(document).ready(function() {
-   	UpdateRefresh();
+	updateRefresh();
 });
+
 <?php } ?>
 
+$(document).ready(function() {
 
+	$(".downloaddetails").click(function() {
+		var specs = 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=430,height=225';
+		window.open($(this).prop('href'), '_blank', specs);
+
+		return false;
+	});
+
+	$(".startTorrent").click(function() {
+		var specs = 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=700,height=530';
+		window.open($(this).prop('href'), '_blank', specs);
+
+		return false;
+	});
+
+	$(".deleteTorrent").click(function() {
+		return confirm("<?php echo _ABOUTTODELETE ?>: " + $(this).data('torrent'));
+	});
+
+});
 
     var ol_closeclick = "1";
     var ol_close = "<b style=\"color:#ffffff\">X</b>";
@@ -691,20 +715,6 @@ $(document).ready(function() {
     var ol_cap = "&nbsp;Torrent Status";
 </script>
 <script src="overlib.js" type="text/javascript"></script>
-<script>
-function ShowDetails(name_file)
-{
-  window.open (name_file,'_blank','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=430,height=225')
-}
-function StartTorrent(name_file)
-{
-    myWindow = window.open (name_file,'_blank','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=700,height=530')
-}
-function ConfirmDelete(file)
-{
-    return confirm("<?php echo _ABOUTTODELETE ?>: " + file)
-}
-</script>
 
 <div id="overDiv" style="position:absolute;visibility:hidden;z-index:1000;"></div>
 

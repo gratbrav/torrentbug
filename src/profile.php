@@ -94,7 +94,7 @@ function showIndex()
 		
 		<div class="col-sm-6">
 			<fieldset class="form-group bd-example" style="margin-left:-12px;margin-right:-15px">
-				<form name="theForm" action="profile.php?op=updateProfile" method="post" onsubmit="return validateProfile()">
+				<form id="formProfile" name="theForm" action="profile.php?op=updateProfile" method="post">
 			        <table class="table table-striped">
 				        <tr>
 				            <td style="text-align:right"><?php echo _USER ?>:</td>
@@ -102,11 +102,11 @@ function showIndex()
 				        </tr>
 				        <tr>
 				            <td style="text-align:right"><?php echo _NEWPASSWORD ?>:</td>
-				            <td><input name="pass1" type="Password" value="" class="form-control"></td>
+				            <td><input name="pass1" id="pass1" type="Password" value="" class="form-control"></td>
 				        </tr>
 				        <tr>
 				            <td style="text-align:right"><?php echo _CONFIRMPASSWORD ?>:</td>
-				            <td><input name="pass2" type="Password" value="" class="form-control"></td>
+				            <td><input name="pass2" id="pass2" type="Password" value="" class="form-control"></td>
 				        </tr>
 				        <tr>
 				            <td style="text-align:right"><?php echo _THEME ?>:</td>
@@ -140,7 +140,7 @@ function showIndex()
 				            <td colspan="2"><input name="hideOffline" type="Checkbox" value="1" <?php echo $hideChecked ?> /> <?php echo _HIDEOFFLINEUSERS ?></td>
 				        </tr>
 				        <tr>
-				            <td style="text-align:center" colspan="2"><input type="Submit" value="<?php echo _UPDATE ?>" class="btn btn-primary" /></td>
+				            <td style="text-align:center" colspan="2"><input id="submitProfile" type="button" value="<?php echo _UPDATE ?>" class="btn btn-primary" /></td>
 				        </tr>
 				    </table>
         		</form>
@@ -149,37 +149,37 @@ function showIndex()
 	</div>
 </div>
 
-    <script>
-    function validateProfile()
-    {
-        var msg = ""
-        if (theForm.pass1.value != "" || theForm.pass2.value != "")
-        {
-            if (theForm.pass1.value.length <= 5 || theForm.pass2.value.length <= 5)
-            {
-                msg = msg + "* <?php echo _PASSWORDLENGTH ?>\n";
-                theForm.pass1.focus();
-            }
-            if (theForm.pass1.value != theForm.pass2.value)
-            {
-                msg = msg + "* <?php echo _PASSWORDNOTMATCH ?>\n";
-                theForm.pass1.value = "";
-                theForm.pass2.value = "";
-                theForm.pass1.focus();
-            }
-        }
+<script> 
 
-        if (msg != "")
-        {
-            alert("<?php echo _PLEASECHECKFOLLOWING ?>:\n\n" + msg);
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
-    </script>
+$(document).ready(function() {
+
+	$("#submitProfile").click(function() {
+   		var msg = ""
+        if ($('#pass1').val() != "" || $('#pass2').val() != "") {
+             if ($('#pass1').val().length <= 5 || $('#pass2').val().length <= 5) {
+                 msg = msg + "* <?php echo _PASSWORDLENGTH ?>\n";
+                 $('#pass1').focus();
+             }
+             
+             if ($('#pass1').val() != $('#pass2').val()) {
+                 msg = msg + "* <?php echo _PASSWORDNOTMATCH ?>\n";
+                 $('#pass1').val("");
+                 $('#pass2').val("");
+                 $('#pass1').focus();
+             }
+         }
+
+         if (msg != "") {
+             alert("<?php echo _PLEASECHECKFOLLOWING ?>:\n\n" + msg);
+             return false;
+         } else {
+             return true;
+             $('formProfile').submit();
+         }
+    });
+
+});
+</script>
 
 <?php
 
