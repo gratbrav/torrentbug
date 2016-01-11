@@ -21,7 +21,10 @@
     along with TorrentFlux; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
+	include_once './Class/autoload.php';
 
+	$settings = new Class_Settings();
+	
 class dir
 {
     var $name;
@@ -104,22 +107,22 @@ class file {
 
 function showMetaInfo($torrent, $allowSave=false)
 {
-    global $cfg;
+    global $settings;
 
-    if (empty($torrent) || !file_exists($cfg["torrent_file_path"].$torrent))
+    if (empty($torrent) || !file_exists($settings->get('torrent_file_path') . $torrent))
     {
         echo _NORECORDSFOUND;
     }
-    elseif ($cfg["enable_file_priority"])
+    elseif ($settings->get('enable_file_priority'))
     {
 
-        $prioFileName = $cfg["torrent_file_path"].getAliasName($torrent).".prio";
+        $prioFileName = $settings->get('torrent_file_path').getAliasName($torrent).".prio";
 
         require_once('BDecode.php');
 
         echo '<link rel="StyleSheet" href="dtree.css" type="text/css" /><script type="text/javascript" src="dtree.js"></script>';
 
-        $ftorrent = $cfg["torrent_file_path"].$torrent;
+        $ftorrent = $settings->get('torrent_file_path').$torrent;
 
         $fp = fopen($ftorrent, "rd");
         if (!$fp)
@@ -251,7 +254,7 @@ function showMetaInfo($torrent, $allowSave=false)
     }
     else
     {
-        $result = shell_exec("cd " . $cfg["torrent_file_path"]."; " . $cfg["pythonCmd"] . " -OO " . $cfg["btshowmetainfo"]." ".escapeshellarg($torrent));
+        $result = shell_exec("cd " . $settings->get('torrent_file_path')."; " . $settings->get('pythonCmd') . " -OO " . $settings->get('btshowmetainfo')." ".escapeshellarg($torrent));
         echo "<pre>";
         echo htmlentities($result, ENT_QUOTES);
         echo "</pre>";

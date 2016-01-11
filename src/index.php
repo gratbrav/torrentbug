@@ -22,10 +22,12 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+	include_once './Class/autoload.php';
 
 include_once("config.php");
 include_once("functions.php");
 
+	$settings = new Class_Settings();
 $messages = "";
 
 // set refresh option into the session cookie
@@ -48,17 +50,13 @@ if(array_key_exists("pagerefresh", $_GET))
 // Check to see if QManager is running if not Start it.
 if (checkQManager() == 0 )
 {
-    if ($cfg["AllowQueing"])
-    {
-        if (is_dir($cfg["path"]) && is_writable($cfg["path"]))
-        {
+    if ($settings->get('AllowQueing')) {
+        if (is_dir($settings->get('path')) && is_writable($settings->get('path'))) {
             AuditAction($cfg["constants"]["QManager"], "QManager Not Running");
             sleep(2);
-            startQManager($cfg["maxServerThreads"],$cfg["maxUserThreads"],$cfg["sleepInterval"]);
+            startQManager($settings->get('maxServerThreads'), $settings->get('maxUserThreads'), $settings->get('sleepInterval'));
             sleep(2);
-        }
-        else
-        {
+        } else {
             AuditAction($cfg["constants"]["error"], "Error starting Queue Manager -- TorrentFlux settings are not correct (path is not valid)");
             if (IsAdmin())
             {
@@ -79,8 +77,7 @@ if(!empty($torrent))
 {
     include_once("AliasFile.php");
 
-    if ($cfg["enable_file_priority"])
-    {
+    if ($settings->get('enable_file_priority')) {
         include_once("setpriority.php");
         // Process setPriority Request.
         setPriority($torrent);
@@ -95,9 +92,8 @@ if(!empty($torrent))
         // if we are to start a torrent then do so
 
         // check to see if the path to the python script is valid
-        if (!is_file($cfg["btphpbin"]))
-        {
-            AuditAction($cfg["constants"]["error"], "Error  Path for ".$cfg["btphpbin"]." is not valid");
+        if (!is_file($settings->get('btphpbin'))) {
+            AuditAction($cfg["constants"]["error"], "Error  Path for " . $settings->get('btphpbin') . " is not valid");
             if (IsAdmin())
             {
                 header("location: admin.php?op=configSettings");
@@ -112,55 +108,51 @@ if(!empty($torrent))
         $command = "";
 
         $rate = getRequestVar('rate');
-        if (empty($rate))
-        {
-            if ($rate != "0")
-            {
-                $rate = $cfg["max_upload_rate"];
+        if (empty($rate)) {
+            if ($rate != "0") {
+                $rate = $settings->get('max_upload_rate');
             }
         }
+
         $drate = getRequestVar('drate');
-        if (empty($drate))
-        {
-            if ($drate != "0")
-            {
-                $drate = $cfg["max_download_rate"];
+        if (empty($drate)) {
+            if ($drate != "0") {
+                $drate = $settings->get('max_download_rate');
             }
         }
+
         $superseeder = getRequestVar('superseeder');
         if (empty($superseeder))
         {
             $superseeder = "0"; // should be 0 in most cases
         }
         $runtime = getRequestVar('runtime');
-        if (empty($runtime))
-        {
-            $runtime = $cfg["torrent_dies_when_done"];
+        if (empty($runtime)) {
+            $runtime = $settings->get('torrent_dies_when_done');
         }
 
         $maxuploads = getRequestVar('maxuploads');
-        if (empty($maxuploads))
-        {
-            if ($maxuploads != "0")
-            {
-                $maxuploads = $cfg["max_uploads"];
+        if (empty($maxuploads)) {
+            if ($maxuploads != "0") {
+                $maxuploads = $settings->get('max_uploads');
             }
         }
+
         $minport = getRequestVar('minport');
-        if (empty($minport))
-        {
-            $minport = $cfg["minport"];
+        if (empty($minport)) {
+            $minport = $settings->get('minport');
         }
+
         $maxport = getRequestVar('maxport');
-        if (empty($maxport))
-        {
-            $maxport = $cfg["maxport"];
+        if (empty($maxport)) {
+            $maxport = $settings->get('maxport');
         }
+
         $rerequest = getRequestVar("rerequest");
-        if (empty($rerequest))
-        {
-            $rerequest = $cfg["rerequest_interval"];
+        if (empty($rerequest)) {
+            $rerequest = $settings->get('rerequest_interval');
         }
+
         $sharekill = getRequestVar('sharekill');
 
         if ($runtime == "True" )
@@ -168,48 +160,38 @@ if(!empty($torrent))
             $sharekill = "-1";
         }
 
-        if (empty($sharekill))
-        {
-            if ($sharekill != "0")
-            {
-                $sharekill = $cfg["sharekill"];
+        if (empty($sharekill)) {
+            if ($sharekill != "0") {
+                $sharekill = $settings->get('sharekill');
             }
         }
-        if ($cfg["AllowQueing"])
-        {
-            if(IsAdmin())
-            {
+
+        if ($settings->get('AllowQueing')) {
+            if(IsAdmin()) {
                 $queue = getRequestVar('queue');
-                if($queue == 'on')
-                {
+                if($queue == 'on') {
                     $queue = "1";
-                }else
-                {
+                } else {
                     $queue = "0";
                 }
-            }
-            else
-            {
+            } else {
                 $queue = "1";
             }
         }
 
         $crypto_allowed = getRequestVar('crypto_allowed');
-        if (empty($crypto_allowed))
-        {
-            $crypto_allowed = $cfg["crypto_allowed"];
+        if (empty($crypto_allowed)) {
+            $crypto_allowed = $settings->get('crypto_allowed');
         }
 
         $crypto_only = getRequestVar('crypto_only');
-        if (empty($crypto_only))
-        {
-            $crypto_only = $cfg["crypto_only"];
+        if (empty($crypto_only)) {
+            $crypto_only = $settings->get('crypto_only');
         }
 
         $crypto_stealth = getRequestVar('crypto_stealth');
-        if (empty($crypto_stealth))
-        {
-            $crypto_stealth = $cfg["crypto_stealth"];
+        if (empty($crypto_stealth)) {
+            $crypto_stealth = $settings->get('crypto_stealth');
         }
 
         //$torrent = urldecode($torrent);
@@ -219,86 +201,67 @@ if(!empty($torrent))
         // The following lines of code were suggested by Jody Steele jmlsteele@stfu.ca
         // This is to help manage user downloads by their user names
         //if the user's path doesnt exist, create it
-        if (!is_dir($cfg["path"]."/".$owner))
-        {
-            if (is_writable($cfg["path"]))
-            {
-                mkdir($cfg["path"]."/".$owner, 0777);
-            }
-            else
-            {
-                AuditAction($cfg["constants"]["error"], "Error -- " . $cfg["path"] . " is not writable.");
-                if (IsAdmin())
-                {
+        if (!is_dir($settings->get('path') . "/".$owner)) {
+            if (is_writable($settings->get('path'))) {
+                mkdir($settings->get('path') . "/".$owner, 0777);
+            } else {
+                AuditAction($cfg["constants"]["error"], "Error -- " . $settings->get('path') . " is not writable.");
+                if (IsAdmin()) {
                     header("location: admin.php?op=configSettings");
                     exit();
-                }
-                else
-                {
+                } else {
                     $messages .= "<strong>Error</strong> TorrentFlux settings are not correct (path is not writable) -- please contact an admin.<br>";
                 }
             }
         }
 
         // create AliasFile object and write out the stat file
-        $af = new AliasFile($cfg["torrent_file_path"].$alias.".stat", $owner);
+        $af = new AliasFile($settings->get('torrent_file_path') . $alias . ".stat", $owner);
 
-        if ($cfg["AllowQueing"])
-        {
-            if($queue == "1")
-            {
+        if ($settings->get('AllowQueing')) {
+            if ($queue == "1") {
                 $af->QueueTorrentFile();  // this only writes out the stat file (does not start torrent)
-            }
-            else
-            {
+            } else {
                 $af->StartTorrentFile();  // this only writes out the stat file (does not start torrent)
             }
-        }
-        else
-        {
+        } else {
             $af->StartTorrentFile();  // this only writes out the stat file (does not start torrent)
         }
 
-        if (usingTornado())
-        {
-            $command = escapeshellarg($runtime)." ".escapeshellarg($sharekill)." '".$cfg["torrent_file_path"].$alias.".stat' ".$owner." --responsefile '".$cfg["torrent_file_path"].$torrent."' --display_interval 5 --max_download_rate ". escapeshellarg($drate) ." --max_upload_rate ".escapeshellarg($rate)." --max_uploads ".escapeshellarg($maxuploads)." --minport ".escapeshellarg($minport)." --maxport ".escapeshellarg($maxport)." --rerequest_interval ".escapeshellarg($rerequest)." --super_seeder ".escapeshellarg($superseeder)." --crypto_allowed ".escapeshellarg($crypto_allowed)." --crypto_only ".escapeshellarg($crypto_only)." --crypto_stealth ".escapeshellarg($crypto_stealth);
+        if (usingTornado()) {
+            $command = escapeshellarg($runtime)." ".escapeshellarg($sharekill)." '" . $settings->get('torrent_file_path') . $alias . ".stat' ".$owner." --responsefile '" . $settings->get('torrent_file_path') . $torrent . "' --display_interval 5 --max_download_rate ". escapeshellarg($drate) ." --max_upload_rate ".escapeshellarg($rate)." --max_uploads ".escapeshellarg($maxuploads)." --minport ".escapeshellarg($minport)." --maxport ".escapeshellarg($maxport)." --rerequest_interval ".escapeshellarg($rerequest)." --super_seeder ".escapeshellarg($superseeder)." --crypto_allowed ".escapeshellarg($crypto_allowed)." --crypto_only ".escapeshellarg($crypto_only)." --crypto_stealth ".escapeshellarg($crypto_stealth);
 
-            if(file_exists($cfg["torrent_file_path"].$alias.".prio")) {
-                $priolist = explode(',',file_get_contents($cfg["torrent_file_path"].$alias.".prio"));
+            if (file_exists($settings->get('torrent_file_path') . $alias . ".prio")) {
+                $priolist = explode(',',file_get_contents($settings->get('torrent_file_path') . $alias . ".prio"));
                 $priolist = implode(',',array_slice($priolist,1,$priolist[0]));
                 $command .= " --priority ".escapeshellarg($priolist);
             }
-            if ($cfg["cmd_options"])
-            	$command .= " ".escapeshellarg($cfg["cmd_options"]);
+
+            if ($settings->get('cmd_options')) {
+            	$command .= " ".escapeshellarg($settings->get('cmd_options'));
+            }
             
             $command .= " > /dev/null &";
 
-            if ($cfg["AllowQueing"] && $queue == "1")
-            {
+            if ($settings->get('AllowQueing') && $queue == "1") {
                 //  This file is being queued.
-            }
-            else
-            {
+            } else {
                 // This flie is being started manually.
-
-                if (! array_key_exists("pythonCmd", $cfg))
-                {
-                    insertSetting("pythonCmd","/usr/bin/python");
+				if ($settings->get('pythonCmd') == null) {
+					$settings->save(array('pythonCmd' => '/usr/bin/python'));
                 }
 
-                if (! array_key_exists("debugTorrents", $cfg))
-                {
-                    insertSetting("debugTorrents", "0");
+               if ($settings->get('debugTorrents') == null) {
+                    $settings->save(array('debugTorrents' => '0'));
                 }
 
-                if (!$cfg["debugTorrents"])
-                {
-                    $pyCmd = escapeshellarg($cfg["pythonCmd"]) . " -OO";
+                if (!$settings->get('debugTorrents')) {
+                    $pyCmd = escapeshellarg($settings->get('pythonCmd')) . " -OO";
                 }else{
-                    $pyCmd = escapeshellarg($cfg["pythonCmd"]);
+                    $pyCmd = escapeshellarg($settings->get('pythonCmd'));
                 }
 
-                $command = "cd " . $cfg["path"] . $owner . "; HOME=".$cfg["path"]."; export HOME; nohup " . $pyCmd . " " .escapeshellarg($cfg["btphpbin"]) . " " . $command;
+                $command = "cd " . $settings->get('path') . $owner . "; HOME=".$settings->get('path')."; export HOME; nohup " . $pyCmd . " " .escapeshellarg($settings->get('btphpbin')) . " " . $command;
             }
 
         }
@@ -306,21 +269,18 @@ if(!empty($torrent))
         {
             // Must be using the Original BitTorrent Client
             // This is now being required to allow Queing functionality
-            //$command = "cd " . $cfg["path"] . $owner . "; nohup " . $cfg["btphpbin"] . " ".$runtime." ".$sharekill." ".$cfg["torrent_file_path"].$alias.".stat ".$owner." --responsefile \"".$cfg["torrent_file_path"].$torrent."\" --display_interval 5 --max_download_rate ". $drate ." --max_upload_rate ".$rate." --max_uploads ".$maxuploads." --minport ".$minport." --maxport ".$maxport." --rerequest_interval ".$rerequest." ".$cfg["cmd_options"]." > /dev/null &";
+            //$command = "cd " . $settings->get('path') . $owner . "; nohup " . $settings->get('btphpbin') . " ".$runtime." ".$sharekill." ".$settings->get('torrent_file_path').$alias.".stat ".$owner." --responsefile \"".$settings->get('torrent_file_path').$torrent."\" --display_interval 5 --max_download_rate ". $drate ." --max_upload_rate ".$rate." --max_uploads ".$maxuploads." --minport ".$minport." --maxport ".$maxport." --rerequest_interval ".$rerequest." ".$settings->get('cmd_options')." > /dev/null &";
             $messages .= "<strong>Error</strong> BitTornado is only supported Client at this time.<br>";
         }
 
         // write the session to close so older version of PHP will not hang
         session_write_close();
 
-        if($af->running == "3")
-        {
-            writeQinfo($cfg["torrent_file_path"]."queue/".$alias.".stat",$command);
+        if($af->running == "3") {
+            writeQinfo($settings->get('torrent_file_path')."queue/".$alias.".stat",$command);
             AuditAction($cfg["constants"]["queued_torrent"], $torrent."<br>Die:".$runtime.", Sharekill:".$sharekill.", MaxUploads:".$maxuploads.", DownRate:".$drate.", UploadRate:".$rate.", Ports:".$minport."-".$maxport.", SuperSeed:".$superseeder.", Rerequest Interval:".$rerequest);
             AuditAction($cfg["constants"]["queued_torrent"], $command);
-        }
-        else
-        {
+        } else {
             // The following command starts the torrent running! w00t!
             passthru($command);
 
@@ -413,8 +373,7 @@ if(! $url_upload == '')
     // if the output had data then write it to a file
     if ((strlen($output) > 0) && (strpos($output, "<br />") === false))
     {
-        if (is_file($cfg["torrent_file_path"].$file_name))
-        {
+        if (is_file($settings->get('torrent_file_path').$file_name)) {
             // Error
             $messages .= "<strong>Error</strong> with (<b>".htmlentities($file_name)."</b>), the file already exists on the server.<br><center><a href=\"".$_SERVER['PHP_SELF']."\">[Refresh]</a></center>";
             $ext_msg = "DUPLICATE :: ";
@@ -422,7 +381,7 @@ if(! $url_upload == '')
         else
         {
             // open a file to write to
-            $fw = fopen($cfg["torrent_file_path"].$file_name,'w');
+            $fw = fopen($settings->get('torrent_file_path').$file_name,'w');
             fwrite($fw, $output);
             fclose($fw);
         }
@@ -459,17 +418,14 @@ if(!empty($_FILES['upload_file']['name']))
         if (ereg(getFileFilter($cfg["file_types_array"]), $file_name))
         {
             //FILE IS BEING UPLOADED
-            if (is_file($cfg["torrent_file_path"].$file_name))
-            {
+            if (is_file($settings->get('torrent_file_path').$file_name)) {
                 // Error
                 $messages .= "<strong>Error</strong> with (<b>".htmlentities($file_name)."</b>), the file already exists on the server.<br><center><a href=\"".$_SERVER['PHP_SELF']."\">[Refresh]</a></center>";
                 $ext_msg = "DUPLICATE :: ";
-            }
-            else
-            {
-                if(move_uploaded_file($_FILES['upload_file']['tmp_name'], $cfg["torrent_file_path"].$file_name))
+            } else {
+                if(move_uploaded_file($_FILES['upload_file']['tmp_name'], $settings->get('torrent_file_path').$file_name))
                 {
-                    chmod($cfg["torrent_file_path"].$file_name, 0644);
+                    chmod($settings->get('torrent_file_path').$file_name, 0644);
 
                     AuditAction($cfg["constants"]["file_upload"], $file_name);
 
@@ -477,7 +433,7 @@ if(!empty($_FILES['upload_file']['name']))
                 }
                 else
                 {
-                    $messages .= "<font color=\"#ff0000\" size=3>ERROR: File not uploaded, file could not be found or could not be moved:<br>".$cfg["torrent_file_path"] . htmlentities($file_name)."</font><br>";
+                    $messages .= "<font color=\"#ff0000\" size=3>ERROR: File not uploaded, file could not be found or could not be moved:<br>".$settings->get('torrent_file_path') . htmlentities($file_name)."</font><br>";
                 }
             }
         }
@@ -506,14 +462,14 @@ if(! $delfile == '')
     $alias_file = SecurityClean(getRequestVar('alias_file'));
     if (($cfg["user"] == getOwner($delfile)) || IsAdmin())
     {
-        @unlink($cfg["torrent_file_path"].$delfile);
-        @unlink($cfg["torrent_file_path"].$alias_file);
+        @unlink($settings->get('torrent_file_path').$delfile);
+        @unlink($settings->get('torrent_file_path').$alias_file);
         // try to remove the QInfo if in case it was queued.
-        @unlink($cfg["torrent_file_path"]."queue/".$alias_file.".Qinfo");
+        @unlink($settings->get('torrent_file_path')."queue/".$alias_file.".Qinfo");
 
         // try to remove the pid file
-        @unlink($cfg["torrent_file_path"].$alias_file.".pid");
-        @unlink($cfg["torrent_file_path"].getAliasName($delfile).".prio");
+        @unlink($settings->get('torrent_file_path').$alias_file.".pid");
+        @unlink($settings->get('torrent_file_path').getAliasName($delfile).".prio");
 
         AuditAction($cfg["constants"]["delete_torrent"], $delfile);
 
@@ -540,7 +496,7 @@ if(! $kill == '' && is_numeric($kill) )
     $the_user = getOwner($kill_torrent);
     // read the alias file
     // create AliasFile object
-    $af = new AliasFile($cfg["torrent_file_path"].$alias_file, $the_user);
+    $af = new AliasFile($settings->get('torrent_file_path') . $alias_file, $the_user);
     if($af->percent_done < 100)
     {
         // The torrent is being stopped but is not completed dowloading
@@ -557,7 +513,7 @@ if(! $kill == '' && is_numeric($kill) )
     }
 
     // see if the torrent process is hung.
-    if (!is_file($cfg["torrent_file_path"].$alias_file.".pid"))
+    if (!is_file($settings->get('torrent_file_path') . $alias_file.".pid"))
     {
         $runningTorrents = getRunningTorrents();
         foreach ($runningTorrents as $key => $value)
@@ -580,7 +536,7 @@ if(! $kill == '' && is_numeric($kill) )
         sleep(3);
         passthru("kill ".$kill);
         // try to remove the pid file
-        @unlink($cfg["torrent_file_path"].$alias_file.".pid");
+        @unlink($settings->get('torrent_file_path') . $alias_file.".pid");
         header("location: ".$return.".php?op=queueSettings");
         exit();
     }
@@ -598,7 +554,7 @@ if(isset($_REQUEST["dQueue"]))
     $QEntry = getRequestVar('QEntry');
 
     // Is the Qinfo file still there?
-    if (file_exists($cfg["torrent_file_path"]."queue/".$alias_file.".Qinfo"))
+    if (file_exists($settings->get('torrent_file_path') . "queue/".$alias_file.".Qinfo"))
     {
         // Yes, then delete it and update the stat file.
         include_once("AliasFile.php");
@@ -607,7 +563,7 @@ if(isset($_REQUEST["dQueue"]))
         $the_user = getOwner($QEntry);
         // read the alias file
         // create AliasFile object
-        $af = new AliasFile($cfg["torrent_file_path"].$alias_file, $the_user);
+        $af = new AliasFile($settings->get('torrent_file_path') . $alias_file, $the_user);
 
         if($af->percent_done > 0 && $af->percent_done < 100)
         {
@@ -633,7 +589,7 @@ if(isset($_REQUEST["dQueue"]))
         $af->WriteFile();
 
         // Remove Qinfo file.
-        @unlink($cfg["torrent_file_path"]."queue/".$alias_file.".Qinfo");
+        @unlink($settings->get('torrent_file_path') . "queue/".$alias_file.".Qinfo");
 
         AuditAction($cfg["constants"]["unqueued_torrent"], $QEntry);
     }
@@ -649,7 +605,7 @@ if(isset($_REQUEST["dQueue"]))
     exit();
 }
 
-$drivespace = getDriveSpace($cfg["path"]);
+$drivespace = getDriveSpace($settings->get('path'));
 
 
 /************************************************************
@@ -665,7 +621,7 @@ $drivespace = getDriveSpace($cfg["path"]);
 <script>
 <?php if (!isset($_SESSION['prefresh']) || ($_SESSION['prefresh'] == true)) { ?>
 
-	var refreshTime = <?php echo $cfg["page_refresh"] ?>;
+	var refreshTime = <?php echo $settings->get('page_refresh') ?>;
 	
 	function updateRefresh() {
 		$('#span_refresh').html(refreshTime--);
@@ -763,12 +719,12 @@ $(document).ready(function() {
     			</form>
   			</fieldset>
   			
-  			<?php if ($cfg["enable_search"]) { ?>
+  			<?php if ($settings->get('enable_search')) { ?>
 			<fieldset class="form-group bd-example" style="margin-right:-12px;margin-left:-15px;padding: 10px;">
 				<form name="form_search" action="torrentSearch.php" method="get">
     				<label for="searchterm">Torrent <?php echo _SEARCH ?></label>
     				<input type="text" name="searchterm" id="searchterm" class="form-control" />
-    				<?php echo buildSearchEngineDDL($cfg["searchEngine"]) ?>
+    				<?php echo buildSearchEngineDDL($settings->get('searchEngine')) ?>
     				<input type="submit" value="<?php echo _SEARCH ?>" class="btn btn-primary pull-sm-right" style="margin-top:6px;" />
     			</form>
   			</fieldset>
@@ -856,7 +812,7 @@ $(document).ready(function() {
 <div class="container">
 	<div class="row">
 		<div class="col-sm-12 bd-example">
-			<?php getDirList($cfg["torrent_file_path"]); ?>
+			<?php getDirList($settings->get('torrent_file_path')); ?>
 				
 			<table class="table table-striped">
    				<tr>
@@ -872,7 +828,7 @@ $(document).ready(function() {
        					<img src="images/kill.gif" title="<?php echo _STOPDOWNLOAD ?>">
        					<?php echo _STOPDOWNLOAD ?>
        				</td>
-       				<?php if ($cfg["AllowQueing"]) { ?>
+       				<?php if ($settings->get('AllowQueing')) { ?>
        					<td>
        						<img src="images/queued.gif" title="<?php echo _DELQUEUE ?>">
        						<?php echo _DELQUEUE ?>
@@ -886,7 +842,7 @@ $(document).ready(function() {
        					<img src="images/delete_on.gif" title="<?php echo _DELETE ?>">
        					<?php echo _DELETE ?>
        				</td>
-       				<?php if ($cfg["enable_torrent_download"]) { ?>
+       				<?php if ($settings->get('enable_torrent_download')) { ?>
        					<td>
        						<img src="images/down.gif" title="Download Torrent meta file">
        						Download Torrent
@@ -901,8 +857,8 @@ $(document).ready(function() {
 	    				if(checkQManager() > 0) {
 	         				echo "<img src=\"images/green.gif\" title=\"Queue Manager Running\"> Queue Manager Running<br>";
 	         				echo "<strong>".strval(getRunningTorrentCount())."</strong> torrent(s) running and <strong>".strval(getNumberOfQueuedTorrents())."</strong> queued.<br>";
-	         				echo "Total torrents server will run: <strong>".$cfg["maxServerThreads"]."</strong><br>";
-	         				echo "Total torrents a user may run: <strong>".$cfg["maxUserThreads"]."</strong><br>";
+	         				echo "Total torrents server will run: <strong>".$settings->get('maxServerThreads')."</strong><br>";
+	         				echo "Total torrents a user may run: <strong>".$settings->get('maxUserThreads')."</strong><br>";
 	         				echo "* Torrents are queued when limits are met.<br>";
 	    				} else {
 	        				echo "<img src=\"images/black.gif\" title=\"Queue Manager Off\"> Queue Manager Off";
@@ -912,7 +868,7 @@ $(document).ready(function() {
 				<div class="col-sm-4 tiny" style="padding:15px 30px;text-align:center;">
 					<?php
 						if(!isset($_SESSION['prefresh']) || ($_SESSION['prefresh'] == true)) {
-	        				echo "*** "._PAGEWILLREFRESH." <span id='span_refresh'>".$cfg["page_refresh"]."</span> "._SECONDS." ***<br>";
+	        				echo "*** "._PAGEWILLREFRESH." <span id='span_refresh'>".$settings->get('page_refresh')."</span> "._SECONDS." ***<br>";
 	        				echo "<a href=\"".$_SERVER['PHP_SELF']."?pagerefresh=false\" class=\"tiny\">"._TURNOFFREFRESH."</a>";
 	    				} else {
 	        				echo "<a href=\"".$_SERVER['PHP_SELF']."?pagerefresh=true\" class=\"tiny\">"._TURNONREFRESH."</a>";
@@ -944,8 +900,8 @@ $(document).ready(function() {
 	           				<td><?php echo _SERVERLOAD ?>:</td>
 	           				<td>
 	        					<?php
-	            					if ($cfg["show_server_load"] && @isFile($cfg["loadavg_path"])) {
-	                					$loadavg_array = explode(" ", exec("cat ".escapeshellarg($cfg["loadavg_path"])));
+	            					if ($settings->get('show_server_load') && @isFile($settings->get('loadavg_path'))) {
+	                					$loadavg_array = explode(" ", exec("cat ".escapeshellarg($settings->get('loadavg_path'))));
 	                					$loadavg = $loadavg_array[2];
 	                					echo $loadavg;
 	            					} else {

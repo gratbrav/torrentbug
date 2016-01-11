@@ -22,6 +22,8 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+	include_once './Class/autoload.php';
+
 include_once("config.php");
 include_once("functions.php");
 include_once("lastRSS.php");
@@ -33,6 +35,7 @@ if (!defined("ENT_COMPAT")) define("ENT_COMPAT", 2);
 if (!defined("ENT_NOQUOTES")) define("ENT_NOQUOTES", 0);
 if (!defined("ENT_QUOTES")) define("ENT_QUOTES", 3);
 
+	$settings = new Class_Settings();
 ?>
 <?php 
 	$subMenu = 'index';
@@ -47,8 +50,8 @@ $arURL = GetRSSLinks();
 $rss = new lastRSS();
 
 // setup transparent cache
-$rss->cache_dir = $cfg["torrent_file_path"];
-$rss->cache_time = $cfg["rss_cache_min"] * 60; // 1200 = 20 min.  3600 = 1 hour
+$rss->cache_dir = $settings->get('torrent_file_path');
+$rss->cache_time = $settings->get('rss_cache_min') * 60; // 1200 = 20 min.  3600 = 1 hour
 $rss->strip_html = false; // don't remove HTML from the description
 ?>
 <div class="container">

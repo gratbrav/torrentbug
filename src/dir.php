@@ -22,8 +22,12 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+	include_once './Class/autoload.php';
+
 include_once("config.php");
 include_once("functions.php");
+
+	$settings = new Class_Settings();
 
 checkUserPath();
 
@@ -55,7 +59,7 @@ if ($del != "")
 
         if (!ereg("(\.\.\/)", $del))
         {
-            avddelete($cfg["path"].$del);
+            avddelete($settings->get('path').$del);
 
             $arTemp = explode("/", $del);
             if (count($arTemp) > 1)
@@ -79,8 +83,7 @@ if ($del != "")
 }
 
 // Are we to download something?
-if ($down != "" && $cfg["enable_file_download"])
-{
+if ($down != "" && $settings->get('enable_file_download')) {
     $current = "";
     // Yes, then download it
 
@@ -95,7 +98,7 @@ if ($down != "" && $cfg["enable_file_download"])
 
     if (!ereg("(\.\.\/)", $down))
     {
-        $path = $cfg["path"].$down;
+        $path = $settings->get('path').$down;
 
         $p = explode(".", $path);
         $pc = count($p);
@@ -140,8 +143,7 @@ if ($down != "" && $cfg["enable_file_download"])
 }
 
 // Are we to download something?
-if ($tar != "" && $cfg["enable_file_download"])
-{
+if ($tar != "" && $settings->get('enable_file_download')) {
     $current = "";
     // Yes, then tar and download it
 
@@ -158,7 +160,7 @@ if ($tar != "" && $cfg["enable_file_download"])
     {
         // This prevents the script from getting killed off when running lengthy tar jobs.
         ini_set("max_execution_time", 3600);
-        $tar = $cfg["path"].$tar;
+        $tar = $settings->get('path').$tar;
 
         $arTemp = explode("/", $tar);
         if (count($arTemp) > 1)
@@ -168,14 +170,14 @@ if ($tar != "" && $cfg["enable_file_download"])
         }
 
         // Find out if we're really trying to access a file within the
-        // proper directory structure. Sadly, this way requires that $cfg["path"]
-        // is a REAL path, not a symlinked one. Also check if $cfg["path"] is part
+        // proper directory structure. Sadly, this way requires that $settings->get('path')
+        // is a REAL path, not a symlinked one. Also check if $settings->get('path') is part
         // of the REAL path.
         if (is_dir($tar))
         {
             $sendname = basename($tar);
 
-            switch ($cfg["package_type"])
+            switch ($settings->get('package_type'))
             {
                 Case "tar":
                     $command = "tar cf - \"".addslashes($sendname)."\"";
@@ -184,7 +186,7 @@ if ($tar != "" && $cfg["enable_file_download"])
                     $command = "zip -0r - \"".addslashes($sendname)."\"";
                     break;
                 default:
-                    $cfg["package_type"] = "tar";
+                    $settings->get('package_type', 'tar');
                     $command = "tar cf - \"".addslashes($sendname)."\"";
                     break;
             }
@@ -193,7 +195,7 @@ if ($tar != "" && $cfg["enable_file_download"])
             header("Pragma: no-cache");
             header("Content-Description: File Transfer");
             header("Content-Type: application/force-download");
-            header('Content-Disposition: attachment; filename="'.$sendname.'.'.$cfg["package_type"].'"');
+            header('Content-Disposition: attachment; filename="'.$sendname.'.'.$settings->get('package_type').'"');
 
             // write the session to close so you can continue to browse on the site.
             session_write_close();
@@ -202,7 +204,7 @@ if ($tar != "" && $cfg["enable_file_download"])
             chdir(dirname($tar));
             passthru($command);
 
-            AuditAction($cfg["constants"]["fm_download"], $sendname.".".$cfg["package_type"]);
+            AuditAction($cfg["constants"]["fm_download"], $sendname.".".$settings->get('package_type'));
             exit();
         }
         else
@@ -239,7 +241,7 @@ if (isset($dir))
 <div class="container">
 	<div class="row">
 		<div class="col-sm-12 bd-example" style="padding: 10px;">
-			<?php displayDriveSpaceBar(getDriveSpace($cfg["path"])); ?>
+			<?php displayDriveSpaceBar(getDriveSpace($settings->get('path'))); ?>
 		</div>
 	</div>
 </div>
@@ -273,10 +275,10 @@ $(document).ready(function() {
 			<?php 
 				if (!isset($dir)) $dir = "";
 
-				if (!file_exists($cfg["path"].$dir)) {
+				if (!file_exists($settings->get('path').$dir)) {
     				echo "<strong>".htmlentities($dir)."</strong> could not be found or is not valid.";
 				} else {
-    				ListDirectory($cfg["path"].$dir);
+    				ListDirectory($settings->get('path').$dir);
 				}
 			?>
 		</div>
@@ -294,7 +296,7 @@ $(document).ready(function() {
 // displayes them.
 function ListDirectory($dirName)
 {
-    global $dir, $cfg;
+    global $dir, $cfg, $settings;
     $bgLight = $cfg["bgLight"];
     $bgDark = $cfg["bgDark"];
     $entrys = array();
@@ -344,14 +346,12 @@ function ListDirectory($dirName)
                 echo "<td>&nbsp;</td>";
                 echo "<td style=\"text-align:right\">";
 
-                if ($cfg["enable_maketorrent"])
-                {
+                if ($settings->get('enable_maketorrent')) {
                     echo "<a class=\"makeTorrent\" href=\"maketorrent.php?path=".urlencode($dir.$entry)."\"><img src=\"images/make.gif\" title=\"Make Torrent\" alt=\"\"></a>";
                 }
 
-                if ($cfg["enable_file_download"])
-                {
-                    echo "<a href=\"dir.php?tar=".urlencode($dir.$entry)."\"><img src=\"images/tar_down.gif\" title=\"Download as ".$cfg["package_type"]."\" alt=\"\"></a>";
+                if ($settings->get('enable_file_download')) {
+                    echo "<a href=\"dir.php?tar=".urlencode($dir.$entry)."\"><img src=\"images/tar_down.gif\" title=\"Download as ".$settings->get('package_type')."\" alt=\"\"></a>";
                 }
 
                 // The following lines of code were suggested by Jody Steele jmlsteele@stfu.ca
@@ -427,15 +427,12 @@ function ListDirectory($dirName)
                 echo "<td>";
 
                 // Can users download files?
-                if ($cfg["enable_file_download"])
-                {
+                if ($settings->get('enable_file_download')) {
                     // Yes, let them download
                     echo "<a href=\"dir.php?down=".urlencode($dir.$entry)."\" >";
                     echo "<img src=\"".$image."\" width=\"16\" height=\"16\" alt=\"".$entry."\"></a>";
                     echo "<a href=\"dir.php?down=".urlencode($dir.$entry)."\" >".$entry."</a>";
-                }
-                else
-                {
+                } else {
                     // No, just show the name
                     echo "<img src=\"".$image."\" width=\"16\" height=\"16\" alt=\"".$entry."\">";
                     echo $entry;
@@ -446,18 +443,16 @@ function ListDirectory($dirName)
                 echo "<td>".date("m-d-Y g:i a", $timeStamp)."</td>";
                 echo "<td style=\"text-align:right\">";
 
-                if( $cfg["enable_view_nfo"] && (( substr( strtolower($entry), -4 ) == ".nfo" ) || ( substr( strtolower($entry), -4 ) == ".txt" ))  )
+                if( $settings->get('enable_view_nfo') && (( substr( strtolower($entry), -4 ) == ".nfo" ) || ( substr( strtolower($entry), -4 ) == ".txt" ))  )
                 {
                     echo "<a href=\"viewnfo.php?path=".urlencode(addslashes($dir.$entry))."\"><img src=\"images/view_nfo.gif\" width=16 height=16 title=\"View '$entry'\"></a>";
                 }
 
-                if ($cfg["enable_maketorrent"])
-                {
+                if ($settings->get('enable_maketorrent')) {
                     echo "<a class=\"makeTorrent\" href=\"maketorrent.php?path=".urlencode($dir.$entry)."\"><img src=\"images/make.gif\" width=16 height=16 title=\"Make Torrent\"></a>";
                 }
 
-                if ($cfg["enable_file_download"])
-                {
+                if ($settings->get('enable_file_download')) {
                     // Show the download button
                     echo "<a href=\"dir.php?down=".urlencode($dir.$entry)."\" >";
                     echo "<img src=\"images/download_owner.gif\" width=16 height=16 title=\"Download\" alt=\"\">";
@@ -501,12 +496,12 @@ function ListDirectory($dirName)
 // If it does not exist, then it creates it.
 function checkUserPath()
 {
-    global $cfg;
+    global $cfg, $settings;
     // is there a user dir?
-    if (!is_dir($cfg["path"].$cfg["user"]))
+    if (!is_dir($settings->get('path').$cfg["user"]))
     {
         //Then create it
-        mkdir($cfg["path"].$cfg["user"], 0777);
+        mkdir($settings->get('path').$cfg["user"], 0777);
     }
 }
 

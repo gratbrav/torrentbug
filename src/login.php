@@ -22,23 +22,22 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-// ADODB support.
-include_once('db.php');
-include_once("settingsfunctions.php");
-include_once './Class/autoload.php';
+	// ADODB support.
+	include_once 'db.php';
+	include_once 'settingsfunctions.php';
+	include_once './Class/autoload.php';
 
 // Create Connection.
 $db = getdb();
 
-loadSettings();
+	$settings = new Class_Settings();
 
-session_name("TorrentFlux");
-session_start();
-include_once("config.php");
-include("themes/".$cfg["default_theme"]."/index.php");
-global $cfg;
+	session_name("TorrentFlux");
+	session_start();
+	include_once("config.php");
+	include_once 'themes/' . $settings->get('default_theme') . '/index.php';
 
-	if(isset($_SESSION['user'])) {
+	if (isset($_SESSION['user'])) {
 	    header("location: index.php");
 	    exit;
 	}
@@ -69,16 +68,16 @@ global $cfg;
         // this is The Super USER, add them to the user table
 
         $record = array(
-                        'user_id'=>$user,
-                        'password'=>md5($iamhim),
-                        'hits'=>1,
-                        'last_visit'=>$create_time,
-                        'time_created'=>$create_time,
-                        'user_level'=>2,
-                        'hide_offline'=>0,
-                        'theme'=>$cfg["default_theme"],
-                        'language_file'=>$cfg["default_language"]
-                        );
+        	'user_id'		=> $user,
+            'password'		=> md5($iamhim),
+            'hits'			=> 1,
+            'last_visit'	=> $create_time,
+            'time_created'	=> $create_time,
+            'user_level'	=> 2,
+            'hide_offline'	=> 0,
+            'theme'			=> $settings->get('default_theme'),
+            'language_file'	=> $settings->get('default_language')
+        );
         $sTable = 'tf_users';
         $sql = $db->GetInsertSql($sTable, $record);
 
@@ -86,32 +85,30 @@ global $cfg;
         showError($db,$sql);
 
         // Test and setup some paths for the TF settings
-        $pythonCmd = $cfg["pythonCmd"];
+        $pythonCmd = $settings->get('pythonCmd');
         $btphpbin = getcwd() . "/TF_BitTornado/btphptornado.py";
         $tfQManager = getcwd() . "/TF_BitTornado/tfQManager.py";
         $maketorrent = getcwd() . "/TF_BitTornado/btmakemetafile.py";
         $btshowmetainfo = getcwd() . "/TF_BitTornado/btshowmetainfo.py";
         $tfPath = getcwd() . "/downloads/";
 
-        if (!isFile($cfg["pythonCmd"]))
-        {
+        if (!isFile($settings->get('pythonCmd'))) {
             $pythonCmd = trim(shell_exec("which python"));
-            if ($pythonCmd == "")
-            {
-                $pythonCmd = $cfg["pythonCmd"];
+            if ($pythonCmd == "") {
+                $pythonCmd = $settings->get('pythonCmd');
             }
         }
 
-        $settings = array(
-                            "pythonCmd" => $pythonCmd,
-                            "btphpbin" => $btphpbin,
-                            "tfQManager" => $tfQManager,
-                            "btmakemetafile" => $maketorrent,
-                            "btshowmetainfo" => $btshowmetainfo,
-                            "path" => $tfPath
-                        );
+        $options = array(
+        	"pythonCmd"			=> $pythonCmd,
+            "btphpbin"			=> $btphpbin,
+            "tfQManager"		=> $tfQManager,
+            "btmakemetafile"	=> $maketorrent,
+            "btshowmetainfo"	=> $btshowmetainfo,
+            "path"				=> $tfPath
+        );
 
-        saveSettings($settings);
+        $settings->save($options);
         AuditAction($cfg["constants"]["update"], "Initial Settings Updated for first login.");
         $next_loc = "admin.php?op=configSettings";
     }
@@ -122,12 +119,7 @@ global $cfg;
     	$result = $auth->checkLogin();
     	showError($db,$sql);
     	
-        list(
-        $uid,
-        $hits,
-        $cfg["hide_offline"],
-        $cfg["theme"],
-        $cfg["language_file"]) = $result->FetchRow();
+        list($uid, $hits, $cfg["hide_offline"], $cfg["theme"], $cfg["language_file"]) = $result->FetchRow();
     
         if(!array_key_exists("shutdown",$cfg))
             $cfg['shutdown'] = '';

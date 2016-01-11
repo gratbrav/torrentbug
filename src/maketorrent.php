@@ -64,12 +64,16 @@
         httpseeds = optional list of http-seed URLs, in the format:
                 url[|url...]
     *****/
+	
+	include_once './Class/autoload.php';
 
     include_once("config.php");
     include_once("functions.php");
 
+    $settings = new Class_Settings();
+    
     // Variable information
-    $tpath    = $cfg["torrent_file_path"];
+    $tpath    = $settings->get('torrent_file_path');
     $tfile    = getRequestVar('torrent');
     $file     = getRequestVar('path');
     $torrent  = cleanFileName(StripFolders( trim($file) )) . ".torrent";
@@ -97,7 +101,7 @@
         }
 
         // This is the command to execute
-        $app = "nohup " . $cfg["pythonCmd"] . " -OO " . $cfg["btmakemetafile"] . " " . escapeshellarg($announce) . " " . escapeshellarg( $cfg['path'] . $file ) . " ";
+        $app = "nohup " . $settings->get('pythonCmd') . " -OO " . $settings->get('btmakemetafile') . " " . escapeshellarg($announce) . " " . escapeshellarg($settings->get('path') . $file ) . " ";
 
         // Is there comments to add?
         if( !empty( $comment ) )

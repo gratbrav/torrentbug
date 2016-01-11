@@ -22,8 +22,12 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+    include_once './Class/autoload.php';
+
 include_once("config.php");
 include_once("functions.php");
+
+    $settings = new Class_Settings();
 
 # what to do?
 $action = getRequestVar("action");
@@ -46,7 +50,7 @@ if($action == "torrent" || $action == "data")
            {
 
                require_once('BDecode.php');
-               $ftorrent=$cfg["torrent_file_path"].$element;
+               $ftorrent = $settings->get('torrent_file_path') . $element;
                $fd = fopen($ftorrent, "rd");
                $alltorrent = fread($fd, filesize($ftorrent));
                $btmeta = BDecode($alltorrent);
@@ -62,7 +66,7 @@ if($action == "torrent" || $action == "data")
                    if (!ereg("(\.\.\/)", $del))
                    {
 
-                       avddelete($cfg["path"].$del);
+                       avddelete($settings->get('path') . $del);
 
                        $arTemp = explode("/", $del);
                        if (count($arTemp) > 1)
@@ -78,9 +82,9 @@ if($action == "torrent" || $action == "data")
                    }
                }
            }
-           @unlink($cfg["torrent_file_path"].$element);
-           @unlink($cfg["torrent_file_path"].$alias);
-           @unlink($cfg["torrent_file_path"].getAliasName($element).".prio");
+           @unlink($settings->get('torrent_file_path') . $element);
+           @unlink($settings->get('torrent_file_path') . $alias);
+           @unlink($settings->get('torrent_file_path') . getAliasName($element) . ".prio");
            AuditAction($cfg["constants"]["delete_torrent"], $element);
 
        }
@@ -116,7 +120,7 @@ else
 
 function delFile($del)
 {
-    global $cfg;
+    global $cfg, $settings;
 
     if(IsAdmin($cfg["user"]) || preg_match("/^" . $cfg["user"] . "/",$del))
     {
@@ -133,7 +137,7 @@ function delFile($del)
 
         if (!ereg("(\.\.\/)", $del))
         {
-            avddelete($cfg["path"].$del);
+            avddelete($settings->get('path') . $del);
 
             $arTemp = explode("/", $del);
             if (count($arTemp) > 1)

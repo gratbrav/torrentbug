@@ -22,10 +22,12 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+	include_once './Class/autoload.php';
+
 include_once("config.php");
 include_once("functions.php");
 
-
+	$settings = new Class_Settings();
 //****************************************************************************
 // showIndex -- default view
 //****************************************************************************
@@ -45,7 +47,7 @@ function showIndex($min)
 //****************************************************************************
 function displayActivity($min=0)
 {
-    global $cfg, $db;
+    global $cfg, $db, $settings;
 
     $offset = 50;
     $inx = 0;
@@ -95,7 +97,7 @@ function displayActivity($min=0)
 
     echo "<table class=\"table table-striped\">";
     echo "<tr><th colspan=\"2\">";
-    echo "<img src=\"images/properties.png\" alt=\"\">&nbsp;&nbsp;" . _UPLOADACTIVITY . " (" . $cfg["days_to_keep"] . " " . _DAYS . ")";
+    echo "<img src=\"images/properties.png\" alt=\"\">&nbsp;&nbsp;" . _UPLOADACTIVITY . " (" . $settings->get('days_to_keep') . " " . _DAYS . ")";
 	echo "</th><th style=\"text-align:right\">";
 
     if(!empty($prevlink) && !empty($morelink))

@@ -36,7 +36,7 @@ function getFile($var)
 // setPriority()
 function setPriority($torrent)
 {
-    global $cfg;
+    global $settings;
 
     // we will use this to determine if we should create a prio file.
     // if the user passes all 1's then they want the whole thing.
@@ -50,7 +50,7 @@ function setPriority($torrent)
     {
 
         $alias = getAliasName($torrent);
-        $fileName = $cfg["torrent_file_path"].$alias.".prio";
+        $fileName = $settings->get('torrent_file_path') . $alias . ".prio";
 
         $result = array();
         $files = array();

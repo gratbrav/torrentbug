@@ -21,9 +21,12 @@
     along with TorrentFlux; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
+	include_once './Class/autoload.php';
 
 include_once("config.php");
 include_once("functions.php");
+
+	$settings = new Class_Settings();
 
 if (! IsAdmin($cfg["user"])) {
     header("Location:index.php");
@@ -32,15 +35,15 @@ if (! IsAdmin($cfg["user"])) {
 	$subMenu = 'index';
 	include_once 'header.php'; 
 	
-	$result = shell_exec("df -h ".$cfg["path"]);
-	$result2 = shell_exec("du -sh ".$cfg["path"]."*");
+	$result = shell_exec("df -h " . $settings->get('path'));
+	$result2 = shell_exec("du -sh " . $settings->get('path') . "*");
 	$result4 = shell_exec("w");
 	$result5 = shell_exec("free -mo");
 ?>
 <div class="container">
 	<div class="row">
 		<div class="col-sm-12 bd-example" style="padding: 10px;">
-			<?php echo displayDriveSpaceBar(getDriveSpace($cfg["path"])); ?>
+			<?php echo displayDriveSpaceBar(getDriveSpace($settings->get('path'))); ?>
 		</div>
 	</div>
 </div>

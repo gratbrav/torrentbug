@@ -23,16 +23,19 @@
 */
 
 // contributed by NovaKing -- thanks duder!
+    include_once './Class/autoload.php';
 
 include_once("config.php");
 include_once("functions.php");
-
+    
+    $settings = new Class_Settings();
+    
 DisplayHead("View NFO");
 
 $file = SecurityCleanPath(getRequestVar("path"));
 $folder = htmlspecialchars( substr( $file, 0, strrpos( $file, "/" ) ) );
 
-if( ( $output = @file_get_contents( $cfg["path"] . $file ) ) === false )
+if( ( $output = @file_get_contents($settings->get('path') . $file ) ) === false )
     $output = "Error opening NFO File.";
 ?>
 <div align="center" style="width: 740px;">

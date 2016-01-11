@@ -30,9 +30,9 @@
 // you may choose from many (mysql is the default)
 $cfg["db_type"] = "mysql";       // mysql, postgres7, postgres8 view adodb/drivers/
 $cfg["db_host"] = "localhost";   // DB host computer name or IP
-$cfg["db_name"] = "torrentflux"; // Name of the Database
-$cfg["db_user"] = "root";        // username for your MySQL database
-$cfg["db_pass"] = "";            // password for database
+$cfg["db_name"] = "flux"; // Name of the Database
+$cfg["db_user"] = "flux";        // username for your MySQL database
+$cfg["db_pass"] = "fluxuser";            // password for database
 /**************************************************************************/
 
 

@@ -21,10 +21,14 @@
     along with TorrentFlux; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
+    
+    include_once './Class/autoload.php';
 
 include_once("config.php");
 include_once("functions.php");
 include_once("searchEngines/SearchEngineBase.php");
+
+    $settings = new Class_Settings();
 
     // Go get the if this is a search request. go get the data and produce output.
 
@@ -44,7 +48,7 @@ include_once("searchEngines/SearchEngineBase.php");
     $pg = getRequestVar('pg');
 
     $searchEngine = getRequestVar('searchEngine');
-    if (empty($searchEngine)) $searchEngine = $cfg["searchEngine"];
+    if (empty($searchEngine)) $searchEngine = $settings->get('searchEngine');
 
     $searchterm = getRequestVar('searchterm');
     if(empty($searchterm))

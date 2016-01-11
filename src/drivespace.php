@@ -22,21 +22,24 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+	include_once './Class/autoload.php';
+
 include_once("config.php");
 include_once("functions.php");
 
-
-$result = shell_exec("df -h ".$cfg["path"]);
-$result2 = shell_exec("du -sh ".$cfg["path"]."*");
+	$settings = new Class_Settings();
+	
+$result = shell_exec("df -h " . $settings->get('path'));
+$result2 = shell_exec("du -sh " . $settings->get('path') . "*");
 
 	$subMenu = 'index';
-	include_once 'header.php' 
+	include_once 'header.php';
 ?>
 
 <div class="container">
 	<div class="row">
 		<div class="col-sm-12 bd-example" style="padding: 10px;">
-			<?php echo displayDriveSpaceBar(getDriveSpace($cfg["path"])); ?>
+			<?php echo displayDriveSpaceBar(getDriveSpace($settings->get('path'))); ?>
 		</div>
 	</div>
 </div>

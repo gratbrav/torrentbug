@@ -22,41 +22,20 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+	include_once './Class/autoload.php';
 
 include_once("config.php");
 include_once("functions.php");
 require_once("metaInfo.php");
 
+	$settings = new Class_Settings();
+
 global $cfg;
 
 $torrent = SecurityClean(getRequestVar('torrent'));
-?>
-<!doctype html>
-<html>
-<head>
-	<TITLE><?php echo $percentdone.$cfg["pagetitle"] ?></TITLE>
-	<link rel="icon" href="images/favicon.ico" type="image/x-icon" />
-	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
-	<link rel="stylesheet" href="./plugins/twitter/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
-    <LINK REL="StyleSheet" HREF="themes/<?php echo $cfg["theme"] ?>/style.css" TYPE="text/css">
-	<META HTTP-EQUIV="Pragma" CONTENT="no-cache" charset="<?php echo _CHARSET ?>">
-<style>
-.bd-example {
-	margin-left: 0;
-	margin-right: 0;
-	margin-bottom: 0;
-	padding: 1.5rem;
-	border-width: .2rem;
-	position: relative;
-	padding: 1rem;
-	margin: 1rem -1rem;
-	border: solid white;
-}
-</style>
-</head>
-<body topmargin="8" bgcolor="<?php echo $cfg["main_bgcolor"] ?>">
 
-<?php
+    include_once 'header.php';
+
 	// Does the user have messages?
 	$sql = "select count(*) from tf_messages where to_user='".$cfg['user']."' and IsNew=1";
 	
@@ -70,16 +49,8 @@ $torrent = SecurityClean(getRequestVar('torrent'));
 
 <div class="container">
 	<div class="row">
-		<nav class="navbar navbar-light " style="background-color: #e3f2fd;">
-			<?php include_once 'menu.php' ?>
-		</nav>
-	</div>
-</div>
-
-<div class="container">
-	<div class="row">
 		<div class="col-sm-12">
-			<?php displayDriveSpaceBar(getDriveSpace($cfg["path"])); ?>
+			<?php displayDriveSpaceBar(getDriveSpace($settings->get('path'))); ?>
 		</div>
 	</div>
 </div>

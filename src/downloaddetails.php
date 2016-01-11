@@ -21,10 +21,13 @@
     along with TorrentFlux; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
+    include_once './Class/autoload.php';
 
 include_once("config.php");
 include_once("functions.php");
 include_once("AliasFile.php");
+
+    $settings = new Class_Settings();
 
 $torrent = getRequestVar('torrent');
 $error = "";
@@ -36,7 +39,7 @@ if (!empty($alias))
 {
     // read the alias file
     // create AliasFile object
-    $af = new AliasFile($cfg["torrent_file_path"].$alias, $torrentowner);
+    $af = new AliasFile($settings->get('torrent_file_path') . $alias, $torrentowner);
 
     for ($inx = 0; $inx < sizeof($af->errors); $inx++)
     {

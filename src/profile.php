@@ -22,14 +22,18 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+	include_once './Class/autoload.php';
+
 include_once("config.php");
 include_once("functions.php");
 
+	$settings = new Class_Settings();
+	
 //****************************************************************************
 // showIndex -- main view
 function showIndex()
 {
-    global $cfg, $db;
+    global $cfg, $db, $settings;
 
     $hideChecked = ($cfg['hide_offline'] == 1) ? 'checked' : '';
 ?>
@@ -75,7 +79,7 @@ function showIndex()
 		            <td><strong><?php echo $user_percent ?>%</strong></td>
 		        </tr>
 		        <tr>
-		            <td colspan="2" style="text-align:center"><div style="text-align:center" class="tiny">(<?php echo _PARTICIPATIONSTATEMENT. " ".$cfg['days_to_keep']." "._DAYS ?>)</div></td>
+		            <td colspan="2" style="text-align:center"><div style="text-align:center" class="tiny">(<?php echo _PARTICIPATIONSTATEMENT. " " . $settings->get('days_to_keep') . " "._DAYS ?>)</div></td>
 		        </tr>
 		        <tr>
 		            <td style="text-align:right"><?php echo _TOTALPAGEVIEWS ?>:&nbsp;</td>

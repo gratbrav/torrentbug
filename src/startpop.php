@@ -22,14 +22,18 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+	include_once './Class/autoload.php';
+
 include_once("config.php");
 include_once("functions.php");
 require_once("metaInfo.php");
 
+	$settings = new Class_Settings();
+
 $torrent = SecurityClean(getRequestVar('torrent'));
 $displayName = $torrent;
 
-if (!file_exists($cfg["torrent_file_path"].$torrent))
+if (!file_exists($settings->get('torrent_file_path') . $torrent))
 {
     echo $torrent." could not be found or does not exist.";
     die();
@@ -173,21 +177,21 @@ function isNumber(sText)
         <table width="100%" cellpadding="2" cellspacing="0" border="0">
         <tr>
             <td align="right">Max Upload Rate:</td>
-            <td><input type="Text" name="rate" maxlength="4" size="4" value="<?php echo $cfg["max_upload_rate"]; ?>"> kB/s</td>
+            <td><input type="Text" name="rate" maxlength="4" size="4" value="<?php echo $settings->get('max_upload_rate') ?>"> kB/s</td>
             <td align="right">Max # Uploads:</td>
-            <td><input type="Text" name="maxuploads" maxlength="2" size="2" value="<?php echo $cfg["max_uploads"]; ?>"></td>
+            <td><input type="Text" name="maxuploads" maxlength="2" size="2" value="<?php echo $settings->get('max_uploads') ?>"></td>
         </tr>
         <tr>
             <td align="right" valign="top">Max Download Rate:</td>
-            <td valign="top"><input type="Text" name="drate" maxlength="4" size="4" value="<?php echo $cfg["max_download_rate"]; ?>"> kB/s<font class="tiny"> (0 = max)</font></td>
+            <td valign="top"><input type="Text" name="drate" maxlength="4" size="4" value="<?php echo $settings->get('max_download_rate') ?>"> kB/s<font class="tiny"> (0 = max)</font></td>
             <td align="Left" colspan="2" valign="top"><input type="Checkbox" name="superseeder" value="1">Super Seeder<font class="tiny"> (dedicated seed only)</font></td>
         </tr>
         <tr>
             <td align="right" valign="top">Rerequest Interval:</td>
-            <td valign="top"><input type="Text" name="rerequest" maxlength="5" size="5" value="<?php echo $cfg["rerequest_interval"]; ?>"></td>
+            <td valign="top"><input type="Text" name="rerequest" maxlength="5" size="5" value="<?php echo $settings->get('rerequest_interval') ?>"></td>
             <td align="Left" colspan="2" valign="top">
 <?php
-    if($cfg["AllowQueing"] == true)
+    if($settings->get('AllowQueing') == true)
     {
         if ( IsAdmin() )
         {
@@ -212,7 +216,7 @@ function isNumber(sText)
             <td>
                 <?php
                     $selected = "";
-                    if ($cfg["torrent_dies_when_done"] == "False")
+                    if ($settings->get('torrent_dies_when_done') == "False")
                     {
                         $selected = "selected";
                     }
@@ -225,13 +229,13 @@ function isNumber(sText)
             </td>
             <td align="right">Port Range:</td>
             <td>
-            <input type="Text" name="minport" maxlength="5" size="5" value="<?php echo $cfg["minport"]; ?>">
+            <input type="Text" name="minport" maxlength="5" size="5" value="<?php echo $settings->get('minport') ?>">
             -
-            <input type="Text" name="maxport" maxlength="5" size="5" value="<?php echo $cfg["maxport"]; ?>">
+            <input type="Text" name="maxport" maxlength="5" size="5" value="<?php echo $settings->get('maxport') ?>">
             </td>
         </tr>
         <tr>
-            <td colspan="4" align="center"><div ID="sharekiller" align="center" style="visibility:hidden;">Keep seeding until Sharing is: <input type="Text" name="sharekill" maxlength="4" size="4" value="<?php echo $cfg["sharekill"]; ?>">%<font class="tiny">  (0% will keep seeding)</font>&nbsp;</div></td>
+            <td colspan="4" align="center"><div ID="sharekiller" align="center" style="visibility:hidden;">Keep seeding until Sharing is: <input type="Text" name="sharekill" maxlength="4" size="4" value="<?php echo $settings->get('sharekill') ?>">%<font class="tiny">  (0% will keep seeding)</font>&nbsp;</div></td>
         </tr>
         </table>
         <br>

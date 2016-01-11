@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-	<title><?php echo $percentdone.$cfg["pagetitle"] ?></title>
+	<title><?php echo $cfg["pagetitle"] ?></title>
 	<link rel="icon" href="images/favicon.ico" type="image/x-icon" />
 	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
 	<link rel="stylesheet" href="./plugins/twitter/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
@@ -40,7 +40,7 @@
 				<div class="col-sm-12 nav navbar-nav" style="margin-left:16px;">
 					<a class="nav-item nav-link" href="admin.php"><small><?php echo _ADMIN_MENU ?></small></a> 
 	    			<a class="nav-item nav-link" href="admin.php?op=configSettings"><small><?php echo _SETTINGS_MENU ?></small></a> 
-	    			<a class="nav-item nav-link" href="admin.php?op=queueSettings"><small><?php echo_QMANAGER_MENU ?></small></a> 
+	    			<a class="nav-item nav-link" href="admin.php?op=queueSettings"><small><?php echo _QMANAGER_MENU ?></small></a> 
 	    			<a class="nav-item nav-link" href="admin.php?op=searchSettings"><small><?php echo _SEARCHSETTINGS_MENU ?></small></a> 
 	    			<a class="nav-item nav-link" href="admin.php?op=showUserActivity"><small><?php echo _ACTIVITY_MENU ?></small></a>
 	    			<a class="nav-item nav-link" href="admin.php?op=editLinks"><small><?php echo _LINKS_MENU ?></small></a>

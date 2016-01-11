@@ -39,14 +39,8 @@ include_once("settingsfunctions.php");
 // Create Connection.
 $db = getdb();
 
-loadSettings();
-
 // Free space in MB
-$cfg["free_space"] = @disk_free_space($cfg["path"])/(1024*1024);
-
-// Path to where the torrent meta files will be stored... usually a sub of $cfg["path"]
-// also, not the '.' to make this a hidden directory
-$cfg["torrent_file_path"] = $cfg["path"].".torrents/";
+$cfg["free_space"] = @disk_free_space($settings->get('path'))/(1024*1024);
 
 Authenticate();
 
@@ -105,7 +99,7 @@ function avddelete($file)
 // Authenticate()
 function Authenticate()
 {
-    global $cfg, $db;
+    global $cfg, $db, $settings;
 
     $create_time = time();
 
@@ -140,25 +134,22 @@ function Authenticate()
     if (!ereg('^[^./][^/]*$', $cfg["theme"]))
     {
         AuditAction($cfg["constants"]["error"], "THEME VARIABLE CHANGE ATTEMPT: ".$cfg["theme"]." from ".$cfg['user']);
-        $cfg["theme"] = $cfg["default_theme"];
+        $cfg["theme"] = $settings->get('default_theme');
     }
 
     // Check for valid language file
-    if(!ereg('^[^./][^/]*$', $cfg["language_file"]))
-    {
+    if(!ereg('^[^./][^/]*$', $cfg["language_file"])) {
         AuditAction($cfg["constants"]["error"], "LANGUAGE VARIABLE CHANGE ATTEMPT: ".$cfg["language_file"]." from ".$cfg['user']);
-        $cfg["language_file"] = $cfg["default_language"];
+        $cfg["language_file"] = $settings->get('default_language');
     }
 
-    if (!is_dir("themes/".$cfg["theme"]))
-    {
-        $cfg["theme"] = $cfg["default_theme"];
+    if (!is_dir("themes/".$cfg["theme"])) {
+        $cfg["theme"] = $settings->get('default_theme');
     }
 
     // Check for valid language file
-    if (!is_file("language/".$cfg["language_file"]))
-    {
-        $cfg["language_file"] = $cfg["default_language"];
+    if (!is_file("language/".$cfg["language_file"])) {
+        $cfg["language_file"] = $settings->get('default_language');
     }
 
     $hits++;
@@ -238,21 +229,21 @@ function SaveMessage($to_user, $from_user, $message, $to_all=0, $force_read=0)
 //*********************************************************
 function addNewUser($newUser, $pass1, $userType)
 {
-    global $cfg, $db;
+    global $settings, $db;
 
     $create_time = time();
 
     $record = array(
-                    'user_id'=>strtolower($newUser),
-                    'password'=>md5($pass1),
-                    'hits'=>0,
-                    'last_visit'=>$create_time,
-                    'time_created'=>$create_time,
-                    'user_level'=>$userType,
-                    'hide_offline'=>"0",
-                    'theme'=>$cfg["default_theme"],
-                    'language_file'=>$cfg["default_language"]
-                    );
+    	'user_id'		=> strtolower($newUser),
+        'password'		=> md5($pass1),
+        'hits'			=> 0,
+        'last_visit'	=> $create_time,
+        'time_created'	=> $create_time,
+        'user_level'	=> $userType,
+        'hide_offline'	=> "0",
+        'theme'			=> $settings->get('default_theme'),
+        'language_file'	=> $settings->get('default_language')
+	);
 
     $sTable = 'tf_users';
     $sql = $db->GetInsertSql($sTable, $record);
@@ -263,16 +254,16 @@ function addNewUser($newUser, $pass1, $userType)
 //*********************************************************
 function PruneDB()
 {
-    global $cfg, $db;
+    global $cfg, $db, $settings;
 
     // Prune LOG
-    $testTime = time()-($cfg['days_to_keep'] * 86400); // 86400 is one day in seconds
+    $testTime = time()-($settings->get('days_to_keep') * 86400); // 86400 is one day in seconds
     $sql = "delete from tf_log where time < " . $db->qstr($testTime);
     $result = $db->Execute($sql);
     showError($db,$sql);
     unset($result);
 
-    $testTime = time()-($cfg['minutes_to_keep'] * 60);
+    $testTime = time()-($settings->get('minutes_to_keep') * 60);
     $sql = "delete from tf_log where time < " . $db->qstr($testTime). " and action=".$db->qstr($cfg["constants"]["hit"]);
     $result = $db->Execute($sql);
     showError($db,$sql);
@@ -344,7 +335,7 @@ function getOwner($file)
 //*********************************************************
 function resetOwner($file)
 {
-    global $cfg, $db;
+    global $cfg, $db, $settings;
     include_once("AliasFile.php");
 
     // log entry has expired so we must renew it
@@ -352,9 +343,9 @@ function resetOwner($file)
 
     $alias = getAliasName($file).".stat";
 
-    if(file_exists($cfg["torrent_file_path"].$alias))
+    if(file_exists($settings->get('torrent_file_path').$alias))
     {
-        $af = new AliasFile($cfg["torrent_file_path"].$alias);
+        $af = new AliasFile($settings->get('torrent_file_path').$alias);
 
         if (IsUser($af->torrentowner))
         {
@@ -1032,16 +1023,15 @@ function buildSearchEngineDDL($selectedEngine = 'PirateBay', $autoSubmit = false
 // Build Search Engine Links
 function buildSearchEngineLinks($selectedEngine = 'PirateBay')
 {
-    global $cfg;
+    global $cfg, $settings;
 
     $settingsNeedsSaving = false;
-    $settings['searchEngineLinks'] = Array();
+    $options['searchEngineLinks'] = Array();
 
     $output = '';
 
-    if( (!array_key_exists('searchEngineLinks', $cfg)) || (!is_array($cfg['searchEngineLinks'])))
-    {
-        saveSettings($settings);
+    if ($settings->get('searchEngineLinks') == null || !is_array($settings->get('searchEngineLinks'))) {
+	    $settings->save($options);
     }
 
     $handle = opendir("./searchEngines");
@@ -1058,15 +1048,12 @@ function buildSearchEngineLinks($selectedEngine = 'PirateBay')
             {
                 $tmpEngine = str_replace("Engine",'',substr($entry,0,strpos($entry,".")));
 
-                if(array_key_exists($tmpEngine,$cfg['searchEngineLinks']))
-                {
-                    $hreflink = $cfg['searchEngineLinks'][$tmpEngine];
-                    $settings['searchEngineLinks'][$tmpEngine] = $hreflink;
-                }
-                else
-                {
+                if (array_key_exists($tmpEngine, $settings->get('searchEngineLinks'))) {
+                    $hreflink = $settings->get('searchEngineLinks')[$tmpEngine];
+                    $options['searchEngineLinks'][$tmpEngine] = $hreflink;
+                } else {
                     $hreflink = getEngineLink($tmpEngine);
-                    $settings['searchEngineLinks'][$tmpEngine] = $hreflink;
+                    $options['searchEngineLinks'][$tmpEngine] = $hreflink;
                     $settingsNeedsSaving = true;
                 }
 
@@ -1086,16 +1073,16 @@ function buildSearchEngineLinks($selectedEngine = 'PirateBay')
             }
     }
 
-    if ( count($settings['searchEngineLinks'],COUNT_RECURSIVE) <> count($cfg['searchEngineLinks'],COUNT_RECURSIVE))
+    if ( count($options['searchEngineLinks'],COUNT_RECURSIVE) <> count($settings->get('searchEngineLinks'),COUNT_RECURSIVE))
     {
         $settingsNeedsSaving = true;
     }
 
     if ($settingsNeedsSaving)
     {
-        natcasesort($settings['searchEngineLinks']);
+        natcasesort($options['searchEngineLinks']);
 
-        saveSettings($settings);
+        $settings->save($options);
     }
 
     return $output;
@@ -1350,12 +1337,12 @@ function check_html ($str, $strip="")
 // If it does not exist, then it creates it.
 function checkTorrentPath()
 {
-    global $cfg;
+    global $settings;
     // is there a stat and torrent dir?
-    if (!@is_dir($cfg["torrent_file_path"]) && is_writable($cfg["path"]))
+    if (!@is_dir($settings->get('torrent_file_path')) && is_writable($settings->get('path')))
     {
         //Then create it
-        @mkdir($cfg["torrent_file_path"], 0777);
+        @mkdir($settings->get('torrent_file_path'), 0777);
     }
 }
 
@@ -1915,15 +1902,18 @@ class ProcessInfo
 //**************************************************************************
 function runPS()
 {
-    global $cfg;
+    global $cfg, $settings;
 
-    return shell_exec("ps x -o pid='' -o ppid='' -o command='' -ww | grep ".basename($cfg["btphpbin"])." | grep ".$cfg["torrent_file_path"]." | grep -v grep");
+    $btphpbin = basename($settings->get('btphpbin')); 
+    $filePath = $settings->get('torrent_file_path');
+
+    return shell_exec("ps x -o pid='' -o ppid='' -o command='' -ww | grep " . $btphpbin . " | grep " . $filePath . " | grep -v grep");
 }
 
 //**************************************************************************
 function RunningProcessInfo()
 {
-    global $cfg;
+    global $settings;
 
     if (IsAdmin())
     {
@@ -1947,14 +1937,14 @@ function RunningProcessInfo()
         $QLine = "";
         for($i = 0; $i < sizeof($arScreen); $i++)
         {
-            if(strpos($arScreen[$i], $cfg["tfQManager"]) > 0)
+            if(strpos($arScreen[$i], $settings->get('tfQManager')) > 0)
             {
                 $pinfo = new ProcessInfo($arScreen[$i]);
                 $QLine = $pinfo->pid;
             }
             else
             {
-               if(strpos($arScreen[$i], basename($cfg["btphpbin"])) !== false)
+               if(strpos($arScreen[$i], basename($settings->get('btphpbin'))) !== false)
                {
                    $pinfo = new ProcessInfo($arScreen[$i]);
 
@@ -2008,11 +1998,11 @@ function RunningProcessInfo()
 //**************************************************************************
 function getNumberOfQueuedTorrents()
 {
-    global $cfg;
+    global $settings;
 
     $rtnValue = 0;
 
-    $dirName = $cfg["torrent_file_path"] . "queue/";
+    $dirName = $settings->get('torrent_file_path') . "queue/";
 
     $handle = @opendir($dirName);
 
@@ -2043,7 +2033,7 @@ function getRunningTorrentCount()
 function getRunningTorrents()
 {
 
-    global $cfg;
+    global $settings;
 
     $screenStatus = runPS();
 
@@ -2059,9 +2049,9 @@ function getRunningTorrents()
 
     for($i = 0; $i < sizeof($arScreen); $i++)
     {
-        if(! strpos($arScreen[$i], $cfg["tfQManager"]) > 0)
+        if(! strpos($arScreen[$i], $settings->get('tfQManager')) > 0)
         {
-           if(strpos($arScreen[$i], basename($cfg["btphpbin"])) !== false)
+           if(strpos($arScreen[$i], basename($settings->get('btphpbin'))) !== false)
            {
                $pinfo = new ProcessInfo($arScreen[$i]);
 
@@ -2111,11 +2101,11 @@ function checkQManager()
 //**************************************************************************
 function getQManagerPID()
 {
-    global $cfg;
+    global $settings;
 
     $rtnValue = "";
 
-    $pidFile = $cfg["torrent_file_path"] . "queue/tfQManager.pid";
+    $pidFile = $settings->get('torrent_file_path') . "queue/tfQManager.pid";
 
     if(file_exists($pidFile))
     {
@@ -2137,44 +2127,39 @@ function getQManagerPID()
 //**************************************************************************
 function startQManager($maxServerThreads=5,$maxUserThreads=2,$sleepInterval=10)
 {
-    global $cfg;
+    global $cfg, $settings;
 
     // is there a stat and torrent dir?
-    if (is_dir($cfg["torrent_file_path"]))
+    if (is_dir($settings->get('torrent_file_path')))
     {
-        if (is_writable($cfg["torrent_file_path"]) && !is_dir($cfg["torrent_file_path"]."queue/"))
+        if (is_writable($settings->get('torrent_file_path')) && !is_dir($settings->get('torrent_file_path')."queue/"))
         {
             //Then create it
-            mkdir($cfg["torrent_file_path"]."queue/", 0777);
+            mkdir($settings->get('torrent_file_path')."queue/", 0777);
         }
     }
 
     if (checkQManager() == 0)
     {
-    $cmd1 = "cd " . $cfg["path"] . "TFQUSERNAME";
+	    $cmd1 = "cd " . $settings->get('path') . "TFQUSERNAME";
+	
+	    if ($settings->get('pythonCmd') === null) {
+			$settings->save(array('pythonCmd' => '/usr/bin/python'));
+	    }
+	
+	    if ($settings->get('debugTorrents') === null) {
+	    	$settings->save(array('debugTorrents' => false));
+	    }
 
-    if (! array_key_exists("pythonCmd",$cfg))
-    {
-        insertSetting("pythonCmd","/usr/bin/python");
-    }
-
-    if (! array_key_exists("debugTorrents",$cfg))
-    {
-        insertSetting("debugTorrents",false);
-    }
-
-        if (!$cfg["debugTorrents"])
-        {
-            $pyCmd = $cfg["pythonCmd"] . " -OO";
-        }
-        else
-        {
-            $pyCmd = $cfg["pythonCmd"];
+        if (!$settings->get('debugTorrents')) {
+            $pyCmd = $settings->get('pythonCmd') . " -OO";
+        } else {
+            $pyCmd = $settings->get('pythonCmd');
         }
 
-        $btphp = "'" . $cmd1. "; HOME=".$cfg["path"]."; export HOME; nohup " . $pyCmd . " " .$cfg["btphpbin"] . " '";
-        $command = $pyCmd . " " . $cfg["tfQManager"] . " ".$cfg["torrent_file_path"]."queue/ ".escapeshellarg($maxServerThreads)." ".escapeshellarg($maxUserThreads)." ".escapeshellarg($sleepInterval)." ".$btphp." > /dev/null &";
-        //$command = $pyCmd . " " . $cfg["tfQManager"] . " ".$cfg["torrent_file_path"]."queue/ ".$maxServerThreads." ".$maxUserThreads." ".$sleepInterval." ".$btphp." > /dev/null2>&1 & &";
+        $btphp = "'" . $cmd1. "; HOME=".$settings->get('path')."; export HOME; nohup " . $pyCmd . " " .$settings->get('btphpbin') . " '";
+        $command = $pyCmd . " " . $settings->get('tfQManager') . " ".$settings->get('torrent_file_path')."queue/ ".escapeshellarg($maxServerThreads)." ".escapeshellarg($maxUserThreads)." ".escapeshellarg($sleepInterval)." ".$btphp." > /dev/null &";
+        //$command = $pyCmd . " " . $settings->get('tfQManager') . " ".$settings->get('torrent_file_path')."queue/ ".$maxServerThreads." ".$maxUserThreads." ".$sleepInterval." ".$btphp." > /dev/null2>&1 & &";
 
         $result = exec($command);
 
@@ -2190,14 +2175,14 @@ function startQManager($maxServerThreads=5,$maxUserThreads=2,$sleepInterval=10)
 //**************************************************************************
 function stopQManager()
 {
-    global $cfg;
+    global $cfg, $settings;
 
     $QmgrPID = getQManagerPID();
     if($QmgrPID != "")
     {
         AuditAction($cfg["constants"]["QManager"], "Stopping PID:" . $QmgrPID);
         $result = exec("kill ".escapeshellarg($QmgrPID));
-        unlink($cfg["torrent_file_path"] . "queue/tfQManager.pid");
+        unlink($settings->get('torrent_file_path') . "queue/tfQManager.pid");
     }
 }
 
@@ -2249,7 +2234,7 @@ function SecurityClean($string)
 // This method Builds and displays the Torrent Section of the Index Page
 function getDirList($dirName)
 {
-    global $cfg, $db;
+    global $cfg, $db, $settings;
     include_once("AliasFile.php");
 
     include_once("RunningTorrent.php");
@@ -2343,10 +2328,10 @@ function getDirList($dirName)
         }
 
         // Check to see if we have a pid without a process.
-        if (is_file($cfg["torrent_file_path"].$alias.".pid") && empty($kill_id))
+        if (is_file($settings->get('torrent_file_path').$alias.".pid") && empty($kill_id))
         {
             // died outside of tf and pid still exists.
-            @unlink($cfg["torrent_file_path"].$alias.".pid");
+            @unlink($settings->get('torrent_file_path').$alias.".pid");
 
             if(($af->percent_done < 100) && ($af->percent_done >= 0))
             {
@@ -2362,8 +2347,7 @@ function getDirList($dirName)
             $af->WriteFile();
         }
 
-        if ($cfg["enable_torrent_download"])
-        {
+        if ($settings->get('enable_torrent_download')) {
             $torrentfilelink = "<a href=\"maketorrent.php?download=".urlencode($entry)."\"><img src=\"images/down.gif\" width=9 height=9 title=\"Download Torrent File\" alt=\"\"></a>";
         }
 
@@ -2518,11 +2502,10 @@ function getDirList($dirName)
                     }
                     else
                     {
-                        if (!is_file($cfg["torrent_file_path"].$alias.".pid"))
+                        if (!is_file($settings->get('torrent_file_path').$alias.".pid"))
                         {
                             // Allow Avanced start popup?
-                            if ($cfg["advanced_start"])
-                            {
+                            if ($settings->get('advanced_start')) {
                                 if($show_run)
                                 {
                                     $output .= "<a class=\"startTorrent\" href=\"startpop.php?torrent=".urlencode($entry)."\"><img src=\"images/run_on.gif\" title=\""._RUNTORRENT."\" alt=\"\"></a>";
@@ -2553,7 +2536,7 @@ function getDirList($dirName)
                     }
                 }
 
-                if (!is_file($cfg["torrent_file_path"].$alias.".pid"))
+                if (!is_file($settings->get('torrent_file_path').$alias.".pid"))
                 {
                     $deletelink = $_SERVER['PHP_SELF']."?alias_file=".$alias."&delfile=".urlencode($entry);
                     $output .= "<a class=\"deleteTorrent\" href=\"".$deletelink."\" data-torrent=\"" . urlencode($entry) . "\"><img src=\"images/delete_on.gif\" title=\""._DELETE."\"></a>";

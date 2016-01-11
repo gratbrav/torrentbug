@@ -22,8 +22,12 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+	include_once './Class/autoload.php';
+
 include_once 'config.php';
 include_once 'functions.php';
+
+	$settings = new Class_Settings();
 
 if (!IsAdmin()) {
      // the user probably hit this page direct
@@ -221,11 +225,11 @@ function showUserActivity($min=0, $user_id="", $srchFile="", $srchAction="")
 //****************************************************************************
 function backupDatabase()
 {
-    global $cfg;
+    global $cfg, $settings;
 
     $file = $cfg["db_name"]."_".date("Ymd").".tar.gz";
-    $back_file = $cfg["torrent_file_path"].$file;
-    $sql_file = $cfg["torrent_file_path"].$cfg["db_name"].".sql";
+    $back_file = $settings->get('torrent_file_path').$file;
+    $sql_file = $settings->get('torrent_file_path').$cfg["db_name"].".sql";
 
     $sCommand = "";
     switch($cfg["db_type"])
@@ -273,7 +277,7 @@ function backupDatabase()
 //****************************************************************************
 function displayActivity($min=0, $user="", $srchFile="", $srchAction="")
 {
-    global $cfg, $db;
+    global $cfg, $db, $settings;
 
     $sqlForSearch = "";
 
@@ -416,7 +420,7 @@ function displayActivity($min=0, $user="", $srchFile="", $srchAction="")
    				<tr>
    					<th colspan="4">
 						<img src="images/properties.png" alt="" />&nbsp;&nbsp;
-   						<?php echo _ACTIVITYLOG . " " . $cfg["days_to_keep"] . " " . _DAYS . " (" . $userdisplay . ")" ?>
+   						<?php echo _ACTIVITYLOG . " " . $settings->get('days_to_keep') . " " . _DAYS . " (" . $userdisplay . ")" ?>
    					</th>
    					<th style="text-align:right">
 					    <?php  
@@ -483,7 +487,7 @@ function displayActivity($min=0, $user="", $srchFile="", $srchAction="")
 //****************************************************************************
 function displayUserSection()
 {
-    global $cfg, $db;
+    global $cfg, $db, $settings;
 ?>
 <div class="container">
 	<div class="row">
@@ -498,7 +502,7 @@ function displayUserSection()
     			<tr>
     				<th style="width:15%"><?php echo _USER ?></th>
 				    <th style="width:6%"><?php echo _HITS ?></th>
-				    <th><?php echo _UPLOADACTIVITY . ' (' . $cfg['days_to_keep'] . ' ' . _DAYS . ')' ?></th>
+				    <th><?php echo _UPLOADACTIVITY . ' (' . $settings->get('days_to_keep') . ' ' . _DAYS . ')' ?></th>
 				    <th style="width:6%"><?php echo _JOINED ?></th>
 				    <th style="width:15%"><?php echo _LASTVISIT ?></th>
 				    <th style="width:8%"><?php echo _ADMIN ?></th>
@@ -596,7 +600,7 @@ function displayUserSection()
 //****************************************************************************
 function editUser($user_id)
 {
-    global $cfg, $db;
+    global $cfg, $db, $settings;
 
     $editUserImage = "images/user.gif";
     $selected_n = "selected";
@@ -692,7 +696,7 @@ function editUser($user_id)
             <td><strong><?php echo $user_percent ?>%</strong></td>
         </tr>
         <tr>
-            <td colspan="2" style="text-align:center"><div style="text-align:center" class="tiny">(<?php echo _PARTICIPATIONSTATEMENT. " ".$cfg['days_to_keep']." "._DAYS ?>)</div><br></td>
+            <td colspan="2" style="text-align:center"><div style="text-align:center" class="tiny">(<?php echo _PARTICIPATIONSTATEMENT. " ".$settings->get('days_to_keep')." "._DAYS ?>)</div><br></td>
         </tr>
         <tr>
             <td style="text-align:right"><?php echo _TOTALPAGEVIEWS ?>:&nbsp;</td>
@@ -1101,7 +1105,7 @@ function validatePath($path)
 //****************************************************************************
 function configSettings()
 {
-    global $cfg;
+    global $cfg, $settings;
     include_once("AliasFile.php");
     include_once("RunningTorrent.php");
 ?>
@@ -1230,7 +1234,7 @@ function configSettings()
 					            It must be chmod'd to 777:
 					            </td>
 					            <td>
-					                <input name="path" type="Text" maxlength="254" value="<?php echo($cfg["path"]); ?>" size="55"><?php echo validatePath($cfg["path"]) ?>
+					                <input name="path" type="Text" maxlength="254" value="<?php echo($settings->get('path')); ?>" size="55"><?php echo validatePath($settings->get('path')) ?>
 					            </td>
 					        </tr>
 					        <tr>
@@ -1238,7 +1242,7 @@ function configSettings()
 					            Specify the path to the Python binary (usually /usr/bin/python or /usr/local/bin/python):
 					            </td>
 					            <td>
-					                <input name="pythonCmd" type="Text" maxlength="254" value="<?php    echo($cfg["pythonCmd"]); ?>" size="55"><?php echo validateFile($cfg["pythonCmd"]) ?>
+					                <input name="pythonCmd" type="Text" maxlength="254" value="<?php    echo($settings->get('pythonCmd')); ?>" size="55"><?php echo validateFile($settings->get('pythonCmd')) ?>
 					            </td>
 					        </tr>
 					        <tr>
@@ -1246,7 +1250,7 @@ function configSettings()
 					            Specify the path to the btphptornado python script:
 					            </td>
 					            <td>
-					                <input name="btphpbin" type="Text" maxlength="254" value="<?php    echo($cfg["btphpbin"]); ?>" size="55"><?php echo validateFile($cfg["btphpbin"]) ?>
+					                <input name="btphpbin" type="Text" maxlength="254" value="<?php    echo($settings->get('btphpbin')); ?>" size="55"><?php echo validateFile($settings->get('btphpbin')) ?>
 					            </td>
 					        </tr>
 					        <tr>
@@ -1254,7 +1258,7 @@ function configSettings()
 					            Specify the path to the btshowmetainfo python script:
 					            </td>
 					            <td>
-					                <input name="btshowmetainfo" type="Text" maxlength="254" value="<?php    echo($cfg["btshowmetainfo"]); ?>" size="55"><?php echo validateFile($cfg["btshowmetainfo"]) ?>
+					                <input name="btshowmetainfo" type="Text" maxlength="254" value="<?php    echo($settings->get('btshowmetainfo')); ?>" size="55"><?php echo validateFile($settings->get('btshowmetainfo')) ?>
 					            </td>
 					        </tr>
 					        <tr>
@@ -1265,7 +1269,7 @@ function configSettings()
 					                <select name="advanced_start">
 					                        <option value="1">true</option>
 					                        <option value="0" <?php
-					                        if (!$cfg["advanced_start"])
+					                        if (!$settings->get('advanced_start'))
 					                        {
 					                            echo "selected";
 					                        }
@@ -1281,7 +1285,7 @@ function configSettings()
 					                <select name="enable_file_priority">
 					                        <option value="1">true</option>
 					                        <option value="0" <?php
-					                        if (!$cfg["enable_file_priority"])
+					                        if (!$settings->get('enable_file_priority'))
 					                        {
 					                            echo "selected";
 					                        }
@@ -1294,7 +1298,7 @@ function configSettings()
 					            Set the default value for the max upload rate per torrent:
 					            </td>
 					            <td>
-					                <input name="max_upload_rate" type="Text" maxlength="5" value="<?php    echo($cfg["max_upload_rate"]); ?>" size="5"> KB/second
+					                <input name="max_upload_rate" type="Text" maxlength="5" value="<?php    echo($settings->get('max_upload_rate')); ?>" size="5"> KB/second
 					            </td>
 					        </tr>
 					        <tr>
@@ -1302,7 +1306,7 @@ function configSettings()
 					            Set the default value for the max download rate per torrent (0 for no limit):
 					            </td>
 					            <td>
-					                <input name="max_download_rate" type="Text" maxlength="5" value="<?php    echo($cfg["max_download_rate"]); ?>" size="5"> KB/second
+					                <input name="max_download_rate" type="Text" maxlength="5" value="<?php    echo($settings->get('max_download_rate')); ?>" size="5"> KB/second
 					            </td>
 					        </tr>
 					        <tr>
@@ -1310,7 +1314,7 @@ function configSettings()
 					            Set the default value for the max number of upload connections per torrent:
 					            </td>
 					            <td>
-					                <input name="max_uploads" type="Text" maxlength="5" value="<?php    echo($cfg["max_uploads"]); ?>" size="5">
+					                <input name="max_uploads" type="Text" maxlength="5" value="<?php    echo($settings->get('max_uploads')); ?>" size="5">
 					            </td>
 					        </tr>
 					        <tr>
@@ -1318,8 +1322,8 @@ function configSettings()
 					            Set the default values for the for port range (Min - Max):
 					            </td>
 					            <td>
-					                <input name="minport" type="Text" maxlength="5" value="<?php    echo($cfg["minport"]); ?>" size="5"> -
-					                <input name="maxport" type="Text" maxlength="5" value="<?php    echo($cfg["maxport"]); ?>" size="5">
+					                <input name="minport" type="Text" maxlength="5" value="<?php    echo($settings->get('minport')); ?>" size="5"> -
+					                <input name="maxport" type="Text" maxlength="5" value="<?php    echo($settings->get('maxport')); ?>" size="5">
 					            </td>
 					        </tr>
 					        <tr>
@@ -1327,7 +1331,7 @@ function configSettings()
 					            Set the default value for the rerequest interval to the tracker (default 1800 seconds):
 					            </td>
 					            <td>
-					                <input name="rerequest_interval" type="Text" maxlength="5" value="<?php    echo($cfg["rerequest_interval"]); ?>" size="5">
+					                <input name="rerequest_interval" type="Text" maxlength="5" value="<?php    echo($settings->get('rerequest_interval')); ?>" size="5">
 					            </td>
 					        </tr>
 					        <tr>
@@ -1338,7 +1342,7 @@ function configSettings()
 					                <select name="crypto_allowed">
 					                        <option value="1">true</option>
 					                        <option value="0" <?php
-					                        if (!$cfg["crypto_allowed"])
+					                        if (!$settings->get('crypto_allowed'))
 					                        {
 					                            echo "selected";
 					                        }
@@ -1354,7 +1358,7 @@ function configSettings()
 					                <select name="crypto_only">
 					                        <option value="1">true</option>
 					                        <option value="0" <?php
-					                        if (!$cfg["crypto_only"])
+					                        if (!$settings->get('crypto_only'))
 					                        {
 					                            echo "selected";
 					                        }
@@ -1369,7 +1373,7 @@ function configSettings()
 					                <select name="crypto_stealth">
 					                        <option value="1">true</option>
 					                        <option value="0" <?php
-					                        if (!$cfg["crypto_stealth"])
+					                        if (!$settings->get('crypto_stealth'))
 					                        {
 					                            echo "selected";
 					                        }
@@ -1382,7 +1386,7 @@ function configSettings()
 					            DO NOT include --max_upload_rate, --minport, --maxport, --max_uploads, --crypto_allowed, --crypto_only, --crypto_stealth here as they are included by TorrentFlux settings above:
 					            </td>
 					            <td>
-					                <input name="cmd_options" type="Text" maxlength="254" value="<?php    echo($cfg["cmd_options"]); ?>" size="55">
+					                <input name="cmd_options" type="Text" maxlength="254" value="<?php    echo($settings->get('cmd_options')); ?>" size="55">
 					            </td>
 					        </tr>
 					        <tr>
@@ -1393,7 +1397,7 @@ function configSettings()
 					                <select name="enable_search">
 					                        <option value="1">true</option>
 					                        <option value="0" <?php
-					                        if (!$cfg["enable_search"])
+					                        if (!$settings->get('enable_search'))
 					                        {
 					                            echo "selected";
 					                        }
@@ -1406,7 +1410,7 @@ function configSettings()
 					            Select the default search engine for torrent searches:
 					            </td>
 					            <td>
-									<?php echo buildSearchEngineDDL($cfg["searchEngine"]); ?>
+									<?php echo buildSearchEngineDDL($settings->get('searchEngine')); ?>
 					            </td>
 					        </tr>
 					        <tr>
@@ -1417,7 +1421,7 @@ function configSettings()
 					                <select name="enable_maketorrent">
 					                        <option value="1">true</option>
 					                        <option value="0" <?php
-					                        if (!$cfg["enable_maketorrent"])
+					                        if (!$settings->get('enable_maketorrent'))
 					                        {
 					                            echo "selected";
 					                        }
@@ -1430,7 +1434,7 @@ function configSettings()
 					            Specify the path to the btmakemetafile.py python script (used for making torrents):
 					            </td>
 					            <td>
-					                <input name="btmakemetafile" type="Text" maxlength="254" value="<?php echo($cfg["btmakemetafile"]); ?>" size="55"><?php echo validateFile($cfg["btmakemetafile"]); ?>
+					                <input name="btmakemetafile" type="Text" maxlength="254" value="<?php echo($settings->get('btmakemetafile')); ?>" size="55"><?php echo validateFile($settings->get('btmakemetafile')); ?>
 					            </td>
 					        </tr>
 					        <tr>
@@ -1441,7 +1445,7 @@ function configSettings()
 					                <select name="enable_torrent_download">
 					                        <option value="1">true</option>
 					                        <option value="0" <?php
-					                        if (!$cfg["enable_torrent_download"])
+					                        if (!$settings->get('enable_torrent_download'))
 					                        {
 					                            echo "selected";
 					                        }
@@ -1457,7 +1461,7 @@ function configSettings()
 					                <select name="enable_file_download">
 					                        <option value="1">true</option>
 					                        <option value="0" <?php
-					                        if (!$cfg["enable_file_download"])
+					                        if (!$settings->get('enable_file_download'))
 					                        {
 					                            echo "selected";
 					                        }
@@ -1473,7 +1477,7 @@ function configSettings()
 					                <select name="enable_view_nfo">
 					                        <option value="1">true</option>
 					                        <option value="0" <?php
-					                        if (!$cfg["enable_view_nfo"])
+					                        if (!$settings->get('enable_view_nfo'))
 					                        {
 					                            echo "selected";
 					                        }
@@ -1488,20 +1492,20 @@ function configSettings()
 					            </td>
 					            <td>
 					                <select name="package_type">
-					                    <option value="tar" <?php echo ($cfg["package_type"] == "tar") ? 'selected' : '' ?>>tar</option>
-					                    <option value="zip" <?php echo ($cfg["package_type"] == "zip") ? 'selected' : '' ?>>zip</option>
+					                    <option value="tar" <?php echo ($settings->get('package_type') == "tar") ? 'selected' : '' ?>>tar</option>
+					                    <option value="zip" <?php echo ($settings->get('package_type') == "zip") ? 'selected' : '' ?>>zip</option>
 					                </select>
 					            </td>
 					        </tr>
 					        <tr>
 					            <td><strong>Show Server Load</strong><br>
-					            Enable showing the average server load over the last 15 minutes from <?php echo $cfg["loadavg_path"] ?> file:
+					            Enable showing the average server load over the last 15 minutes from <?php echo $settings->get('loadavg_path') ?> file:
 					            </td>
 					            <td>
 					                <select name="show_server_load">
 					                        <option value="1">true</option>
 					                        <option value="0" <?php
-					                        if (!$cfg["show_server_load"])
+					                        if (!$settings->get('show_server_load'))
 					                        {
 					                            echo "selected";
 					                        }
@@ -1514,7 +1518,7 @@ function configSettings()
 					            Path to the loadavg file:
 					            </td>
 					            <td>
-					                <input name="loadavg_path" type="Text" maxlength="254" value="<?php    echo($cfg["loadavg_path"]); ?>" size="55"><?php echo validateFile($cfg["loadavg_path"]) ?>
+					                <input name="loadavg_path" type="Text" maxlength="254" value="<?php echo($settings->get('loadavg_path')); ?>" size="55"><?php echo validateFile($settings->get('loadavg_path')) ?>
 					            </td>
 					        </tr>
 					        <tr>
@@ -1522,7 +1526,7 @@ function configSettings()
 					            Number of days that audit actions will be held in the database:
 					            </td>
 					            <td>
-					                <input name="days_to_keep" type="Text" maxlength="3" value="<?php    echo($cfg["days_to_keep"]); ?>" size="3">
+					                <input name="days_to_keep" type="Text" maxlength="3" value="<?php echo($settings->get('days_to_keep')); ?>" size="3">
 					            </td>
 					        </tr>
 					        <tr>
@@ -1530,7 +1534,7 @@ function configSettings()
 					            Number of minutes before a user status changes to offline after leaving TorrentFlux:
 					            </td>
 					            <td>
-					                <input name="minutes_to_keep" type="Text" maxlength="2" value="<?php    echo($cfg["minutes_to_keep"]); ?>" size="2">
+					                <input name="minutes_to_keep" type="Text" maxlength="2" value="<?php echo($settings->get('minutes_to_keep')); ?>" size="2">
 					            </td>
 					        </tr>
 					        <tr>
@@ -1538,7 +1542,7 @@ function configSettings()
 					            Number of minutes to cache the RSS XML feed on server (speeds up reload):
 					            </td>
 					            <td>
-					                <input name="rss_cache_min" type="Text" maxlength="3" value="<?php    echo($cfg["rss_cache_min"]); ?>" size="3">
+					                <input name="rss_cache_min" type="Text" maxlength="3" value="<?php echo($settings->get('rss_cache_min')); ?>" size="3">
 					            </td>
 					        </tr>
 					        <tr>
@@ -1546,7 +1550,7 @@ function configSettings()
 					            Number of seconds before the torrent list page refreshes:
 					            </td>
 					            <td>
-					                <input name="page_refresh" type="Text" maxlength="3" value="<?php    echo($cfg["page_refresh"]); ?>" size="3">
+					                <input name="page_refresh" type="Text" maxlength="3" value="<?php echo($settings->get('page_refresh')); ?>" size="3">
 					            </td>
 					        </tr>
 							<?php
@@ -1562,7 +1566,7 @@ function configSettings()
 							                <select name="security_code" disabled>
 							                        <option value="1">true</option>
 							                        <option value="0" <?php
-							                            if (!$cfg["security_code"])
+							                            if (!$settings->get('security_code'))
 							                            {
 							                                echo "selected";
 							                            }
@@ -1583,7 +1587,7 @@ function configSettings()
 										    for($inx = 0; $inx < sizeof($arThemes); $inx++)
 										    {
 										        $selected = "";
-										        if ($cfg["default_theme"] == $arThemes[$inx])
+										        if ($settings->get('default_theme') == $arThemes[$inx])
 										        {
 										            $selected = "selected";
 										        }
@@ -1604,7 +1608,7 @@ function configSettings()
 										    for($inx = 0; $inx < sizeof($arLanguage); $inx++)
 										    {
 										        $selected = "";
-										        if ($cfg["default_language"] == $arLanguage[$inx])
+										        if ($settings->get('default_language') == $arLanguage[$inx])
 										        {
 										            $selected = "selected";
 										        }
@@ -1623,7 +1627,7 @@ function configSettings()
 					                <select name="debug_sql">
 					                        <option value="1">true</option>
 					                        <option value="0" <?php
-					                        if (!$cfg["debug_sql"])
+					                        if (!$settings->get('debug_sql'))
 					                        {
 					                            echo "selected";
 					                        }
@@ -1640,7 +1644,7 @@ function configSettings()
 					                <select name="torrent_dies_when_done">
 					                        <option value="True">Die When Done</option>
 					                        <option value="False" <?php
-					                        if ($cfg["torrent_dies_when_done"] == "False")
+					                        if ($settings->get('torrent_dies_when_done') == "False")
 					                        {
 					                            echo "selected";
 					                        }
@@ -1655,7 +1659,7 @@ function configSettings()
 					            Value '0' will seed forever.
 					            </td>
 					            <td>
-					                <input name="sharekill" type="Text" maxlength="3" value="<?php    echo($cfg["sharekill"]); ?>" size="3">%
+					                <input name="sharekill" type="Text" maxlength="3" value="<?php    echo($settings->get('sharekill')); ?>" size="3">%
 					            </td>
 					        </tr>
 					    </table>
@@ -1678,7 +1682,7 @@ function configSettings()
 //****************************************************************************
 function updateConfigSettings()
 {
-    global $cfg;
+    global $cfg, $settings;
 
     $tmpPath = getRequestVar("path");
     
@@ -1688,40 +1692,38 @@ function updateConfigSettings()
         $_POST["path"] = $_POST["path"] . "/";
     }
     
-    if ((array_key_exists("AllowQueing",$_POST) && $_POST["AllowQueing"] != $cfg["AllowQueing"]) ||
-        (array_key_exists("maxServerThreads",$_POST) && $_POST["maxServerThreads"] != $cfg["maxServerThreads"]) ||
-        (array_key_exists("maxUserThreads",$_POST) && $_POST["maxUserThreads"] != $cfg["maxUserThreads"]) ||
-        (array_key_exists("sleepInterval",$_POST) && $_POST["sleepInterval"] != $cfg["sleepInterval"]) ||
-        (array_key_exists("debugTorrents",$_POST) && $_POST["debugTorrents"] != $cfg["debugTorrents"]) ||
-        (array_key_exists("tfQManager",$_POST) && $_POST["tfQManager"] != $cfg["tfQManager"]) ||
-        (array_key_exists("btphpbin",$_POST) && $_POST["btphpbin"] != $cfg["btphpbin"])
-        )
-    {
+    if ((array_key_exists("AllowQueing",$_POST) && $_POST["AllowQueing"] != $settings->get('AllowQueing')) ||
+        (array_key_exists("maxServerThreads",$_POST) && $_POST["maxServerThreads"] != $settings->get('maxServerThreads')) ||
+        (array_key_exists("maxUserThreads",$_POST) && $_POST["maxUserThreads"] != $settings->get('maxUserThreads')) ||
+        (array_key_exists("sleepInterval",$_POST) && $_POST["sleepInterval"] != $settings->get('sleepInterval')) ||
+        (array_key_exists("debugTorrents",$_POST) && $_POST["debugTorrents"] != $settings->get('debugTorrents')) ||
+        (array_key_exists("tfQManager",$_POST) && $_POST["tfQManager"] != $settings->get('tfQManager')) ||
+        (array_key_exists("btphpbin",$_POST) && $_POST["btphpbin"] != $settings->get('btphpbin'))
+    ) {
         // kill QManager process;
         if(getQManagerPID() != "")
         {
             stopQManager();
         }
 
-            $settings = $_POST;
+            $options = $_POST;
 
-            saveSettings($settings);
+            $settings->save($options);
             AuditAction($cfg["constants"]["admin"], " Updating TorrentFlux Settings");
 
         // if enabling Start QManager
-        if($cfg["AllowQueing"])
-        {
+        if($settings->get('AllowQueing')) {
             sleep(2);
-            startQManager($cfg["maxServerThreads"], $cfg["maxUserThreads"], $cfg["sleepInterval"]);
+            startQManager($settings->get('maxServerThreads'), $settings->get('maxUserThreads'), $settings->get('sleepInterval'));
             sleep(1);
         }
     }
     else
     {
-         $settings = $_POST;
+         $options = $_POST;
 
-             saveSettings($settings);
-             AuditAction($cfg["constants"]["admin"], " Updating TorrentFlux Settings");
+         $settings->save($options);
+         AuditAction($cfg["constants"]["admin"], " Updating TorrentFlux Settings");
     }
 
     $continue = getRequestVar('continue');
@@ -1733,7 +1735,7 @@ function updateConfigSettings()
 //****************************************************************************
 function queueSettings()
 {
-    global $cfg;
+    global $cfg, $settings;
     include_once("AliasFile.php");
     include_once("RunningTorrent.php");
 
@@ -1816,8 +1818,7 @@ function queueSettings()
                     <select name="AllowQueing">
                             <option value="1">true</option>
                             <option value="0" <?php
-                            if (!$cfg["AllowQueing"])
-                            {
+                            if (!$settings->get('AllowQueing')) {
                                 echo "selected";
                             }
                             ?>>false</option>
@@ -1829,7 +1830,7 @@ function queueSettings()
                 Specify the path to the tfQManager python script:
                 </td>
                 <td>
-                    <input name="tfQManager" type="Text" maxlength="254" value="<?php    echo($cfg["tfQManager"]); ?>" size="55"><?php echo validateFile($cfg["tfQManager"]) ?>
+                    <input name="tfQManager" type="Text" maxlength="254" value="<?php echo ($settings->get('tfQManager')); ?>" size="55"><?php echo validateFile($settings->get('tfQManager')) ?>
                 </td>
             </tr>
 <!-- Only used for develpment or if you really really know what you are doing
@@ -1841,18 +1842,14 @@ function queueSettings()
                     <select name="debugTorrents">
                         <option value="1">true</option>
                         <option value="0" <?php
-            if (array_key_exists("debugTorrents",$cfg))
-            {
-                if (!$cfg["debugTorrents"])
-                {
-                    echo "selected";
-                }
-            }
-            else
-            {
-                insertSetting("debugTorrents",false);
-                echo "selected";
-            }
+                        if ($settings->get('debugTorrents') !== null) {
+			                if (!$settings->get('debugTorrents')) {
+                    			echo "selected";
+                			}
+            			} else {
+            				$settings->save(array('debugTorrents' => false));
+			                echo "selected";
+            			}
                         ?>>false</option>
                     </select>
                 </td>
@@ -1864,7 +1861,7 @@ function queueSettings()
                 one time (admins may override this):
                 </td>
                 <td>
-                    <input name="maxServerThreads" type="Text" maxlength="3" value="<?php echo($cfg["maxServerThreads"]); ?>" size="3">
+                    <input name="maxServerThreads" type="Text" maxlength="3" value="<?php echo $settings->get('maxServerThreads') ?>" size="3">
                 </td>
             </tr>
             <tr>
@@ -1873,7 +1870,7 @@ function queueSettings()
                 one time:
                 </td>
                 <td>
-                    <input name="maxUserThreads" type="Text" maxlength="3" value="<?php echo($cfg["maxUserThreads"]); ?>" size="3">
+                    <input name="maxUserThreads" type="Text" maxlength="3" value="<?php echo $settings->get('maxUserThreads') ?>" size="3">
                 </td>
             </tr>
             <tr>
@@ -1881,7 +1878,7 @@ function queueSettings()
                 Number of seconds the Queue Manager will sleep before checking for new torrents to run:
                 </td>
                 <td>
-                    <input name="sleepInterval" type="Text" maxlength="3" value="<?php echo($cfg["sleepInterval"]); ?>" size="3">
+                    <input name="sleepInterval" type="Text" maxlength="3" value="<?php echo $settings->get('sleepInterval') ?>" size="3">
                 </td>
             </tr>
             <tr>
@@ -1927,11 +1924,9 @@ function queueSettings()
         echo "</tr>";
         echo "\n";
 
-        $qDir = $cfg["torrent_file_path"]."queue/";
-        if (is_dir($cfg["torrent_file_path"]))
-        {
-            if (is_writable($cfg["torrent_file_path"]) && !is_dir($qDir))
-            {
+        $qDir = $settings->get('torrent_file_path') . "queue/";
+        if (is_dir($settings->get('torrent_file_path'))) {
+            if (is_writable($settings->get('torrent_file_path')) && !is_dir($qDir)) {
                 @mkdir($qDir, 0777);
             }
 
@@ -2013,7 +2008,7 @@ function queueSettings()
 //****************************************************************************
 function searchSettings()
 {
-    global $cfg;
+    global $cfg, $settings;
     include_once("AliasFile.php");
     include_once("RunningTorrent.php");
     include_once("searchEngines/SearchEngineBase.php");
@@ -2037,7 +2032,7 @@ function searchSettings()
 	            			<td>
 								<?php
 					                $searchEngine = getRequestVar('searchEngine');
-					                if (empty($searchEngine)) $searchEngine = $cfg["searchEngine"];
+					                if (empty($searchEngine)) $searchEngine = $settings->get('searchEngine');
 					                echo buildSearchEngineDDL($searchEngine,true)
 								?>
 							</td>
@@ -2146,21 +2141,19 @@ function searchSettings()
 //****************************************************************************
 function updateSearchSettings()
 {
-    global $cfg;
+    global $cfg, $settings;
 
-    foreach ($_POST as $key => $value)
-    {
-        if ($key != "searchEngine")
-        {
-            $settings[$key] = $value;
+    foreach ($_POST as $key => $value) {
+        if ($key != "searchEngine") {
+            $options[$key] = $value;
         }
     }
 
-    saveSettings($settings);
+    $settings->save($options);
     AuditAction($cfg["constants"]["admin"], " Updating TorrentFlux Search Settings");
 
     $searchEngine = getRequestVar('searchEngine');
-    if (empty($searchEngine)) $searchEngine = $cfg["searchEngine"];
+    if (empty($searchEngine)) $searchEngine = $settings->get('searchEngine');
     header("location: admin.php?op=searchSettings&searchEngine=".$searchEngine);
 }
 

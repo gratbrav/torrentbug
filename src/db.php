@@ -1,8 +1,12 @@
 <?php
 
+	include_once './Class/autoload.php';
+
 // will need include of config.php
 include_once('config.php');
 include_once('adodb/adodb.inc.php');
+
+	$settings = new Class_Settings();
 
 function getdb()
 {
@@ -20,7 +24,7 @@ function getdb()
 
 function showError($db, $sql)
 {
-    global $cfg;
+    global $cfg, $settings;
     if($db->ErrorNo() != 0)
     {
         include("themes/matrix/index.php");
@@ -65,8 +69,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
                      <tr>
                      <td>
 <?php
-                    if ($cfg["debug_sql"])
-                    {
+                    if ($settings->get('debug_sql')) {
                         echo "Debug SQL is on. <br><br>SQL: <strong>".$sql."</strong><br><br><br>";
                     }
                     echo "Database error: <strong>".$db->ErrorMsg()."</strong><br><br>";

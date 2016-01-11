@@ -33,7 +33,7 @@ class RunningTorrent
 
     function RunningTorrent( $psLine )
     {
-        global $cfg;
+        global $settings;
         if (strlen($psLine) > 0)
         {
             while (strpos($psLine,"  ") > 0)
@@ -51,7 +51,7 @@ class RunningTorrent
                 {
                     $startArgs = false;
                 }
-                if ($value == $cfg["btphpbin"])
+                if ($value == $settings->get('btphpbin'))
                 {
                     $offset = 2;
                     if(!strpos($arr[$key+$offset],"/",1) > 0)
