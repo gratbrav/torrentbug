@@ -85,5 +85,3 @@ $cfg["file_types_array"] = array("torrent");
 $cfg["user"] = "";
 // Capture ip
 $cfg["ip"] = $_SERVER['REMOTE_ADDR'];
-
-?>

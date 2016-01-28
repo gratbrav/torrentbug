@@ -22,15 +22,17 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+    include_once './Class/autoload.php';
+
 	// ADODB support.
 	include_once 'db.php';
 	include_once 'settingsfunctions.php';
-	include_once './Class/autoload.php';
 
+	$settings = new Class_Settings();
 // Create Connection.
 $db = getdb();
 
-	$settings = new Class_Settings();
+	
 
 	session_name("TorrentFlux");
 	session_start();
@@ -91,6 +93,7 @@ $db = getdb();
         $maketorrent = getcwd() . "/TF_BitTornado/btmakemetafile.py";
         $btshowmetainfo = getcwd() . "/TF_BitTornado/btshowmetainfo.py";
         $tfPath = getcwd() . "/downloads/";
+        $documentRoot = '//' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']);
 
         if (!isFile($settings->get('pythonCmd'))) {
             $pythonCmd = trim(shell_exec("which python"));
@@ -105,7 +108,8 @@ $db = getdb();
             "tfQManager"		=> $tfQManager,
             "btmakemetafile"	=> $maketorrent,
             "btshowmetainfo"	=> $btshowmetainfo,
-            "path"				=> $tfPath
+            "path"				=> $tfPath,
+            'document_root'     => $documentRoot,
         );
 
         $settings->save($options);

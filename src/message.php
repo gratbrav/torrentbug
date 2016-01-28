@@ -22,8 +22,12 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+    include_once 'Class/autoload.php';
+
 include_once("config.php");
 include_once("functions.php");
+    
+    $settings = new Class_Settings();
 
 $to_user = getRequestVar('to_user');
 if(empty($to_user) or empty($cfg['user']))

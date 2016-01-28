@@ -178,7 +178,7 @@ $(document).ready(function() {
              return false;
          } else {
              return true;
-             $('formProfile').submit();
+             $('#formProfile').submit();
          }
     });
 

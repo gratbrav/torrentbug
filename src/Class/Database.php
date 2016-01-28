@@ -1,6 +1,6 @@
 <?php
 
-include_once dirname(__FILE__) . '/../db.php';
+include_once __DIR__ . '/../db.php';
 	
 /**
 * Database Class
@@ -49,8 +49,8 @@ class Class_Database
 	 */
 	private function __construct()
 	{
-		include('./config.php');
-		include('./adodb/adodb.inc.php');
+		include(__DIR__ . '/../config.php');
+		include(__DIR__ . '/../adodb/adodb.inc.php');
 		
 		// 2004-12-09 PFM: connect to database.
 		$db = NewADOConnection($cfg['db_type']);

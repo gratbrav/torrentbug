@@ -1,7 +1,5 @@
 <?php
 
-	include_once './Class/autoload.php';
-
 // will need include of config.php
 include_once('config.php');
 include_once('adodb/adodb.inc.php');

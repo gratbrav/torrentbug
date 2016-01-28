@@ -21,13 +21,15 @@
     along with TorrentFlux; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-
+error_log('1');
 	include_once './Class/autoload.php';
-
-include_once("config.php");
-include_once("functions.php");
+	error_log('2');
+	
+include_once("config.php");error_log('3');
+include_once("functions.php");error_log('4');
 
 	$settings = new Class_Settings();
+	error_log('5');
 $messages = "";
 
 // set refresh option into the session cookie

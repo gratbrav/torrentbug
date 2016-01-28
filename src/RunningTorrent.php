@@ -108,6 +108,8 @@ class RunningTorrent
     // Private Function to put the variables into a string for writing to file
     function BuildAdminOutput()
     {
+        GLOBAL $settings;
+
         $output = "<tr>";
         $output .= "<td><div class=\"tiny\">";
         $output .= $this->torrentOwner;
@@ -119,7 +121,7 @@ class RunningTorrent
         $output .= "&kill=".$this->processId;
         $output .= "&kill_torrent=".urlencode($this->torrentFile);
         $output .= "&return=admin\">";
-        $output .= "<img src=\"images/kill.gif\" width=16 height=16 title=\""._FORCESTOP."\" border=0></a></td>";
+        $output .= "<img src=\"" . $settings->get('base_url') . "/images/kill.gif\" width=16 height=16 title=\""._FORCESTOP."\" border=0></a></td>";
         $output .= "</tr>";
         $output .= "\n";
 

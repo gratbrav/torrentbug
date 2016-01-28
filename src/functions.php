@@ -105,14 +105,14 @@ function Authenticate()
 
     if(!isset($_SESSION['user']))
     {
-        header('location: login.php');
+        header('location: ' . $settings->get('base_url') . '/login.php');
         exit();
     }
 
     if ($_SESSION['user'] == md5($cfg["pagetitle"]))
     {
         // user changed password and needs to login again
-        header('location: logout.php');
+        header('location: ' . $settings->get('base_url') . '/logout.php');
         exit();
     }
 
@@ -226,30 +226,6 @@ function SaveMessage($to_user, $from_user, $message, $to_all=0, $force_read=0)
 
 }
 
-//*********************************************************
-function addNewUser($newUser, $pass1, $userType)
-{
-    global $settings, $db;
-
-    $create_time = time();
-
-    $record = array(
-    	'user_id'		=> strtolower($newUser),
-        'password'		=> md5($pass1),
-        'hits'			=> 0,
-        'last_visit'	=> $create_time,
-        'time_created'	=> $create_time,
-        'user_level'	=> $userType,
-        'hide_offline'	=> "0",
-        'theme'			=> $settings->get('default_theme'),
-        'language_file'	=> $settings->get('default_language')
-	);
-
-    $sTable = 'tf_users';
-    $sql = $db->GetInsertSql($sTable, $record);
-    $result = $db->Execute($sql);
-    showError($db,$sql);
-}
 
 //*********************************************************
 function PruneDB()
@@ -614,8 +590,10 @@ function GetMessage($mid)
 // Get Themes data in an array
 function GetThemes()
 {
+    global $settings;
+    
     $arThemes = array();
-    $dir = "themes/";
+    $dir = $settings->get('document_root') . "/themes/";
 
     $handle = opendir($dir);
     while($entry = readdir($handle))
@@ -636,8 +614,10 @@ function GetThemes()
 // Get Languages in an array
 function GetLanguages()
 {
+    global $settings;
+    
     $arLanguages = array();
-    $dir = "language/";
+    $dir = $settings->get('document_root') . "/language/";
 
     $handle = opendir($dir);
     while($entry = readdir($handle))
@@ -677,74 +657,6 @@ function DeleteMessage($mid)
     showError($db,$sql);
 }
 
-
-// ***************************************************************************
-// Delete Link
-function deleteOldLink($lid)
-{
-    global $db;
-    // Get Current sort order index of link with this link id:
-    $idx = getLinkSortOrder($lid);
-
-    // Fetch all link ids and their sort orders where the sort order is greater
-    // than the one we're removing - we need to shuffle each sort order down
-    // one:
-    $sql = "SELECT sort_order, lid FROM tf_links ";
-    $sql .= "WHERE sort_order > ".$idx." ORDER BY sort_order ASC";
-    $result = $db->Execute($sql);
-    showError($db,$sql);
-    $arLinks = $result->GetAssoc();
-
-    // Decrement the sort order of each link:
-    foreach($arLinks as $sid => $this_lid)
-    {
-        $sql="UPDATE tf_links SET sort_order=sort_order-1 WHERE lid=".$this_lid;
-        $db->Execute($sql);
-        showError($db,$sql);
-    }
-
-    // Finally delete the link:
-    $sql = "DELETE FROM tf_links WHERE lid=".$lid;
-    $result = $db->Execute($sql);
-    showError($db,$sql);
-}
-
-// ***************************************************************************
-// Delete RSS
-function deleteOldRSS($rid)
-{
-    global $db;
-    $sql = "delete from tf_rss where rid=".$rid;
-    $result = $db->Execute($sql);
-    showError($db,$sql);
-}
-
-// ***************************************************************************
-// Delete User
-function DeleteThisUser($user_id)
-{
-    global $db;
-
-    $sql = "SELECT uid FROM tf_users WHERE user_id = ".$db->qstr($user_id);
-    $uid = $db->GetOne( $sql );
-    showError($db,$sql);
-
-    // delete any cookies this user may have had
-    //$sql = "DELETE tf_cookies FROM tf_cookies, tf_users WHERE (tf_users.uid = tf_cookies.uid) AND tf_users.user_id=".$db->qstr($user_id);
-    $sql = "DELETE FROM tf_cookies WHERE uid=".$uid;
-    $result = $db->Execute($sql);
-    showError($db,$sql);
-
-    // Now cleanup any message this person may have had
-    $sql = "DELETE FROM tf_messages WHERE to_user=".$db->qstr($user_id);
-    $result = $db->Execute($sql);
-    showError($db,$sql);
-
-    // now delete the user from the table
-    $sql = "DELETE FROM tf_users WHERE user_id=".$db->qstr($user_id);
-    $result = $db->Execute($sql);
-    showError($db,$sql);
-}
 
 // ***************************************************************************
 // Update User -- used by admin
@@ -827,18 +739,6 @@ function MarkMessageRead($mid)
              'force_read'=>0);
 
     $sql = $db->GetUpdateSQL($rs, $rec);
-    $db->Execute($sql);
-    showError($db,$sql);
-}
-
-//**************************************************************************
-// alterLink()
-// This function updates the database and alters the selected links values
-function alterLink($lid,$newLink,$newSite)
-{
-    global $cfg, $db;
-
-    $sql = "UPDATE tf_links SET url='".$newLink."',`sitename`='".$newSite."' WHERE `lid`=".$lid;
     $db->Execute($sql);
     showError($db,$sql);
 }
@@ -985,6 +885,7 @@ function GetRSSLinks()
 // Build Search Engine Drop Down List
 function buildSearchEngineDDL($selectedEngine = 'PirateBay', $autoSubmit = false)
 {
+    global $settings;
     $output = "<select name=\"searchEngine\" ";
     if ($autoSubmit)
     {
@@ -993,7 +894,7 @@ function buildSearchEngineDDL($selectedEngine = 'PirateBay', $autoSubmit = false
   //  $output .= " STYLE=\"width: 125px\">";
 	$output .= " STYLE=\"margin-top:6px;\" ";
 	$output .= " class=\"form-control\" >";
-    $handle = opendir("./searchEngines");
+    $handle = opendir($settings->get('document_root') . "/searchEngines");
     while($entry = readdir($handle))
     {
         $entrys[] = $entry;

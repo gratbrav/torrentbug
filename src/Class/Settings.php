@@ -62,7 +62,9 @@ class Class_Settings
 	        $this->config[$key] = $value;
 	    }
 	    
+	    // @TODO save and load from db
 	    $this->config['torrent_file_path'] = $this->config['path'] . '.torrents/';
+	    // $this->config['document_root'] = realpath($this->config['path'] . '..');
 	}
 	
 
@@ -71,7 +73,7 @@ class Class_Settings
 		$config = $this->config;
 		
 	    if (count($data)) {
-	    	$this->config = array_map($this->config, $data);
+	    	$this->config = array_merge($this->config, $data);
 	    }
         
     	foreach ($this->config as $key => $value) {
@@ -87,7 +89,7 @@ class Class_Settings
 	
 	protected function updateValue($key, $value)
 	{
-	    $query = "UPDATE tf_settings SET tf_value = '" . $update . "' WHERE tf_key = '" . $key . "'";
+	    $query = "UPDATE tf_settings SET tf_value = '" . $value . "' WHERE tf_key = '" . $key . "'";
 
         $result = $this->db->Execute($query);
         // showError($db,$query);
@@ -95,8 +97,8 @@ class Class_Settings
 	
 	protected function insertValue($key, $value)
 	{
-	    $query = "INSERT INTO tf_settings VALUES ('" . $key . "', '" . $update_value . "')";
-	
+	    $query = "INSERT INTO tf_settings VALUES ('" . $key . "', '" . $value . "')";
+
 	    $result = $this->db->Execute($query);
         // showError($db,$query);
 	}
