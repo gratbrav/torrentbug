@@ -2357,10 +2357,8 @@ function getDirList($dirName)
                 
                 $output .= "<a class=\"downloaddetails\" href=\"downloaddetails.php?alias=".$alias."&torrent=".urlencode($entry)."\" onmouseover=\"return overlib('".$popup_msg."<br>', CSSCLASS);\" onmouseout=\"return nd();\">";
                 $output .= "<font class=\"tiny\"><strong>".$af->percent_done."%</strong> @ ".$af->down_speed."</font></a><br>";
-                $output .= "<table width=\"100\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">";
-                $output .= "<tr><td background=\"themes/".$cfg["theme"]."/images/progressbar.gif\" bgcolor=\"".$progress_color."\"><img src=\"images/blank.gif\" width=\"".$graph_width."\" height=\"".$bar_width."\" border=\"0\"></td>";
-                $output .= "<td bgcolor=\"".$background."\"><img src=\"images/blank.gif\" width=\"".(100 - $graph_width)."\" height=\"".$bar_width."\" border=\"0\" alt=\"\"></td>";
-                $output .= "</tr></table>";
+                
+                $output .= "<progress class=\"progress progress-success\" value=\"{$af->percent_done}\" max=\"100\" style=\"margin-bottom:0px\">{$af->percent_done}%</progress>";
             }
 
         }
