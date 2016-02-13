@@ -1,9 +1,10 @@
 {
-    "config": {
-        "vendor-dir": "src/plugins"
-    },
-    "require": {
-        "components/jquery": "2.1.4",
-        "twitter/bootstrap": "4.0.0-alpha.2"
-    }
+  "require" : {
+    "php" : ">=5.4",
+    "components/jquery" : "2.2.0",
+    "twitter/bootstrap" : "4.0.0-alpha.2"
+  },
+  "config" : {
+    "vendor-dir" : "src/plugins"
+  }
 }
