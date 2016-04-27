@@ -1,7 +1,7 @@
 {
   "require" : {
     "php" : ">=5.4",
-    "components/jquery" : "2.2.0",
+    "components/jquery" : "2.2.1",
     "twitter/bootstrap" : "4.0.0-alpha.2"
   },
   "config" : {
