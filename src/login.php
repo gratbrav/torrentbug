@@ -205,45 +205,18 @@ $db = getdb();
 
 <div class="container">
 
-	<form class="form-signin" method="post" action="login.php">
+	<form class="form-signin" method="post" action="login.php" id="login">
 		<?php if ($loginFailed) { ?><div class="alert alert-danger" role="alert">Login failed. Please try again.</div><?php } ?>
 		<h2 class="form-signin-heading">Please sign in</h2>
-        <input type="text" placeholder="Username" class="form-control" name="username" autofocus>
-        <input type="password" placeholder="Password" class="form-control" name="iamhim">
+        <input type="text" placeholder="Username" class="form-control" name="username" id="user" autofocus>
+        <input type="password" placeholder="Password" class="form-control" name="iamhim" id="password">
         <button type="submit" class="btn btn-large btn-primary" id="submit">Sign in</button>
 	</form>
 
 </div>
 
 <script src="./plugins/components/jquery/jquery.min.js"></script>
-<script>
-$(document).ready(function() {
-
-	$("form #submit").click(function() {
-	    var msg = "";
-	    var pass = $("form input[name='iamhim']").val();
-	    var user = $("form input[name='username']").val();
-
-	    if (user.length < 1) {
-	        msg = msg + "* Username is required\n";
-	        $("form input[name='username']").focus();
-	    }
-	    
-	    if (pass.length < 1) {
-	        msg = msg + "* Password is required\n";
-	        if (user.length > 0) {
-	        	$("form input[name='iamhim']").focus();
-	        }
-	    }
-
-	    if (msg != "") {
-	        alert("Check the following:\n\n" + msg);
-	        return false;
-	    }
-	});
-	
-});
-</script>
+<script src="./js/login.js"></script>
 </body>
 </html>
 <?php ob_end_flush(); ?>
