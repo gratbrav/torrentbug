@@ -4,6 +4,7 @@
 	<link rel="icon" href="<?php echo $settings->get('base_url') ?>/images/favicon.ico" type="image/x-icon" />
 	<link rel="shortcut icon" href="<?php echo $settings->get('base_url') ?>/images/favicon.ico" type="image/x-icon" />
 	<link rel="stylesheet" href="<?php echo $settings->get('base_url') ?>/plugins/twitter/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
+	<link rel="stylesheet" href="<?php echo $settings->get('base_url') ?>/plugins/components/font-awesome/css/font-awesome.min.css" type="text/css" />
     <link rel="StyleSheet" href="<?php echo $settings->get('base_url') ?>/themes/<?php echo $cfg["theme"] ?>/style.css" type="text/css" />
     <script src="<?php echo $settings->get('base_url') ?>/plugins/components/jquery/jquery.min.js"></script>
 </head>

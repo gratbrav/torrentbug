@@ -707,16 +707,28 @@ $(document).ready(function() {
 			<fieldset class="form-group bd-example" style="margin-right:-12px;margin-left:-15px;padding: 10px;">
 				<form name="form_file" action="index.php" method="post" enctype="multipart/form-data">
 	    			<label for="upload_file"><?php echo _SELECTFILE ?></label>
-   	 				<input type="file" name="upload_file" id="upload_file" class="form-control" />
-   		 			<input type="submit" value="<?php echo _UPLOAD ?>" class="btn btn-primary pull-sm-right" style="margin-top:6px;" />
+   		 			<div class="input-group">
+      					<input type="file" class="form-control" name="upload_file" id="upload_file" style="height:38px" />
+      					<span class="input-group-btn">
+        					<button class="btn btn-secondary" type="submit">
+        						<i class="fa fa-upload" aria-hidden="true" style="font-size:24px"></i>
+    						</button>
+      					</span>
+    				</div>
     			</form>
   			</fieldset>
   			
   			<fieldset class="form-group bd-example" style="margin-right:-12px;margin-left:-15px;padding: 10px;">
   				<form name="form_url" action="index.php" method="post">
     				<label for="url_upload"><?php echo _URLFILE ?></label>
-    				<input type="text" name="url_upload" id="url_upload" class="form-control" />
-    				<input type="submit" value="<?php echo _UPLOAD ?>" class="btn btn-primary pull-sm-right" style="margin-top:6px;" />
+    				<div class="input-group">
+      					<input type="text" class="form-control" name="url_upload" id="url_upload" />
+      					<span class="input-group-btn">
+        					<button class="btn btn-secondary" type="submit">
+        						<i class="fa fa-upload" aria-hidden="true" style="font-size:24px"></i>
+    						</button>
+      					</span>
+    				</div>
     			</form>
   			</fieldset>
   			
@@ -724,9 +736,16 @@ $(document).ready(function() {
 			<fieldset class="form-group bd-example" style="margin-right:-12px;margin-left:-15px;padding: 10px;">
 				<form name="form_search" action="torrentSearch.php" method="get">
     				<label for="searchterm">Torrent <?php echo _SEARCH ?></label>
-    				<input type="text" name="searchterm" id="searchterm" class="form-control" />
-    				<?php echo buildSearchEngineDDL($settings->get('searchEngine')) ?>
-    				<input type="submit" value="<?php echo _SEARCH ?>" class="btn btn-primary pull-sm-right" style="margin-top:6px;" />
+    				<?php echo buildSearchEngineDDL($settings->get('searchEngine')); ?>
+    				
+    				<div class="input-group">
+      					<input type="text" class="form-control" name="searchterm" id="searchterm" />
+      					<span class="input-group-btn">
+        					<button class="btn btn-secondary" type="submit">
+        						<i class="fa fa-search" aria-hidden="true" style="font-size:24px"></i>
+    						</button>
+      					</span>
+    				</div>
     			</form>
   			</fieldset>
   			<?php } ?>
