@@ -47,7 +47,6 @@ $db = getdb();
 	ob_start();
 
 
-	$loginFailed = 0;
  	$user = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
  	$iamhim = filter_input(INPUT_POST, 'iamhim', FILTER_SANITIZE_STRING);
 
@@ -189,7 +188,7 @@ $db = getdb();
         
     <div id="loginbox" class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3"> 
 		
-		<?php if ($loginFailed) { ?><div class="alert alert-danger" role="alert">Login failed. Please try again.</div><?php } ?>
+		<?php if (isset($loginFailed)) { ?><div class="alert alert-danger" role="alert">Login failed. Please try again.</div><?php } ?>
         
         <div class="card">
             <div class="card-header text-sm-center">
