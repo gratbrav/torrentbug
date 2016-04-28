@@ -174,45 +174,52 @@ $db = getdb();
 <!doctype html>
 <html>
 <head>
-	<title><?php echo $cfg["pagetitle"] ?></title>
-	<link rel="stylesheet" href="./plugins/twitter/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
-	<style>
-	
-	.form-signin {
-	    background-color: #fff;
-	    border: 1px solid #e5e5e5;
-	    border-radius: 5px;
-	    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-	    margin: 0 auto 20px;
-	    max-width: 300px;
-	    padding: 19px 29px 29px;
-	}
-	.form-signin input[type="text"], .form-signin input[type="password"] {
-	    font-size: 16px;
-	    height: auto;
-	    margin-bottom: 15px;
-	    padding: 7px 9px;
-	}
-	body {
-	    background-color: #f5f5f5;
-	    padding-bottom: 40px;
-	    padding-top: 40px;
-	}
-	</style>
+    <title><?php echo $cfg["pagetitle"] ?></title>
+    <link rel="stylesheet" href="./plugins/twitter/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="<?php echo $settings->get('base_url') ?>/plugins/components/font-awesome/css/font-awesome.min.css" type="text/css" />
     <meta name=viewport content="width=device-width, initial-scale=1">
+    <style>
+    #loginbox { margin-top: 70px; }
+    #form > div { margin-bottom: 25px; }
+    </style>
 </head>
 <body>
 
-<div class="container">
-
-	<form class="form-signin" method="post" action="login.php" id="login">
+<div class="container">    
+        
+    <div id="loginbox" class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3"> 
+		
 		<?php if ($loginFailed) { ?><div class="alert alert-danger" role="alert">Login failed. Please try again.</div><?php } ?>
-		<h2 class="form-signin-heading">Please sign in</h2>
-        <input type="text" placeholder="Username" class="form-control" name="username" id="user" autofocus>
-        <input type="password" placeholder="Password" class="form-control" name="iamhim" id="password">
-        <button type="submit" class="btn btn-large btn-primary" id="submit">Sign in</button>
-	</form>
+        
+        <div class="card">
+            <div class="card-header text-sm-center">
+                Please sign in
+            </div>     
 
+            <div class="card-block">
+
+                <form name="form" id="form" class="form-horizontal" enctype="multipart/form-data" method="POST">
+                   
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
+                        <input id="user" type="text" class="form-control" name="username" value="" placeholder="User" autofocus>                                        
+                    </div>
+
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lock" aria-hidden="true"></i></span>
+                        <input id="password" type="password" class="form-control" name="iamhim" placeholder="Password">
+                    </div>
+                                                                                      
+                    <button type="submit" class="btn btn-primary btn-block" id="submit">
+                    	<i class="fa fa-sign-in" aria-hidden="true"></i> 
+                    	Log in
+                    </button>                          
+
+                </form>     
+
+            </div>                     
+        </div>  
+    </div>
 </div>
 
 <script src="./plugins/components/jquery/jquery.min.js"></script>
