@@ -1263,7 +1263,7 @@ $(document).ready(function() {
 	    				}
 	
 	    				if ($drivespace >= 98) {
-							echo "<script>Lobibox.notify('error', { size: 'mini', icon: false, msg: '"._WARNING.": ".$drivespace."% "._DRIVESPACEUSED."'}); </script>";
+							echo "<script>Lobibox.notify('error', { size: 'mini', icon: false, sound: false, msg: '"._WARNING.": ".$drivespace."% "._DRIVESPACEUSED."'}); </script>";
 	    				}
 	
 	    				if (!array_key_exists("total_download",$cfg)) $cfg["total_download"] = 0;
