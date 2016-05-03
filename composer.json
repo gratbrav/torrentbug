@@ -1,9 +1,24 @@
 {
+  "repositories": [
+	{
+		"type": "package",
+	    "package": {
+	        "name": "arboshiki/lobibox",
+	        "version": "dev-master",
+	        "source": {
+	            "url": "https://github.com/arboshiki/lobibox",
+	            "type": "git",
+	            "reference": "origin/master"
+	        }
+	    }
+	}
+  ],
   "require" : {
     "php" : ">=5.4",
     "components/jquery" : "2.2.1",
     "components/font-awesome" : "4.6.1",
-    "twitter/bootstrap" : "4.0.0-alpha.2"
+    "twitter/bootstrap" : "4.0.0-alpha.2",
+    "arboshiki/lobibox": "dev-master"
   },
   "config" : {
     "vendor-dir" : "src/plugins"

@@ -618,7 +618,8 @@ $drivespace = getDriveSpace($settings->get('path'));
 	$subMenu = 'index';
 	include_once 'header.php' 
 ?>
-
+<link rel="stylesheet" href="/src/plugins/arboshiki/lobibox/dist/css/lobibox.min.css"/>
+<script src="/src/plugins/arboshiki/lobibox/dist/js/lobibox.min.js"></script>
 <script>
 <?php if (!isset($_SESSION['prefresh']) || ($_SESSION['prefresh'] == true)) { ?>
 
@@ -1262,7 +1263,7 @@ $(document).ready(function() {
 	    				}
 	
 	    				if ($drivespace >= 98) {
-							echo "\n\n<script>\n alert(\""._WARNING.": ".$drivespace."% "._DRIVESPACEUSED."\")\n </script>";
+							echo "<script>Lobibox.notify('error', { size: 'mini', icon: false, msg: '"._WARNING.": ".$drivespace."% "._DRIVESPACEUSED."'}); </script>";
 	    				}
 	
 	    				if (!array_key_exists("total_download",$cfg)) $cfg["total_download"] = 0;
