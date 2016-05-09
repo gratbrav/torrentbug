@@ -259,10 +259,7 @@ if (isset($dir))
 	</div>
 </div>
 
-<?php echo DisplayTorrentFluxLink(); ?>
-
 <?php
-
 
 //**************************************************************************
 // ListDirectory()

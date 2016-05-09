@@ -1080,9 +1080,6 @@ function DisplayFoot($showReturn=true)
     </td>
     </tr>
     </table>
-<?php
-    echo DisplayTorrentFluxLink();
-?>
 
         </td>
     </tr>
@@ -1093,19 +1090,6 @@ function DisplayFoot($showReturn=true)
   </html>
 
     <?php
-}
-
-
-// ***************************************************************************
-// ***************************************************************************
-// Dipslay TF Link and Version
-function DisplayTorrentFluxLink()
-{
-    global $cfg;
-
-    echo "<div style=\"text-align:right\">";
-    echo "<a href=\"http://www.torrentflux.com\" target=\"_blank\" class=\"tiny\">TorrentFlux ".$cfg["version"]."</a>";
-    echo "</div>";
 }
 
 

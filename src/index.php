@@ -1306,7 +1306,6 @@ $(document).ready(function() {
 </div>
 
 <?php
-    echo DisplayTorrentFluxLink();
     // At this point Any User actions should have taken place
     // Check to see if the user has a force_read message from an admin
     if (IsForceReadMsg())

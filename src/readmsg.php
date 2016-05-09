@@ -201,5 +201,3 @@ if (!empty($mid) && is_numeric($mid)) {
 <?php } ?>
 
 <div style="text-align:center">[<a href="index.php"><?php echo _RETURNTOTORRENTS ?></a>]</div>
-
-<?php echo DisplayTorrentFluxLink(); ?>

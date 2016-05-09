@@ -522,9 +522,6 @@
                         </td>
                     </tr>
                 </table>
-<?php
-                DisplayTorrentFluxLink();
-?>
             </td>
         </tr>
     </table>

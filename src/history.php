@@ -142,5 +142,3 @@ function displayActivity($min=0)
 		</div>
 	</div>
 </div>
-    
-<?php echo DisplayTorrentFluxLink(); ?>
