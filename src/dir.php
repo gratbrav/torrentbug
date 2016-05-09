@@ -22,10 +22,9 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-	include_once './Class/autoload.php';
-
-include_once("config.php");
-include_once("functions.php");
+	include_once 'Class/autoload.php';
+    include_once 'config.php';
+    include_once 'functions.php';
 
 	$settings = new Class_Settings();
 
@@ -244,32 +243,7 @@ if (isset($dir))
 			<?php displayDriveSpaceBar(getDriveSpace($settings->get('path'))); ?>
 		</div>
 	</div>
-</div>
 
-
-<script>
-
-$(document).ready(function() {
-
-	$(".makeTorrent").click(function() {
-		var specs = 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=600,height=430';
-	    window.open (name_file, '_blank', specs);
-
-		return false;
-	});
-
-	$(".delete").click(function() {
-		return confirm("<?php echo _ABOUTTODELETE ?>: " + $(this).data('file'));
-	});
-
-	$(".selectAll").click(function() {
-		$(".selectFile").prop('checked', $(this).prop("checked"));
-	});
-
-});
-
-</script>
-<div class="container">
 	<div class="row">
 		<div class="col-sm-12 bd-example">
 			<?php 
@@ -326,7 +300,7 @@ function ListDirectory($dirName)
         echo "</a>";
         echo '</td>';
         echo '<td style="text-align:right">Multi-Delete-&gt;</td>';
-        echo '<td style="text-align:right"><a class=\"delete\" href="javascript:document.multidir.submit()" data-file=\"Multiple Files\")">';
+        echo '<td style="text-align:right"><a class="delete" href="javascript:document.multidir.submit()" data-file="Multiple Files">';
         echo '<i class="fa fa-trash-o" style="color:red" aria-hidden="true" title="'._DELETE.'"></i>';
         echo '</a>';
         echo ' <input class="selectAll" type="checkbox" /></td></tr>';
@@ -353,7 +327,7 @@ function ListDirectory($dirName)
                 echo "<td style=\"text-align:right\">";
 
                 if ($settings->get('enable_maketorrent')) {
-                    echo "<a class=\"makeTorrent\" href=\"maketorrent.php?path=".urlencode($dir.$entry)."\">";
+                    echo "<a class=\"makeTorrent\" href=\"#\" data-url=\"maketorrent.php?path=".urlencode($dir.$entry)."\">";
                     echo '<i class="fa fa-external-link" style="color:#5CB85C" aria-hidden="true" title="Make Torrent"></i>';
                     echo "</a> ";
                 }
@@ -426,14 +400,6 @@ function ListDirectory($dirName)
                     $timeStamp = "";
                 }
                 $fileSize = number_format(($arStat[7])/1024);
-                // Code added by Remko Jantzen to assign an icon per file-type. But when not
-                // available all stays the same.
-                $image="images/time.gif";
-                $imageOption="images/files/".getExtension($entry).".png";
-                if (file_exists("./".$imageOption))
-                {
-                    $image = $imageOption;
-                }
 
                 echo "<tr>";
                 echo "<td>";
@@ -442,12 +408,10 @@ function ListDirectory($dirName)
                 if ($settings->get('enable_file_download')) {
                     // Yes, let them download
                     echo "<a href=\"dir.php?down=".urlencode($dir.$entry)."\" >";
-                    //echo "<img src=\"".$image."\" width=\"16\" height=\"16\" alt=\"".$entry."\"></a>";
                     echo '<i class="fa fa-file" aria-hidden="true" style="color:orange;margin-right:4px;"></i>';
                     echo "<a href=\"dir.php?down=".urlencode($dir.$entry)."\" >".$entry."</a>";
                 } else {
                     // No, just show the name
-                    // echo "<img src=\"".$image."\" width=\"16\" height=\"16\" alt=\"".$entry."\">";
                     echo '<i class="fa fa-file" aria-hidden="true"  style="color:orange;margin-right:4px;"></i>';
                     echo $entry;
                 }
@@ -463,7 +427,7 @@ function ListDirectory($dirName)
                 }
 
                 if ($settings->get('enable_maketorrent')) {
-                    echo "<a class=\"makeTorrent\" href=\"maketorrent.php?path=".urlencode($dir.$entry)."\">";
+                    echo "<a class=\"makeTorrent\" href=\"#\" data-url=\"maketorrent.php?path=".urlencode($dir.$entry)."\">";
                     echo '<i class="fa fa-external-link" style="color:#5CB85C" aria-hidden="true" title="Make Torrent"></i>';
                     echo "</a> ";
                 }
@@ -524,31 +488,25 @@ function checkUserPath()
 }
 
 
-// This function returns the extension of a given file.
-// Where the extension is the part after the last dot.
-// When no dot is found the noExtensionFile string is
-// returned. This should point to a 'unknown-type' image
-// time by default. This string is also returned when the
-// file starts with an dot.
-function getExtension($fileName)
-{
-    $noExtensionFile="unknown"; // The return when no extension is found
-
-    //Prepare the loop to find an extension
-    $length = -1*(strlen($fileName)); // The maximum negative value for $i
-    $i=-1; //The counter which counts back to $length
-
-    //Find the last dot in an string
-    while (substr($fileName,$i,1) != "." && $i > $length) {$i -= 1; }
-
-    //Get the extension (with dot)
-    $ext = substr($fileName,$i);
-
-    //Decide what to return.
-    if (substr($ext,0,1)==".") {$ext = substr($ext,((-1 * strlen($ext))+1)); } else {$ext = $noExtensionFile;}
-
-    //Return the extension
-    return strtolower($ext);
-}
-
 ?>
+
+<script>
+$(document).ready(function() {
+
+	$(".makeTorrent").click(function() {
+		var specs = 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=600,height=430';
+	    window.open ($(this).data('url'), '_blank', specs);
+
+		return false;
+	});
+
+	$(".delete").click(function() {
+		return confirm("<?php echo _ABOUTTODELETE ?>: " + $(this).data('file'));
+	});
+
+	$(".selectAll").click(function() {
+		$(".selectFile").prop('checked', $(this).prop("checked"));
+	});
+
+});
+</script>
