@@ -124,7 +124,7 @@ function Authenticate()
     {
         AuditAction($cfg["constants"]["error"], "FAILED AUTH: ".$cfg['user']);
         session_destroy();
-        header('location: login.php');
+        header('location: ' . $settings->get('base_url') . '/login.php');
         exit();
     }
 
@@ -695,7 +695,6 @@ function updateThisUser($user_id, $org_user_id, $pass1, $userType, $hideOffline)
     if ($user_id != $org_user_id)
     {
         $sql = "UPDATE tf_messages SET to_user=".$db->qstr($user_id)." WHERE to_user=".$db->qstr($org_user_id);
-
         $result = $db->Execute($sql);
         showError($db,$sql);
 

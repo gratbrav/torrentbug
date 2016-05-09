@@ -265,4 +265,4 @@
 
     // Show User Section
     // displayUserSection();
-    include './admin/user_section.php';
+    include './user_section.php';

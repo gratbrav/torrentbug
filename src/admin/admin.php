@@ -7,7 +7,7 @@
     if (!IsAdmin()) {
         // the user probably hit this page direct
         AuditAction($cfg["constants"]["access_denied"], $_SERVER['PHP_SELF']);
-        header("location: index.php");
+        header("location: ../index.php");
     }
     
     $settings = new Class_Settings();
