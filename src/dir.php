@@ -320,12 +320,16 @@ function ListDirectory($dirName)
         echo '<input type="hidden" name="action" value="fileDelete" />';
         echo "<table class=\"table table-striped\">";
         echo '<tr><td colspan="2">';
-        echo "<a href=\"" . $parentURL . "\"><img src=\"images/up_dir.gif\" width=16 height=16 title=\""._BACKTOPARRENT."\" alt=\"\">["._BACKTOPARRENT."]</a>";
+        echo "<a href=\"" . $parentURL . "\" title=\""._BACKTOPARRENT."\">";
+        echo '<i class="fa fa-folder-open" aria-hidden="true" style="color:orange;margin-right:4px;"></i>';
+        echo "["._BACKTOPARRENT."]";
+        echo "</a>";
         echo '</td>';
         echo '<td style="text-align:right">Multi-Delete-&gt;</td>';
         echo '<td style="text-align:right"><a class=\"delete\" href="javascript:document.multidir.submit()" data-file=\"Multiple Files\")">';
-        echo '<img src="images/delete_on.gif" title="Delete Multiple Files" height="16" width="16" alt=""></a>';
-        echo '<input class="selectAll" type="checkbox" /></td></tr>';
+        echo '<i class="fa fa-trash-o" style="color:red" aria-hidden="true" title="'._DELETE.'"></i>';
+        echo '</a>';
+        echo ' <input class="selectAll" type="checkbox" /></td></tr>';
     }
 
     $handle = opendir($dirName);
@@ -341,17 +345,23 @@ function ListDirectory($dirName)
         {
             if (@is_dir($dirName.$entry))
             {
-                echo "<tr><td><a href=\"dir.php?dir=".urlencode($dir.$entry)."\"><img src=\"images/folder2.gif\" width=\"16\" height=\"16\" title=\"".$entry."\" alt=\"\">".$entry."</a></td>";
+                echo "<tr><td><a href=\"dir.php?dir=".urlencode($dir.$entry)."\" title=\"".$entry."\">";
+                echo '<i class="fa fa-folder" aria-hidden="true" style="color:orange;margin-right:4px;"></i>';
+                echo $entry."</a></td>";
                 echo "<td>&nbsp;</td>";
                 echo "<td>&nbsp;</td>";
                 echo "<td style=\"text-align:right\">";
 
                 if ($settings->get('enable_maketorrent')) {
-                    echo "<a class=\"makeTorrent\" href=\"maketorrent.php?path=".urlencode($dir.$entry)."\"><img src=\"images/make.gif\" title=\"Make Torrent\" alt=\"\"></a>";
+                    echo "<a class=\"makeTorrent\" href=\"maketorrent.php?path=".urlencode($dir.$entry)."\">";
+                    echo '<i class="fa fa-external-link" style="color:#5CB85C" aria-hidden="true" title="Make Torrent"></i>';
+                    echo "</a> ";
                 }
 
                 if ($settings->get('enable_file_download')) {
-                    echo "<a href=\"dir.php?tar=".urlencode($dir.$entry)."\"><img src=\"images/tar_down.gif\" title=\"Download as ".$settings->get('package_type')."\" alt=\"\"></a>";
+                    echo "<a href=\"dir.php?tar=".urlencode($dir.$entry)."\">";
+                    echo '<i class="fa fa-download" style="color:#5CB85C" aria-hidden="true" title="Download as '.$settings->get('package_type').'"></i>';
+                    echo "</a> ";
                 }
 
                 // The following lines of code were suggested by Jody Steele jmlsteele@stfu.ca
@@ -360,8 +370,10 @@ function ListDirectory($dirName)
                 // the ability to delete sub directories
                 if(IsAdmin($cfg["user"]) || preg_match("/^" . $cfg["user"] . "/",$dir))
                 {
-                    echo "<a class=\"delete\" href=\"dir.php?del=".urlencode($dir.$entry)."\" data-file=\"".addslashes($entry)."\"><img src=\"images/delete_on.gif\" title=\""._DELETE."\" alt=\"\"></a>";
-                    echo "<input class=\"selectFile\" type=\"checkbox\" name=\"file[]\" value=\"".urlencode($dir.$entry)."\">";
+                    echo "<a class=\"delete\" href=\"dir.php?del=".urlencode($dir.$entry)."\" data-file=\"".addslashes($entry)."\">";
+                    echo '<i class="fa fa-trash-o" style="color:red" aria-hidden="true" title="'._DELETE.'"></i>';
+                    echo "</a>";
+                    echo " <input class=\"selectFile\" type=\"checkbox\" name=\"file[]\" value=\"".urlencode($dir.$entry)."\">";
                 }
                 else
                 {
@@ -430,11 +442,13 @@ function ListDirectory($dirName)
                 if ($settings->get('enable_file_download')) {
                     // Yes, let them download
                     echo "<a href=\"dir.php?down=".urlencode($dir.$entry)."\" >";
-                    echo "<img src=\"".$image."\" width=\"16\" height=\"16\" alt=\"".$entry."\"></a>";
+                    //echo "<img src=\"".$image."\" width=\"16\" height=\"16\" alt=\"".$entry."\"></a>";
+                    echo '<i class="fa fa-file" aria-hidden="true" style="color:orange;margin-right:4px;"></i>';
                     echo "<a href=\"dir.php?down=".urlencode($dir.$entry)."\" >".$entry."</a>";
                 } else {
                     // No, just show the name
-                    echo "<img src=\"".$image."\" width=\"16\" height=\"16\" alt=\"".$entry."\">";
+                    // echo "<img src=\"".$image."\" width=\"16\" height=\"16\" alt=\"".$entry."\">";
+                    echo '<i class="fa fa-file" aria-hidden="true"  style="color:orange;margin-right:4px;"></i>';
                     echo $entry;
                 }
 
@@ -449,14 +463,16 @@ function ListDirectory($dirName)
                 }
 
                 if ($settings->get('enable_maketorrent')) {
-                    echo "<a class=\"makeTorrent\" href=\"maketorrent.php?path=".urlencode($dir.$entry)."\"><img src=\"images/make.gif\" width=16 height=16 title=\"Make Torrent\"></a>";
+                    echo "<a class=\"makeTorrent\" href=\"maketorrent.php?path=".urlencode($dir.$entry)."\">";
+                    echo '<i class="fa fa-external-link" style="color:#5CB85C" aria-hidden="true" title="Make Torrent"></i>';
+                    echo "</a> ";
                 }
 
                 if ($settings->get('enable_file_download')) {
                     // Show the download button
                     echo "<a href=\"dir.php?down=".urlencode($dir.$entry)."\" >";
-                    echo "<img src=\"images/download_owner.gif\" width=16 height=16 title=\"Download\" alt=\"\">";
-                    echo "</a>";
+                    echo '<i class="fa fa-download" style="color:#5CB85C" aria-hidden="true" title="Download"></i>';
+                    echo "</a> ";
                 }
 
                 // The following lines of code were suggested by Jody Steele jmlsteele@stfu.ca
@@ -465,8 +481,10 @@ function ListDirectory($dirName)
                 // the ability to delete files
                 if(IsAdmin($cfg["user"]) || preg_match("/^" . $cfg["user"] . "/",$dir))
                 {
-                    echo "<a class=\"delete\" href=\"dir.php?del=".urlencode($dir.$entry)."\" data-file=\"".addslashes($entry)."\"><img src=\"images/delete_on.gif\" title=\""._DELETE."\" alt=\"\"></a>";
-                    echo "<input class=\"selectFile\" type=\"checkbox\" name=\"file[]\" value=\"".urlencode($dir.$entry)."\">";
+                    echo "<a class=\"delete\" href=\"dir.php?del=".urlencode($dir.$entry)."\" data-file=\"".addslashes($entry)."\">";
+                    echo '<i class="fa fa-trash-o" style="color:red" aria-hidden="true" title="'._DELETE.'"></i>';
+                    echo "</a>";
+                    echo " <input class=\"selectFile\" type=\"checkbox\" name=\"file[]\" value=\"".urlencode($dir.$entry)."\">";
                 }
                 else
                 {

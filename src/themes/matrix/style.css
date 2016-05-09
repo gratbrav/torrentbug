@@ -38,3 +38,4 @@ table#torrentList td:nth-child(2) { text-align:right }
 .overBody {font-family:arial; background:#ffffff; font-size:9pt; font-weight:normal;}
 .bd-example { border-width: .2rem; position: relative; margin: 8px 0px; padding: 0px; border: solid white; }
 table.table { margin-bottom: 0px; }
+i.fa { font-size: 14px; }
