@@ -302,21 +302,15 @@ if (isset($dir))
 		                	<td style="text-align:right">
     			    
     			            <?php if ($settings->get('enable_maketorrent')) { ?>
-			                    <a class="makeTorrent" href="#" data-url="maketorrent.php?path=<?php echo urlencode($dir . $entry); ?>">
-    			                	<i class="fa fa-external-link" style="color:#5CB85C" aria-hidden="true" title="Make Torrent"></i>
-    			                </a> 
+			                    <a class="makeTorrent" href="#" data-url="maketorrent.php?path=<?php echo urlencode($dir . $entry); ?>"><i class="fa fa-external-link" style="color:#5CB85C" aria-hidden="true" title="Make Torrent"></i></a> 
     			            <?php } ?>
     			    
 			                <?php if ($settings->get('enable_file_download')) { ?>
-	                    		<a href="dir.php?tar=<?php echo urlencode($dir . $entry); ?>">
-    			                	<i class="fa fa-download" style="color:#5CB85C" aria-hidden="true" title="Download as '<?php echo $settings->get('package_type'); ?>"></i>
-    			                </a> 
+	                    		<a href="dir.php?tar=<?php echo urlencode($dir . $entry); ?>"><i class="fa fa-download" style="color:#5CB85C" aria-hidden="true" title="Download as '<?php echo $settings->get('package_type'); ?>"></i></a> 
     			            <?php } ?>
     			    
     			            <?php if (IsAdmin($cfg["user"]) || preg_match("/^" . $cfg["user"] . "/",$dir)) { ?>
-    			            	<a class="delete" href="dir.php?del=<?php echo urlencode($dir . $entry); ?>" data-file="<?php echo addslashes($entry); ?>">
-    			                	<i class="fa fa-trash-o" style="color:red" aria-hidden="true" title="<?php echo _DELETE; ?>"></i>
-    			                </a>
+    			            	<a class="delete" href="dir.php?del=<?php echo urlencode($dir . $entry); ?>" data-file="<?php echo addslashes($entry); ?>"><i class="fa fa-trash-o" style="color:red" aria-hidden="true" title="<?php echo _DELETE; ?>"></i></a>
     			                <input class="selectFile" type="checkbox" name="file[]" value="<?php echo urlencode($dir . $entry); ?>">
 							<?php } ?>
     			            </td>

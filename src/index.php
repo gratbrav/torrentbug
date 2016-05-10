@@ -768,24 +768,23 @@ $(document).ready(function() {
   			<fieldset class="form-group bd-example" style="margin-left:-12px;margin-right:-15px">
   				<table class="table table-striped">
   					<!-- ONLINE -->
-    				<tr><th style="color:#5CB85C"><?php echo _ONLINE ?></th></tr>
+    				<tr><th	>User</th></tr>
 	  				<?php foreach ($onlineUsers AS $user) { ?>
 		                <tr>
 							<td>
 								<a href="message.php?to_user=<?php echo $user ?>">
-									<?php echo $user ?>
+									<i class="fa fa-user" aria-hidden="true" style="color:#5CB85C;margin-right:4px;"></i><?php echo $user ?>
 								</a>
 							</td>
 						</tr>
 	    			<?php } ?>
 					
 					<!-- OFFLINE -->
-    				<tr><th style="color:#D9534F"><?php echo _OFFLINE ?></th></tr>
 	  				<?php foreach ($offlineUsers AS $user) { ?>
 		                <tr>
 							<td>
 								<a href="message.php?to_user=<?php echo $user ?>">
-									<?php echo $user ?>
+									<i class="fa fa-user" aria-hidden="true" style="color:#D9534F;margin-right:4px;"></i><?php echo $user ?>
 								</a>
 							</td>
 						</tr>
