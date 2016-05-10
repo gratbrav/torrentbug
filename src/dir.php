@@ -252,222 +252,147 @@ if (isset($dir))
 				if (!file_exists($settings->get('path').$dir)) {
     				echo "<strong>".htmlentities($dir)."</strong> could not be found or is not valid.";
 				} else {
-    				ListDirectory($settings->get('path').$dir);
-				}
-			?>
+		    
+	                if (isset($dir)) {
+                        // setup default parent directory URL
+                        $parentURL = 'dir.php';
+
+                        //get the real parentURL
+                        if (preg_match('/^(.+)\/.+$/', $dir, $matches) == 1) {
+                            $parentURL = 'dir.php?dir=' . urlencode($matches[1]);
+                        }
+                    ?>
+                	<form action="multi.php" method="post" name="multidir">
+                		<input type="hidden" name="action" value="fileDelete" />
+                		<table class="table table-striped">
+                		<tr>
+                			<td>
+                				<a href="<?php echo $parentURL; ?>" title="<?php _BACKTOPARRENT; ?>">
+                					<i class="fa fa-folder-open" aria-hidden="true" style="color:orange;margin-right:4px;"></i>[<?php echo _BACKTOPARRENT; ?>]
+                				</a>
+                			</td>
+                			<td class="hidden-sm-down"> </td>
+                			<td style="text-align:right">Multi-Delete-&gt;</td>
+                			<td style="text-align:right">
+                				<a class="delete" href="javascript:document.multidir.submit()" data-file="Multiple Files"><i class="fa fa-trash-o" style="color:red" aria-hidden="true" title="<?php echo _DELETE; ?>"></i></a> 
+                				<input class="selectAll" type="checkbox" />
+            				</td>
+        				</tr>
+    			<?php } ?>
+
+    			<?php 
+        			$dirName = stripslashes($settings->get('path') . $dir);
+        			
+        			$entrys = array();
+    			    foreach (glob($dirName . '*', GLOB_ONLYDIR) as $dir2) {
+    			        $entrys[] = str_replace($dirName, '', $dir2);
+    			    }
+    			    natsort($entrys);
+
+    			    foreach ($entrys as $entry) {
+			        ?>
+		                <tr>
+		                	<td>
+		                		<a href="dir.php?dir=<?php echo urlencode($dir . $entry); ?>" title="<?php echo $entry; ?>">
+		                			<i class="fa fa-folder" aria-hidden="true" style="color:orange;margin-right:4px;"></i><?php echo $entry; ?>
+		                		</a>
+	                		</td>
+		                	<td>&nbsp;</td>
+		                	<td>&nbsp;</td>
+		                	<td style="text-align:right">
+    			    
+    			            <?php if ($settings->get('enable_maketorrent')) { ?>
+			                    <a class="makeTorrent" href="#" data-url="maketorrent.php?path=<?php echo urlencode($dir . $entry); ?>">
+    			                	<i class="fa fa-external-link" style="color:#5CB85C" aria-hidden="true" title="Make Torrent"></i>
+    			                </a> 
+    			            <?php } ?>
+    			    
+			                <?php if ($settings->get('enable_file_download')) { ?>
+	                    		<a href="dir.php?tar=<?php echo urlencode($dir . $entry); ?>">
+    			                	<i class="fa fa-download" style="color:#5CB85C" aria-hidden="true" title="Download as '<?php echo $settings->get('package_type'); ?>"></i>
+    			                </a> 
+    			            <?php } ?>
+    			    
+    			            <?php if (IsAdmin($cfg["user"]) || preg_match("/^" . $cfg["user"] . "/",$dir)) { ?>
+    			            	<a class="delete" href="dir.php?del=<?php echo urlencode($dir . $entry); ?>" data-file="<?php echo addslashes($entry); ?>">
+    			                	<i class="fa fa-trash-o" style="color:red" aria-hidden="true" title="<?php echo _DELETE; ?>"></i>
+    			                </a>
+    			                <input class="selectFile" type="checkbox" name="file[]" value="<?php echo urlencode($dir . $entry); ?>">
+							<?php } ?>
+    			            </td>
+			            </tr>
+    			  <?php }
+    			    closedir($handle);
+                ?>
+    			
+    			<?php 
+        			
+        			$entrys = array();
+    			    foreach (glob($dirName . '*.*') as $dir2) {
+                        $entrys[] = str_replace($dirName, '', $dir2);
+    			    }
+    			    
+    			    foreach($entrys as $entry) {
+
+    			        $arStat = @lstat($dirName.$entry);
+		                $arStat[7] = ( $arStat[7] == 0 )? file_size( $dirName . $entry ) : $arStat[7];
+		                
+		                $timeStamp = '';
+		                if (array_key_exists(10,$arStat)) {
+		                    $timeStamp = $arStat[10];
+		                }
+		                
+	                   $fileSize = number_format(($arStat[7])/1024);
+                    ?>
+						<tr>
+							<td>
+    			    
+							<?php if ($settings->get('enable_file_download')) { ?>
+								<a href="dir.php?down=<?php echo urlencode($dir.$entry); ?>" >
+			                    	<i class="fa fa-file" aria-hidden="true" style="color:orange;margin-right:4px;"></i><?php echo $entry; ?>
+    			                </a>
+			                <?php } else { ?>
+    			                    <i class="fa fa-file" aria-hidden="true"  style="color:orange;margin-right:4px;"></i>
+    			                    <?php echo $entry; ?>
+							<?php } ?>
+    			    
+    			            </td>
+    			            <td style="text-align:right"><?php echo $fileSize; ?> KB</td>
+    			            <td class="hidden-sm-down"><?php echo date('m-d-Y g:i a', $timeStamp); ?></td>
+    			            <td style="text-align:right">
+    			    
+			                <?php if( $settings->get('enable_view_nfo') && (( substr( strtolower($entry), -4 ) == ".nfo" ) || ( substr( strtolower($entry), -4 ) == ".txt" ))  ) { ?>
+    			            	<a href="viewnfo.php?path=<?php echo urlencode(addslashes($dir.$entry)); ?>" title="View <?php echo $entry; ?>"><i class="fa fa-info" aria-hidden="true"></i></a>
+    			            <?php } ?>
+    			    
+			                <?php if ($settings->get('enable_maketorrent')) { ?>
+			                    <a class="makeTorrent" href="#" data-url="maketorrent.php?path=<?php echo urlencode($dir.$entry); ?>"><i class="fa fa-external-link" style="color:#5CB85C" aria-hidden="true" title="Make Torrent"></i></a>
+			                <?php } ?>
+    			    
+			                <?php if ($settings->get('enable_file_download')) { ?>
+    			            	<a href="dir.php?down=<?php echo urlencode($dir.$entry); ?>" ><i class="fa fa-download" style="color:#5CB85C" aria-hidden="true" title="Download"></i></a>
+			                <?php } ?>
+    			    
+			                <?php if (IsAdmin($cfg["user"]) || preg_match("/^" . $cfg["user"] . "/",$dir)) { ?>
+    			            	<a class="delete" href="dir.php?del=<?php echo urlencode($dir.$entry); ?>" data-file="<?php echo addslashes($entry); ?>"><i class="fa fa-trash-o" style="color:red" aria-hidden="true" title="<?php echo _DELETE; ?>"></i></a>
+    			                <input class="selectFile" type="checkbox" name="file[]" value="<?php echo urlencode($dir.$entry); ?>">
+			                <?php } else { ?>
+    			            	&nbsp;
+    			            <?php } ?>
+    			            </td>
+			            </tr>
+    			    <?php 
+    			    }
+    			    closedir($handle);
+			    ?>
+				</table>
+    		</form>
+		    <?php } ?>
 		</div>
 	</div>
 </div>
 
 <?php
-
-//**************************************************************************
-// ListDirectory()
-// This method reads files and directories in the specified path and
-// displayes them.
-function ListDirectory($dirName)
-{
-    global $dir, $cfg, $settings;
-    $bgLight = $cfg["bgLight"];
-    $bgDark = $cfg["bgDark"];
-    $entrys = array();
-
-    $bg = $bgLight;
-
-    $dirName = stripslashes($dirName);
-
-    if (isset($dir))
-    {
-        //setup default parent directory URL
-        $parentURL = "dir.php";
-
-        //get the real parentURL
-        if (preg_match("/^(.+)\/.+$/",$dir,$matches) == 1)
-        {
-            $parentURL="dir.php?dir=" . urlencode($matches[1]);
-        }
-
-        echo '<form action="multi.php" method="post" name="multidir">';
-        echo '<input type="hidden" name="action" value="fileDelete" />';
-        echo "<table class=\"table table-striped\">";
-        echo '<tr><td colspan="2">';
-        echo "<a href=\"" . $parentURL . "\" title=\""._BACKTOPARRENT."\">";
-        echo '<i class="fa fa-folder-open" aria-hidden="true" style="color:orange;margin-right:4px;"></i>';
-        echo "["._BACKTOPARRENT."]";
-        echo "</a>";
-        echo '</td>';
-        echo '<td style="text-align:right">Multi-Delete-&gt;</td>';
-        echo '<td style="text-align:right"><a class="delete" href="javascript:document.multidir.submit()" data-file="Multiple Files">';
-        echo '<i class="fa fa-trash-o" style="color:red" aria-hidden="true" title="'._DELETE.'"></i>';
-        echo '</a>';
-        echo ' <input class="selectAll" type="checkbox" /></td></tr>';
-    }
-
-    $handle = opendir($dirName);
-    while($entry = readdir($handle))
-    {
-        $entrys[] = $entry;
-    }
-    natsort($entrys);
-
-    foreach($entrys as $entry)
-    {
-        if ($entry != "." && $entry != ".." && substr($entry, 0, 1) != ".")
-        {
-            if (@is_dir($dirName.$entry))
-            {
-                echo "<tr><td><a href=\"dir.php?dir=".urlencode($dir.$entry)."\" title=\"".$entry."\">";
-                echo '<i class="fa fa-folder" aria-hidden="true" style="color:orange;margin-right:4px;"></i>';
-                echo $entry."</a></td>";
-                echo "<td>&nbsp;</td>";
-                echo "<td>&nbsp;</td>";
-                echo "<td style=\"text-align:right\">";
-
-                if ($settings->get('enable_maketorrent')) {
-                    echo "<a class=\"makeTorrent\" href=\"#\" data-url=\"maketorrent.php?path=".urlencode($dir.$entry)."\">";
-                    echo '<i class="fa fa-external-link" style="color:#5CB85C" aria-hidden="true" title="Make Torrent"></i>';
-                    echo "</a> ";
-                }
-
-                if ($settings->get('enable_file_download')) {
-                    echo "<a href=\"dir.php?tar=".urlencode($dir.$entry)."\">";
-                    echo '<i class="fa fa-download" style="color:#5CB85C" aria-hidden="true" title="Download as '.$settings->get('package_type').'"></i>';
-                    echo "</a> ";
-                }
-
-                // The following lines of code were suggested by Jody Steele jmlsteele@stfu.ca
-                // this is so only the owner of the file(s) or admin can delete
-                // only give admins and users who "own" this directory
-                // the ability to delete sub directories
-                if(IsAdmin($cfg["user"]) || preg_match("/^" . $cfg["user"] . "/",$dir))
-                {
-                    echo "<a class=\"delete\" href=\"dir.php?del=".urlencode($dir.$entry)."\" data-file=\"".addslashes($entry)."\">";
-                    echo '<i class="fa fa-trash-o" style="color:red" aria-hidden="true" title="'._DELETE.'"></i>';
-                    echo "</a>";
-                    echo " <input class=\"selectFile\" type=\"checkbox\" name=\"file[]\" value=\"".urlencode($dir.$entry)."\">";
-                }
-                else
-                {
-                    echo "&nbsp;";
-                }
-                echo "</td></tr>\n";
-                if ($bg == $bgLight)
-                {
-                    $bg = $bgDark;
-                }
-                else
-                {
-                    $bg = $bgLight;
-                }
-            }
-            else
-            {
-                // Do nothing
-            }
-        }
-    }
-    closedir($handle);
-
-    $entrys = array();
-    $handle = opendir($dirName);
-    while($entry = readdir($handle))
-    {
-        $entrys[] = $entry;
-    }
-    natsort($entrys);
-
-    foreach($entrys as $entry)
-    {
-        if ($entry != "." && $entry != "..")
-        {
-            if (@is_dir($dirName.$entry))
-            {
-                // Do nothing
-            }
-            else
-            {
-                $arStat = @lstat($dirName.$entry);
-                $arStat[7] = ( $arStat[7] == 0 )? file_size( $dirName . $entry ) : $arStat[7];
-                if (array_key_exists(10,$arStat))
-                {
-                        $timeStamp = $arStat[10];
-                }
-                else
-                {
-                    $timeStamp = "";
-                }
-                $fileSize = number_format(($arStat[7])/1024);
-
-                echo "<tr>";
-                echo "<td>";
-
-                // Can users download files?
-                if ($settings->get('enable_file_download')) {
-                    // Yes, let them download
-                    echo "<a href=\"dir.php?down=".urlencode($dir.$entry)."\" >";
-                    echo '<i class="fa fa-file" aria-hidden="true" style="color:orange;margin-right:4px;"></i>';
-                    echo "<a href=\"dir.php?down=".urlencode($dir.$entry)."\" >".$entry."</a>";
-                } else {
-                    // No, just show the name
-                    echo '<i class="fa fa-file" aria-hidden="true"  style="color:orange;margin-right:4px;"></i>';
-                    echo $entry;
-                }
-
-                echo "</td>";
-                echo "<td style=\"text-align:right\">".$fileSize." KB</td>";
-                echo "<td>".date("m-d-Y g:i a", $timeStamp)."</td>";
-                echo "<td style=\"text-align:right\">";
-
-                if( $settings->get('enable_view_nfo') && (( substr( strtolower($entry), -4 ) == ".nfo" ) || ( substr( strtolower($entry), -4 ) == ".txt" ))  )
-                {
-                    echo "<a href=\"viewnfo.php?path=".urlencode(addslashes($dir.$entry))."\"><img src=\"images/view_nfo.gif\" width=16 height=16 title=\"View '$entry'\"></a>";
-                }
-
-                if ($settings->get('enable_maketorrent')) {
-                    echo "<a class=\"makeTorrent\" href=\"#\" data-url=\"maketorrent.php?path=".urlencode($dir.$entry)."\">";
-                    echo '<i class="fa fa-external-link" style="color:#5CB85C" aria-hidden="true" title="Make Torrent"></i>';
-                    echo "</a> ";
-                }
-
-                if ($settings->get('enable_file_download')) {
-                    // Show the download button
-                    echo "<a href=\"dir.php?down=".urlencode($dir.$entry)."\" >";
-                    echo '<i class="fa fa-download" style="color:#5CB85C" aria-hidden="true" title="Download"></i>';
-                    echo "</a> ";
-                }
-
-                // The following lines of code were suggested by Jody Steele jmlsteele@stfu.ca
-                // this is so only the owner of the file(s) or admin can delete
-                // only give admins and users who "own" this directory
-                // the ability to delete files
-                if(IsAdmin($cfg["user"]) || preg_match("/^" . $cfg["user"] . "/",$dir))
-                {
-                    echo "<a class=\"delete\" href=\"dir.php?del=".urlencode($dir.$entry)."\" data-file=\"".addslashes($entry)."\">";
-                    echo '<i class="fa fa-trash-o" style="color:red" aria-hidden="true" title="'._DELETE.'"></i>';
-                    echo "</a>";
-                    echo " <input class=\"selectFile\" type=\"checkbox\" name=\"file[]\" value=\"".urlencode($dir.$entry)."\">";
-                }
-                else
-                {
-                    echo "&nbsp;";
-                }
-                echo "</td></tr>\n";
-
-                if ($bg == $bgLight)
-                {
-                    $bg = $bgDark;
-                }
-                else
-                {
-                    $bg = $bgLight;
-                }
-            }
-        }
-    }
-    closedir($handle);
-    echo "</table>";
-    echo "</form>";
-}
 
 // ***************************************************************************
 // ***************************************************************************
@@ -483,7 +408,6 @@ function checkUserPath()
         mkdir($settings->get('path').$cfg["user"], 0777);
     }
 }
-
 
 ?>
 
