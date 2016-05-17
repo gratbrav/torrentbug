@@ -18,7 +18,8 @@
     "components/jquery" : "2.2.1",
     "components/font-awesome" : "4.6.1",
     "twitter/bootstrap" : "4.0.0-alpha.2",
-    "arboshiki/lobibox": "dev-master"
+    "arboshiki/lobibox": "dev-master",
+    "datatables/datatables": "1.10.11"
   },
   "config" : {
     "vendor-dir" : "src/plugins"
