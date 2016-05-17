@@ -30,20 +30,15 @@
     include_once 'functions.php';
 
 
-if (empty($cfg['user'])) {
-	// the user probably hit this page direct
-	header("location: index.php");
-    exit;
-}
+    $delete = getRequestVar('delete');
+    if (!empty($delete)) {
+        DeleteMessage($delete);
+        header("location: " . $_SERVER['PHP_SELF']);
+        exit();
+    }
 
-$delete = getRequestVar('delete');
-if (!empty($delete)) {
-    DeleteMessage($delete);
-    header("location: " . $_SERVER['PHP_SELF']);
-}
-
+    include_once 'header.php';
 ?>
-<?php include_once 'header.php' ?>
 
 <?php
 $mid = getRequestVar('mid');
