@@ -50,13 +50,13 @@
             		
             		$result = $db->SelectLimit($sql);
             		while (list($user_id, $file, $time) = $result->FetchRow()) {
-            		    $user_icon = "images/user_offline.gif";
+            		    $iconColor = "#D9534F";
             		    if (IsOnline($user_id)) {
-            		        $user_icon = "images/user.gif";
+            		        $iconColor = '#5CB85C';
             		    }
             		?>
         			<tr>
-        		    	<td><a href="message.php?to_user=<?php echo $user_id; ?>"><img src="<?php echo $user_icon; ?>" title="<?php echo $user_id; ?>" alt=""><?php echo $user_id; ?></a>&nbsp;&nbsp;</td>
+        		    	<td><a href="message.php?to_user=<?php echo $user_id; ?>"><i class="fa fa-user" aria-hidden="true" style="color:<?php echo $iconColor; ?>;margin-right:4px;"></i><?php echo $user_id; ?></a>&nbsp;&nbsp;</td>
         		    	<td><?php echo $file; ?></td>
         		    	<td style="text-align:center;"><?php echo date(_DATETIMEFORMAT, $time); ?></td>
         		    </tr>
