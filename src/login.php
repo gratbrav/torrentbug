@@ -44,8 +44,6 @@ $db = getdb();
 	    exit;
 	}
 	
-	ob_start();
-
 
  	$user = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
  	$iamhim = filter_input(INPUT_POST, 'iamhim', FILTER_SANITIZE_STRING);
@@ -173,56 +171,52 @@ $db = getdb();
 <!doctype html>
 <html>
 <head>
-    <title><?php echo $cfg["pagetitle"] ?></title>
-    <link rel="stylesheet" href="./plugins/twitter/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="<?php echo $settings->get('base_url') ?>/plugins/components/font-awesome/css/font-awesome.min.css" type="text/css" />
-    <meta name=viewport content="width=device-width, initial-scale=1">
-    <style>
-    #loginbox { margin-top: 70px; }
-    #form > div { margin-bottom: 25px; }
-    </style>
+<title><?php echo $cfg["pagetitle"] ?></title>
+<meta name=viewport content="width=device-width, initial-scale=1">
+<style>
+#loginbox { margin-top: 70px; text-align:center; }
+#form > div { margin-bottom: 25px; }
+</style>
 </head>
 <body>
 
-<div class="container">    
-        
-    <div id="loginbox" class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3"> 
-		
-		<?php if (isset($loginFailed)) { ?><div class="alert alert-danger" role="alert">Login failed. Please try again.</div><?php } ?>
-        
+<div class="container">
+    <div id="loginbox" class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3">
+
+        <?php if (isset($loginFailed)) { ?><div class="alert alert-danger">Login failed. Please try again.</div><?php } ?>
+
         <div class="card">
-            <div class="card-header text-sm-center">
-                Please sign in
-            </div>     
+            <div class="card-header">Please sign in</div>
 
             <div class="card-block">
 
-                <form name="form" id="form" class="form-horizontal" enctype="multipart/form-data" method="POST">
-                   
+                <form id="form" method="POST">
+
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
-                        <input id="user" type="text" class="form-control" name="username" value="" placeholder="User" autofocus>                                        
+                        <input id="user" type="text" class="form-control" name="username" value="" placeholder="User" autofocus />
                     </div>
 
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-lock" aria-hidden="true"></i></span>
-                        <input id="password" type="password" class="form-control" name="iamhim" placeholder="Password">
+                        <input id="password" type="password" class="form-control" name="iamhim" placeholder="Password" />
                     </div>
-                                                                                      
+
                     <button type="submit" class="btn btn-primary btn-block" id="submit">
-                    	<i class="fa fa-sign-in" aria-hidden="true"></i> 
-                    	Log in
-                    </button>                          
+                        <i class="fa fa-sign-in" aria-hidden="true"></i>
+                        Log in
+                    </button>
 
-                </form>     
+                </form>
 
-            </div>                     
-        </div>  
+            </div>
+        </div>
     </div>
 </div>
 
 <script src="./plugins/components/jquery/jquery.min.js"></script>
-<script src="./js/login.js"></script>
+<script async src="./js/login.js"></script>
 </body>
 </html>
-<?php ob_end_flush(); ?>
+<link rel="stylesheet" href="./plugins/twitter/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" href="./plugins/components/font-awesome/css/font-awesome.min.css" type="text/css" />
