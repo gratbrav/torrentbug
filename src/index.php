@@ -618,8 +618,8 @@ $drivespace = getDriveSpace($settings->get('path'));
 	$subMenu = 'index';
 	include_once 'header.php' 
 ?>
-<link rel="stylesheet" href="/src/plugins/arboshiki/lobibox/dist/css/lobibox.min.css"/>
-<script src="/src/plugins/arboshiki/lobibox/dist/js/lobibox.min.js"></script>
+<link rel="stylesheet" href="<?=$settings->get('base_url')?>/plugins/arboshiki/lobibox/dist/css/lobibox.min.css"/>
+<script src="<?=$settings->get('base_url')?>/plugins/arboshiki/lobibox/dist/js/lobibox.min.js"></script>
 <script>
 <?php if (!isset($_SESSION['prefresh']) || ($_SESSION['prefresh'] == true)) { ?>
 
