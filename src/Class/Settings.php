@@ -7,7 +7,7 @@ class Class_Settings
 	
 	function __construct()
 	{
-		$db = Class_Database::getInstance();
+		$db = \Database::getInstance();
 		$this->db = $db->getDatabase();
 		
 		$this->load();

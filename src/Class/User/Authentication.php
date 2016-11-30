@@ -22,7 +22,7 @@ class Authentication
 		$this->user = $user;
 		$this->password = $password;
 		
-		$db = \Class_Database::getInstance();
+		$db = \Database::getInstance();
 		$this->db = $db->getDatabase();
 	}
 	

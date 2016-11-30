@@ -9,7 +9,7 @@
  */
 include_once __DIR__ . '/../db.php';
 
-class Class_Database
+class Database
 {
     /**
      * Database
