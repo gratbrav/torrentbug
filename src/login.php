@@ -116,7 +116,7 @@ $db = getdb();
         
     if ($allow_login)
     {
-    	$auth = new Class_User_Authentication($user, $iamhim);
+    	$auth = new User\Authentication($user, $iamhim);
     	$result = $auth->checkLogin();
     	showError($db,$sql);
     	

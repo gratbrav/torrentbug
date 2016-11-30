@@ -4,12 +4,14 @@
 *
 * Class for authentication a user
 *
-* @package  gratbrav
+* @package  Torrentbug
 * @author   Gratbrav
 * @version  $Revision: 1.0 $
 * @access   public
 */
-class Class_User_Authentication
+namespace User;
+
+class Authentication
 {
 	protected $db = null;
 	protected $user = null;
@@ -20,7 +22,7 @@ class Class_User_Authentication
 		$this->user = $user;
 		$this->password = $password;
 		
-		$db = Class_Database::getInstance();
+		$db = \Class_Database::getInstance();
 		$this->db = $db->getDatabase();
 	}
 	
