@@ -29,6 +29,8 @@
 
     include_once 'functions.php';
 
+    $msgService = new \Message\Service($cfg['user']);
+
     $delete = getRequestVar('delete');
     if (!empty($delete)) {
         $msgService->delete($delete);
