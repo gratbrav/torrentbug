@@ -31,6 +31,11 @@
 	include_once 'header.php'; 
 
 ?>
+<script src="<?=$settings->get('base_url')?>/plugins/datatables/datatables/media/js/jquery.dataTables.min.js"></script>
+<script src="<?=$settings->get('base_url')?>/plugins/datatables/datatables/media/js/dataTables.bootstrap4.min.js"></script>
+
+<link href="<?=$settings->get('base_url')?>/plugins/datatables/datatables/media/css/dataTables.bootstrap4.min.css" type="text/css" rel="stylesheet" />
+<link href="<?=$settings->get('base_url')?>/plugins/twitter/bootstrap/dist/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
 
 <div class="container">
 	<div class="row">
