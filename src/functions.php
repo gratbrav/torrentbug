@@ -647,18 +647,6 @@ function GetLanguageFromFile($inFile)
 }
 
 // ***************************************************************************
-// Delete Message
-function DeleteMessage($mid)
-{
-    global $cfg, $db;
-
-    $sql = "delete from tf_messages where mid=".$mid." and to_user=".$db->qstr($cfg['user']);
-    $result = $db->Execute($sql);
-    showError($db,$sql);
-}
-
-
-// ***************************************************************************
 // Update User -- used by admin
 function updateThisUser($user_id, $org_user_id, $pass1, $userType, $hideOffline)
 {

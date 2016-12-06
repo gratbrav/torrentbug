@@ -24,23 +24,20 @@
 
     include_once 'Class/autoload.php';
     include_once 'config.php';
-    
-    $settings = new Class_Settings();
-    
-    include_once 'functions.php';
 
+    $settings = new Class_Settings();
+
+    include_once 'functions.php';
 
     $delete = getRequestVar('delete');
     if (!empty($delete)) {
-        DeleteMessage($delete);
-        header("location: " . $_SERVER['PHP_SELF']);
-        exit();
+        $msgService->delete($delete);
+        header('location: ' . $_SERVER['PHP_SELF']);
+        exit;
     }
 
     include_once 'header.php';
-?>
 
-<?php
 $mid = getRequestVar('mid');
 if (!empty($mid) && is_numeric($mid)) {
     list($from_user, $message, $ip, $time, $isnew, $force_read) = GetMessage($mid);
@@ -97,7 +94,13 @@ if (!empty($mid) && is_numeric($mid)) {
 </div>
 
 <?php } else { ?>
-	
+
+<script src="<?=$settings->get('base_url')?>/plugins/datatables/datatables/media/js/jquery.dataTables.min.js"></script>
+<script src="<?=$settings->get('base_url')?>/plugins/datatables/datatables/media/js/dataTables.bootstrap4.min.js"></script>
+
+<link href="<?=$settings->get('base_url')?>/plugins/datatables/datatables/media/css/dataTables.bootstrap4.min.css" type="text/css" rel="stylesheet" />
+<link href="<?=$settings->get('base_url')?>/plugins/twitter/bootstrap/dist/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+
 <div class="container">
 	<div class="row">
 		<div class="col-sm-12 bd-example">
@@ -124,74 +127,79 @@ if (!empty($mid) && is_numeric($mid)) {
 </div>
 
 <div class="container">
-	<div class="row">
-		<div class="col-sm-12 bd-example">
-			<?php $inx = 0; ?>
-   			<table class="table table-striped">
-   				<tr>
-   					<th><?php echo _FROM ?></th>
-   					<th><?php echo _MESSAGE ?></th>
-   					<th><?php echo _DATE ?></th>
-   					<th><?php echo _ADMIN ?></th>
-   				</tr>
-				<?php
-   					$sql = "SELECT mid, from_user, message, IsNew, ip, time, force_read FROM tf_messages WHERE to_user=".$db->qstr($cfg['user'])." ORDER BY time";
-   					$result = $db->Execute($sql);
-   					showError($db,$sql);
+    <div class="row">
+        <div class="col-sm-12 bd-example">
+            <table id="message-list" class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th><?php echo _FROM ?></th>
+                    <th><?php echo _MESSAGE ?></th>
+                    <th><?php echo _DATE ?></th>
+                    <th><?php echo _ADMIN ?></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php
+                    $messageList = $msgService->getMessages();
+                    foreach ((array)$messageList as $message) {
 
-   					while (list($mid, $from_user, $message, $new, $ip, $time, $force_read) = $result->FetchRow()) {
+                        $mailIcon = ($message->getIsNew()) ? 'fa-envelope-o' : 'fa-envelope-open-o';
 
-   						if($new == 1) {
-           					$mail_image = "images/new_message.gif";
-       					} else {
-           					$mail_image = "images/old_message.gif";
-       					}
+                        $messageContent = check_html($message->getMessage(), "nohtml");
+                        if (strlen($messageContent) >= 40) { // needs to be trimmed
+                            $messageContent = substr($messageContent, 0, 39);
+                            $messageContent .= '...';
+                        }
 
-       					$display_message = check_html($message, "nohtml");
-       					if (strlen($display_message) >= 40) { // needs to be trimmed
-           					$display_message = substr($display_message, 0, 39);
-           					$display_message .= "...";
-       					}
+                        $link = $_SERVER['PHP_SELF'] . '?mid=' . $message->getMessageId();
+                    ?>
+                    <tr>
+                        <td>
+                            <a href="<?=$link?>"><i class="fa <?=$mailIcon?>" aria-hidden="true"></i></a>
+                            <a href="<?=$link?>"><?=$message->getSender()?></a>
+                        </td>
+                        <td>
+                            <a href="<?=$link?>"><?=$messageContent?></a>
+                        </td>
+                        <td style="text-align:center">
+                            <a href="<?php echo $link ?>"><?php echo date(_DATETIMEFORMAT, $message->getTime()) ?></a>
+                        </td>
+                        <td style="text-align:center">
+                        <?php
+                            // Is this a force_read from an admin?
+                            if ($message->getForceRead()) {
+                                // Yes, then don't let them delete the message yet
+                                echo '<img src="images/delete_off.gif" alt="" title="" />';
+                            } else {
+                                // No, let them reply or delete it
+                                if (IsUser($message->getSender())) {
+                                    echo "<a href=\"message.php?to_user=".$message->getSender()."&rmid=".$message->getMessageId()."\"><i class=\"fa fa-reply\" aria-hidden=\"true\"></i></a>";
+                                }
+                                echo "<a href=\"".$_SERVER['PHP_SELF']."?delete=".$message->getMessageId()."\" style=\"margin-left:6px;\"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></a>";
+                            }
+                        ?>
+                        </td>
+                    </tr>
+                <?php } ?>
+                </tbody>
+            </table>
 
-       					$link = $_SERVER['PHP_SELF']."?mid=".$mid;
-					?>
-        			<tr>
-        				<td>
-        					&nbsp;&nbsp;
-        					<a href="<?php echo $link ?>">
-        						<img src="<?php echo $mail_image ?>" title="" alt="" />
-        					</a>
-        					&nbsp;&nbsp; 
-        					<a href="<?php echo $link ?>"><?php echo $from_user ?></a>
-        				</td>
-        				<td><a href="<?php echo $link ?>"><?php echo $display_message ?></a></td>
-        				<td style="text-align:center"><a href="<?php echo $link ?>"><?php echo date(_DATETIMEFORMAT, $time) ?></a></td>
-        				<td style="text-align:center">
-							<?php
-						        // Is this a force_read from an admin?
-        						if ($force_read == 1) {
-						            // Yes, then don't let them delete the message yet
-            						echo "<img src=\"images/delete_off.gif\" alt=\"\" title=\"\" />";
-        						} else {
-						            // No, let them reply or delete it
-						            if (IsUser($from_user)) {
-                						echo "<a href=\"message.php?to_user=".$from_user."&rmid=".$mid."\"><img src=\"images/reply.gif\" alt=\"\" title=\""._REPLY."\" /></a>";
-            						}
-            						echo "<a href=\"".$_SERVER['PHP_SELF']."?delete=".$mid."\"><img src=\"images/delete_on.gif\" alt=\"\" title=\""._DELETE."\" /></a></td></tr>";
-        						}
-        				$inx++;
-    				} // End While
-    				?>
-    		</table>
-
-    		<?php
-			    if($inx == 0) {
-       				echo "<div style=\"text-align:center\"><strong>-- "._NORECORDSFOUND." --</strong></div>";
-   				} 
-   			?>
-		</div>
-	</div>
+            <?php
+                if (!count($messageList)) {
+                    echo "<div style=\"text-align:center\"><strong>-- "._NORECORDSFOUND." --</strong></div>";
+                }
+            ?>
+        </div>
+    </div>
 </div>
+
+<script>
+$(document).ready(function() {
+    $('#message-list').dataTable( {
+        // lengthChange: false,
+    });
+});
+</script>
 
 <?php } ?>
 
