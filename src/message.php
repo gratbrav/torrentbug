@@ -30,15 +30,9 @@ include_once("functions.php");
     $settings = new Class_Settings();
 
 $to_user = getRequestVar('to_user');
-if(empty($to_user) or empty($cfg['user']))
-{
-     // the user probably hit this page direct
-    header("location: index.php");
-    exit;
-}
-
 $message = getRequestVar('message');
-if (!empty($message))
+
+if (!empty($message) && !empty($to_user) && !empty($cfg['user']))
 {
     $to_all = getRequestVar('to_all');
     if(!empty($to_all))
@@ -85,11 +79,17 @@ else
 <table border="0" cellpadding="3" cellspacing="2" width="100%">
 <tr>
     <td bgcolor="<?php echo $cfg["table_data_bg"] ?>" align="right"><font size=2 face=Arial><?php echo _TO ?>:</font></td>
-    <td bgcolor="<?php echo $cfg["table_data_bg"] ?>"><font size=2 face=Arial><input type="Text" name="to_user" value="<?php echo $to_user ?>" size="20" readonly="true"></font></td>
-</tr>
-<tr>
-    <td bgcolor="<?php echo $cfg["table_data_bg"] ?>" align="right"><font size=2 face=Arial><?php echo _FROM ?>:</font></td>
-    <td bgcolor="<?php echo $cfg["table_data_bg"] ?>"><font size=2 face=Arial><input type="Text" name="from_user" value="<?php echo $cfg['user'] ?>" size="20" readonly="true"></font></td>
+    <td bgcolor="<?php echo $cfg["table_data_bg"] ?>">
+        <select name="to_user" class="form-control">
+        <?php
+            $users = GetUsers();
+            foreach ($users as $user) {
+                $selected = ($user == $to_user) ? 'selected' : '';
+                echo '<option ' . $selected .'>' . htmlentities($user, ENT_QUOTES) . '</option>';
+            }
+        ?>
+        </select>
+    </td>
 </tr>
 <tr>
     <td bgcolor="<?php echo $cfg["table_data_bg"] ?>" colspan="2">

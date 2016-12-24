@@ -104,33 +104,16 @@ if (!empty($mid) && is_numeric($mid)) {
 <link href="<?=$settings->get('base_url')?>/plugins/twitter/bootstrap/dist/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
 
 <div class="container">
-	<div class="row">
-		<div class="col-sm-12 bd-example">
-			<form name="formMessage" action="message.php" method="post">
-				<table class="table table-striped">
-    				<tr>
-    					<td style="vertical-align: middle;"><?php echo _SENDMESSAGETO ?></td>
-    					<td style="vertical-align: middle">
-    						<select name="to_user" class="form-control">
-    							<?php
-    								$users = GetUsers();
-        							foreach ($users AS $user) {
-        								echo '<option>'.htmlentities($user, ENT_QUOTES).'</option>';
-        							}
-        						?>
-    						</select>
-    					</td>
-    					<td><input type="Submit" value="<?php echo _COMPOSE ?>" class="btn btn-primary"></td>
-    				</tr>
-    			</table>
-    		</form>
-		</div>
-	</div>
-</div>
-
-<div class="container">
     <div class="row">
-        <div class="col-sm-12 bd-example">
+
+        <div class="col-sm-12 bd-example" style="border:none;padding-right:0px;">
+            <a class="btn btn-primary pull-right" href="message.php">
+                <span class="btn-label icon fa fa-plus"></span>
+                <?=_SENDMESSAGETO?>
+            </a>
+        </div>
+
+        <div class="col-sm-12 bd-example" style="padding:16px;">
             <table id="message-list" class="table table-striped table-bordered">
             <thead>
                 <tr>
