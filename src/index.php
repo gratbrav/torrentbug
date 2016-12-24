@@ -661,6 +661,81 @@ $(document).ready(function() {
 		return confirm("<?php echo _ABOUTTODELETE ?>: " + $(this).data('torrent'));
 	});
 
+    /**
+     * display torrent upload form
+     * and hide all visible forms
+    */
+    $( ".display_upload_form" ).click( function() {
+
+        var visible = $( this ).hasClass( "btn-primary" );
+
+        hideAllForms();
+
+        if ( visible ) {
+            $( "#form_upload" ).slideToggle();
+            $( ".display_upload_form" ).toggleClass( "btn-primary btn-success" );
+        }
+    } );
+
+    /**
+     * display torrent url form
+     * and hide all visible forms
+    */
+    $( ".display_url_form" ).click( function() {
+
+        var visible = $( this ).hasClass( "btn-primary" );
+
+        hideAllForms();
+
+        if ( visible ) {
+            $( "#form_url" ).slideToggle();
+            $( ".display_url_form" ).toggleClass( "btn-primary btn-success" );
+        }
+    } );
+
+    /**
+     * display torrent search form
+     * and hide all visible forms
+    */
+    $( ".display_search_form" ).click( function() {
+
+        var visible = $( this ).hasClass( "btn-primary" );
+
+        hideAllForms();
+
+        if ( visible ) {
+            $( "#form_search" ).slideToggle();
+            $( ".display_search_form" ).toggleClass( "btn-primary btn-success" );
+        }
+    } );
+
+    /**
+     * hide all visible forms
+    */
+    $( ".close_form" ).click( hideAllForms );
+
+    /**
+     * hide all visible forms
+    */
+    function hideAllForms() {
+
+        $( "#form_upload" ).hide( "fast" );
+        $( "#form_url" ).hide( "fast" );
+        $( "#form_search" ).hide( "fast" );
+
+        if ( $( ".display_url_form" ).hasClass( "btn-success" ) ) {
+            $( ".display_url_form" ).toggleClass( "btn-primary btn-success" );
+        }
+
+        if ( $( ".display_search_form" ).hasClass( "btn-success" ) ) {
+            $( ".display_search_form" ).toggleClass( "btn-primary btn-success" );
+        }
+
+        if ( $( ".display_upload_form" ).hasClass( "btn-success" ) ) {
+            $( ".display_upload_form" ).toggleClass( "btn-primary btn-success" );
+        }
+    }
+
 });
 
     var ol_closeclick = "1";
@@ -702,57 +777,90 @@ $(document).ready(function() {
 <?php } ?>
 
 <div class="container">
-	<div class="row">
-		<div class="col-sm-6">
-		 
-			<fieldset class="form-group bd-example" style="margin-right:-12px;margin-left:-15px;padding: 10px;">
-				<form name="form_file" action="index.php" method="post" enctype="multipart/form-data">
-	    			<label for="upload_file"><?php echo _SELECTFILE ?></label>
-   		 			<div class="input-group">
-      					<input type="file" class="form-control" name="upload_file" id="upload_file" style="height:38px" />
-      					<span class="input-group-btn">
-        					<button class="btn btn-secondary" type="submit">
-        						<i class="fa fa-upload" aria-hidden="true" style="font-size:24px"></i>
-    						</button>
-      					</span>
-    				</div>
-    			</form>
-  			</fieldset>
-  			
-  			<fieldset class="form-group bd-example" style="margin-right:-12px;margin-left:-15px;padding: 10px;">
-  				<form name="form_url" action="index.php" method="post">
-    				<label for="url_upload"><?php echo _URLFILE ?></label>
-    				<div class="input-group">
-      					<input type="text" class="form-control" name="url_upload" id="url_upload" />
-      					<span class="input-group-btn">
-        					<button class="btn btn-secondary" type="submit">
-        						<i class="fa fa-upload" aria-hidden="true" style="font-size:24px"></i>
-    						</button>
-      					</span>
-    				</div>
-    			</form>
-  			</fieldset>
-  			
-  			<?php if ($settings->get('enable_search')) { ?>
-			<fieldset class="form-group bd-example" style="margin-right:-12px;margin-left:-15px;padding: 10px;">
-				<form name="form_search" action="torrentSearch.php" method="get">
-    				<label for="searchterm">Torrent <?php echo _SEARCH ?></label>
-    				<?php echo buildSearchEngineDDL($settings->get('searchEngine')); ?>
-    				
-    				<div class="input-group">
-      					<input type="text" class="form-control" name="searchterm" id="searchterm" />
-      					<span class="input-group-btn">
-        					<button class="btn btn-secondary" type="submit">
-        						<i class="fa fa-search" aria-hidden="true" style="font-size:24px"></i>
-    						</button>
-      					</span>
-    				</div>
-    			</form>
-  			</fieldset>
-  			<?php } ?>
+    <div class="row">
 
-		</div>
-		<div class="col-sm-6">
+        <div class="hidden-sm-down col-sm-12 bd-example" style="border:none;padding-right:0px;">
+            <button class="display_upload_form btn btn-primary" type="button">
+                <span class="btn-label icon fa fa-upload"></span>
+                <?=_SELECTFILE?>
+            </button>
+            <button class="display_url_form btn btn-primary" type="button">
+                <span class="btn-label icon fa fa-plus"></span>
+                <?=_URLFILE?>
+            </button>
+            <button class="display_search_form btn btn-primary" type="button">
+                <span class="btn-label icon fa fa-search"></span>
+                Torrent <?=_SEARCH?>
+            </button>
+        </div>
+
+        <div class="hidden-md-up col-sm-12 bd-example" style="border:none;padding-right:0px;">
+            <button class="display_upload_form btn btn-primary btn-block" type="button">
+                <span class="btn-label icon fa fa-upload"></span>
+                <?=_SELECTFILE?>
+            </button>
+
+            <button class="display_url_form btn btn-primary btn-block" type="button">
+                <span class="btn-label icon fa fa-plus"></span>
+                <?=_URLFILE?>
+            </button>
+            <button class="display_search_form btn btn-primary btn-block" type="button">
+                <span class="btn-label icon fa fa-search"></span>
+                Torrent <?=_SEARCH?>
+            </button>
+        </div>
+
+        <div class="col-sm-12">
+
+            <fieldset class="form-group bd-example" id="form_upload" style="display:none;margin-right:-12px;margin-left:-15px;padding: 10px;">
+                <form name="form_file" action="index.php" method="post" enctype="multipart/form-data">
+                    <label for="upload_file"><?php echo _SELECTFILE ?></label>
+                    <button type="button" class="close_form btn btn-danger btn-sm pull-right"><span class="btn-label icon fa fa-times"></span></button>
+                    
+                    <div class="input-group">
+                        <input type="file" class="form-control" name="upload_file" id="upload_file" style="height:38px" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-secondary" type="submit">
+                                <i class="fa fa-upload" aria-hidden="true" style="font-size:24px"></i>
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </fieldset>
+
+            <fieldset class="form-group bd-example" id="form_url" style="display:none;margin-right:-12px;margin-left:-15px;padding: 10px;">
+                <form name="form_url" action="index.php" method="post">
+                    <label for="url_upload"><?php echo _URLFILE ?></label>
+                    <button type="button" class="close_form btn btn-danger btn-sm pull-right"><span class="btn-label icon fa fa-times"></span></button>
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="url_upload" id="url_upload" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-secondary" type="submit">
+                                <i class="fa fa-upload" aria-hidden="true" style="font-size:24px"></i>
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </fieldset>
+
+            <?php if ($settings->get('enable_search')) { ?>
+            <fieldset class="form-group bd-example" id="form_search" style="display:none;margin-right:-12px;margin-left:-15px;padding: 10px;">
+                <form name="form_search" action="torrentSearch.php" method="get">
+                    <label for="searchterm">Torrent <?php echo _SEARCH ?></label>
+                    <button type="button" class="close_form btn btn-danger btn-sm pull-right"><span class="btn-label icon fa fa-times"></span></button>
+                    <?php echo buildSearchEngineDDL($settings->get('searchEngine')); ?>
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="searchterm" id="searchterm" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-secondary" type="submit">
+                                <i class="fa fa-search" aria-hidden="true" style="font-size:24px"></i>
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </fieldset>
+            <?php } ?>
+
 			<?php 
 				$users = GetUsers();
 				$onlineUsers = $offlineUsers = array();
@@ -765,7 +873,7 @@ $(document).ready(function() {
 		            }
 		        }
 			?>
-  			<fieldset class="form-group bd-example" style="margin-left:-12px;margin-right:-15px">
+  			<fieldset class="form-group bd-example" style="display:none;margin-left:-12px;margin-right:-15px">
   				<table class="table table-striped">
   					<!-- ONLINE -->
     				<tr><th	>User</th></tr>
@@ -792,7 +900,7 @@ $(document).ready(function() {
 				</table>
 			</fieldset>
 			
-  			<fieldset class="form-group bd-example" style="margin-left:-12px;margin-right:-15px">
+  			<fieldset class="form-group bd-example" style="display:none;margin-left:-12px;margin-right:-15px">
   				<table class="table table-striped">
   				<thead>
     				<tr><th><?php echo _TORRENTLINKS ?></th></tr>
