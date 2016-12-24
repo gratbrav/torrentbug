@@ -59,74 +59,62 @@ if (!empty($message) && !empty($to_user) && !empty($cfg['user']))
     SaveMessage($to_user, $cfg['user'], $message, $to_all, $force_read);
 
     header("location: readmsg.php");
-}
-else
-{
+    exit;
+
+} else {
+
     $rmid = getRequestVar('rmid');
-    if(!empty($rmid))
-    {
+    if (!empty($rmid)) {
         list($from_user, $message, $ip, $time) = GetMessage($rmid);
         $message = _DATE.": ".date(_DATETIMEFORMAT, $time)."\n".$from_user." "._WROTE.":\n\n".$message;
         $message = ">".str_replace("\n", "\n>", $message);
         $message = "\n\n\n".$message;
     }
 
-    DisplayHead(_SENDMESSAGETITLE);
-
+    include_once 'header.php';
 ?>
 
-<form name="theForm" method="post" action="message.php">
-<table border="0" cellpadding="3" cellspacing="2" width="100%">
-<tr>
-    <td bgcolor="<?php echo $cfg["table_data_bg"] ?>" align="right"><font size=2 face=Arial><?php echo _TO ?>:</font></td>
-    <td bgcolor="<?php echo $cfg["table_data_bg"] ?>">
-        <select name="to_user" class="form-control">
-        <?php
-            $users = GetUsers();
-            foreach ($users as $user) {
-                $selected = ($user == $to_user) ? 'selected' : '';
-                echo '<option ' . $selected .'>' . htmlentities($user, ENT_QUOTES) . '</option>';
-            }
-        ?>
-        </select>
-    </td>
-</tr>
-<tr>
-    <td bgcolor="<?php echo $cfg["table_data_bg"] ?>" colspan="2">
-    <div align="center">
-    <table border="0" cellpadding="0" cellspacing="0">
-    <tr>
-        <td>
-        <font size=2 face=Arial>
-        <?php echo _YOURMESSAGE ?>:<br>
-          <textarea cols="72" rows="10" name="message" wrap="hard" tabindex="1"><?php echo $message ?></textarea><br>
-        <input type="Checkbox" name="to_all" value=1><?php echo _SENDTOALLUSERS ?>
-<?php
-    if (IsAdmin())
-    {
-        echo "&nbsp;&nbsp;&nbsp;&nbsp;";
-        echo "<input type=\"Checkbox\" name=\"force_read\" value=1>"._FORCEUSERSTOREAD."";
-    }
-?>
-        <br>
-        <div align="center">
-        <input type="Submit" name="Submit" value="<?php echo _SEND ?>">
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 bd-example" style="padding:16px;">
+
+            <form name="theForm" method="post" action="message.php">
+            <div class="form-group row">
+                <label for="to_user" class="col-sm-2 col-form-label"><?=_TO?></label>
+                <div class="col-sm-10">
+                    <select name="to_user" id="to_user" class="form-control">
+                    <?php
+                        $users = GetUsers();
+                        foreach ((array)$users as $user) {
+                            $selected = ($user == $to_user) ? 'selected' : '';
+                            echo '<option ' . $selected .'>' . htmlentities($user, ENT_QUOTES) . '</option>';
+                        }
+                    ?>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="message" class="col-sm-2 col-form-label"><?=_YOURMESSAGE?></label>
+                <div class="col-sm-10">
+                    <textarea rows="10" name="message" id="message" class="form-control" wrap="hard" autofocus><?=$message?></textarea>
+                    <input type="Checkbox" name="to_all" value="1"><?php echo _SENDTOALLUSERS ?>
+                    <?php if (IsAdmin()) { ?>
+                        <input type="Checkbox" name="force_read" value="1"><?=_FORCEUSERSTOREAD?>
+                    <?php } ?>
+                </div>
+            </div>
+    
+            <div class="form-group row">
+                <div class="col-sm-10 offset-sm-2">
+                    <button type="submit" class="btn btn-primary"><?=_SEND?></button>
+                </div>
+            </div>
+            </form>
+
         </div>
-        </font>
-        </td>
-    </tr>
-    </table>
     </div>
-    </td>
-</tr>
-</table>
-</form>
-<script>document.theForm.message.focus();</script>
+</div>
 
-<?php
+<div style="text-align:center">[<a href="index.php"><?php echo _RETURNTOTORRENTS ?></a>]</div>
 
-    DisplayFoot();
-
-} // end the else
-
-?>
+<?php } ?>
