@@ -15,11 +15,11 @@
   ],
   "require" : {
     "php" : ">=5.4",
-    "components/jquery" : "2.2.4",
-    "components/font-awesome" : "4.7.0",
-    "twitter/bootstrap" : "4.0.0-alpha.2",
+    "components/jquery" : "2.2.*",
+    "components/font-awesome" : "4.*",
+    "twitter/bootstrap" : "4.0.0-alpha.5",
     "arboshiki/lobibox": "dev-master",
-    "datatables/datatables": "1.10.12"
+    "datatables/datatables": "1.10.*"
   },
   "config" : {
     "vendor-dir" : "src/plugins"
