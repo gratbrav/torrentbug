@@ -181,7 +181,7 @@ $db = getdb();
 <body>
 
 <div class="container">
-    <div id="loginbox" class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3">
+    <div id="loginbox" class="col-md-6 offset-md-3 col-sm-6 offset-sm-3">
 
         <?php if (isset($loginFailed)) { ?><div class="alert alert-danger">Login failed. Please try again.</div><?php } ?>
 
