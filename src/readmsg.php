@@ -31,7 +31,7 @@
 
     $msgService = new \Message\Service($cfg['user']);
 
-    $delete = getRequestVar('delete');
+    $delete = filter_input(INPUT_GET, 'delete', FILTER_VALIDATE_INT);
     if (!empty($delete)) {
         $msgService->delete($delete);
         header('location: ' . $_SERVER['PHP_SELF']);
@@ -40,59 +40,56 @@
 
     include_once 'header.php';
 
-$mid = getRequestVar('mid');
+$mid = filter_input(INPUT_GET, 'mid', FILTER_VALIDATE_INT);
 if (!empty($mid) && is_numeric($mid)) {
-    list($from_user, $message, $ip, $time, $isnew, $force_read) = GetMessage($mid);
 
-    if (!empty($from_user) && $isnew == 1) { 
-        // We have a Message that is being seen
-        // Mark it as NOT new.
-        MarkMessageRead($mid);
+    $message = $msgService->getMessageById($mid);
+    if (!empty($message->getSender()) && $message->getIsNew() == 1) { 
+        $msgService->markAsRead($mid);
     }
 ?>
 
-<div style="text-align:center">[<a href="?"><?php echo _RETURNTOMESSAGES ?></a>]</div>
-
+<div style="text-align:center">[<a href="?"><?=_RETURNTOMESSAGES?></a>]</div>
 
 <div class="container">
-	<div class="row">
-		<div class="col-sm-12 bd-example">
-			<?php
-				$message = check_html($message, "nohtml");
-    			$message = str_replace("\n", "<br>", $message);
-    		?>
-    		<table class="table table-striped">
-    			<tr>
-					<td>
-						<?php echo _FROM ?>: 
-						<strong><?php echo $from_user ?></strong>
-					</td>
-					<td style="text-align:right">
-					    <?php if (IsUser($from_user)) { ?>
-					        <a href="message.php?to_user=<?php echo $from_user ?>&rmid=<?php echo $mid ?>">
-								<img src="images/reply.gif" title="<?php echo _REPLY ?>" alt="" />
-					        </a>
-					    <?php } ?>
-    					<a href="<?php echo $_SERVER['PHP_SELF'] ?>?delete=<?php echo $mid ?>">
-   							<img src="images/delete_on.gif" title="<?php echo _DELETE ?>" alt="" />
-   						</a>
-   					</td>
-   				</tr>
-   				<tr>
-   					<td colspan=2>
-   						<?php echo _DATE ?>:  
-   						<strong><?php echo date(_DATETIMEFORMAT, $time) ?></strong>
-   					</td>
-   				</tr>
-   				<tr>
-   					<td colspan=2>
-   						<?php echo _MESSAGE ?>:
-   						<blockquote><strong><?php echo $message ?></strong></blockquote>
-   					</td>
-   				</tr>
-   			</table>
-		</div>
-	</div>
+    <div class="row">
+        <div class="col-sm-12 bd-example">
+            <?php
+                $msgContent = check_html($message->getMessage(), "nohtml");
+                $msgContent = str_replace("\n", "<br>", $msgContent);
+            ?>
+            <table class="table table-striped">
+                <tr>
+                    <td>
+                        <?=_FROM?>: 
+                        <strong><?=$message->getSender()?></strong>
+                    </td>
+                    <td style="text-align:right">
+                        <?php if (IsUser($message->getSender())) { ?>
+                            <a href="message.php?to_user=<?=$message->getSender()?>&rmid=<?=$mid?>">
+                                <img src="images/reply.gif" title="<?=_REPLY?>" alt="" />
+                            </a>
+                        <?php } ?>
+                        <a href="<?php echo $_SERVER['PHP_SELF'] ?>?delete=<?php echo $mid ?>">
+                            <img src="images/delete_on.gif" title="<?php echo _DELETE ?>" alt="" />
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                <td colspan="2">
+                    <?= _DATE?>:  
+                    <strong><?php echo date(_DATETIMEFORMAT, $message->getTime()) ?></strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <?=_MESSAGE?>:
+                        <blockquote><strong><?php echo $msgContent ?></strong></blockquote>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
 </div>
 
 <?php } else { ?>
@@ -106,8 +103,15 @@ if (!empty($mid) && is_numeric($mid)) {
 <div class="container">
     <div class="row">
 
-        <div class="col-sm-12 bd-example" style="border:none;padding-right:0px;">
+        <div class="hidden-sm-down col-sm-12 bd-example" style="border:none;padding-right:0px;">
             <a class="btn btn-primary pull-right" href="message.php">
+                <span class="btn-label icon fa fa-plus"></span>
+                <?=_SENDMESSAGETO?>
+            </a>
+        </div>
+
+        <div class="hidden-md-up col-sm-12 bd-example" style="border:none;">
+            <a class="btn btn-primary btn-block" href="message.php">
                 <span class="btn-label icon fa fa-plus"></span>
                 <?=_SENDMESSAGETO?>
             </a>
@@ -119,7 +123,7 @@ if (!empty($mid) && is_numeric($mid)) {
                 <tr>
                     <th><?php echo _FROM ?></th>
                     <th><?php echo _MESSAGE ?></th>
-                    <th><?php echo _DATE ?></th>
+                    <th class="hidden-xs-down"><?php echo _DATE ?></th>
                     <th><?php echo _ADMIN ?></th>
                 </tr>
                 </thead>
@@ -146,7 +150,7 @@ if (!empty($mid) && is_numeric($mid)) {
                         <td>
                             <a href="<?=$link?>"><?=$messageContent?></a>
                         </td>
-                        <td style="text-align:center">
+                        <td class="hidden-xs-down" style="text-align:center">
                             <a href="<?php echo $link ?>"><?php echo date(_DATETIMEFORMAT, $message->getTime()) ?></a>
                         </td>
                         <td style="text-align:center">
@@ -188,4 +192,4 @@ $(document).ready(function() {
 
 <?php } ?>
 
-<div style="text-align:center">[<a href="index.php"><?php echo _RETURNTOTORRENTS ?></a>]</div>
+<div style="text-align:center">[<a href="?"><?=_RETURNTOMESSAGES?></a>]</div>

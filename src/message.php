@@ -23,52 +23,41 @@
 */
 
     include_once 'Class/autoload.php';
+    include_once 'config.php';
 
-include_once("config.php");
 include_once("functions.php");
-    
+
     $settings = new Class_Settings();
+    $msgService = new \Message\Service($cfg['user']);
 
-$to_user = getRequestVar('to_user');
-$message = getRequestVar('message');
+    $to_user = filter_input(INPUT_POST, 'to_user', FILTER_SANITIZE_STRING);
+    $message = filter_input(INPUT_POST, 'message', FILTER_SANITIZE_STRING);
 
-if (!empty($message) && !empty($to_user) && !empty($cfg['user']))
-{
-    $to_all = getRequestVar('to_all');
-    if(!empty($to_all))
-    {
-        $to_all = 1;
-    }
-    else
-    {
-        $to_all = 0;
-    }
+if (!empty($message) && !empty($to_user) && !empty($cfg['user'])) {
 
-    $force_read = getRequestVar('force_read');
-    if(!empty($force_read) && IsAdmin())
-    {
-        $force_read = 1;
-    }
-    else
-    {
-        $force_read = 0;
-    }
-
+    $to_all = filter_input(INPUT_POST, 'to_all', FILTER_VALIDATE_INT);
+    $force_read = filter_input(INPUT_POST, 'force_read', FILTER_VALIDATE_INT);
 
     $message = check_html($message, "nohtml");
     SaveMessage($to_user, $cfg['user'], $message, $to_all, $force_read);
 
-    header("location: readmsg.php");
+    header('location: readmsg.php');
     exit;
 
 } else {
 
-    $rmid = getRequestVar('rmid');
+    $to_user = filter_input(INPUT_GET, 'to_user', FILTER_SANITIZE_STRING);
+    $rmid = filter_input(INPUT_GET, 'rmid', FILTER_VALIDATE_INT);
+
     if (!empty($rmid)) {
-        list($from_user, $message, $ip, $time) = GetMessage($rmid);
-        $message = _DATE.": ".date(_DATETIMEFORMAT, $time)."\n".$from_user." "._WROTE.":\n\n".$message;
-        $message = ">".str_replace("\n", "\n>", $message);
-        $message = "\n\n\n".$message;
+        $message = $msgService->getMessageById($rmid);
+
+        $msgContent = _DATE. ': ' . date(_DATETIMEFORMAT, $message->getTime()) . "\n";
+        $msgContent .= $message->getSender() . ' ' . _WROTE . ":\n\n";
+        $msgContent .= $message->getMessage();
+
+        $msgContent = '>' . str_replace("\n", "\n>", $msgContent);
+        $msgContent = "\n\n\n" . $msgContent;
     }
 
     include_once 'header.php';
@@ -96,14 +85,20 @@ if (!empty($message) && !empty($to_user) && !empty($cfg['user']))
             <div class="form-group row">
                 <label for="message" class="col-sm-2 col-form-label"><?=_YOURMESSAGE?></label>
                 <div class="col-sm-10">
-                    <textarea rows="10" name="message" id="message" class="form-control" wrap="hard" autofocus><?=$message?></textarea>
-                    <input type="Checkbox" name="to_all" value="1"><?php echo _SENDTOALLUSERS ?>
+                    <textarea rows="10" name="message" id="message" class="form-control" wrap="hard" autofocus><?=$msgContent?></textarea>
+
+                    <input type="hidden" name="to_all" value="0">
+                    <input type="checkbox" name="to_all" id="to_all" value="1">
+                    <label for="to_all"><?=_SENDTOALLUSERS?></label>
+
+                    <input type="hidden" name="force_read" value="0">
                     <?php if (IsAdmin()) { ?>
-                        <input type="Checkbox" name="force_read" value="1"><?=_FORCEUSERSTOREAD?>
+                        <input type="checkbox" name="force_read" id="force_read" value="1">
+                        <label for="force_read"><?=_FORCEUSERSTOREAD?></label>
                     <?php } ?>
                 </div>
             </div>
-    
+
             <div class="form-group row">
                 <div class="col-sm-10 offset-sm-2">
                     <button type="submit" class="btn btn-primary"><?=_SEND?></button>
@@ -115,6 +110,6 @@ if (!empty($message) && !empty($to_user) && !empty($cfg['user']))
     </div>
 </div>
 
-<div style="text-align:center">[<a href="index.php"><?php echo _RETURNTOTORRENTS ?></a>]</div>
+<div style="text-align:center">[<a href="index.php"><?=_RETURNTOTORRENTS?></a>]</div>
 
 <?php } ?>

@@ -569,24 +569,6 @@ function IsForceReadMsg()
 }
 
 // ***************************************************************************
-// Get Message data in an array
-function GetMessage($mid)
-{
-    global $cfg, $db;
-
-    $rtnValue = array();
-
-    if (is_numeric($mid))
-    {
-        $sql = "select from_user, message, ip, time, isnew, force_read from tf_messages where mid=".$mid." and to_user=".$db->qstr($cfg['user']);
-        $rtnValue = $db->GetRow($sql);
-        showError($db,$sql);
-    }
-
-    return $rtnValue;
-}
-
-// ***************************************************************************
 // Get Themes data in an array
 function GetThemes()
 {
@@ -709,24 +691,6 @@ function changeUserLevel($user_id, $level)
     $rec = array('user_level'=>$level);
     $sql = $db->GetUpdateSQL($rs, $rec);
     $result = $db->Execute($sql);
-    showError($db,$sql);
-}
-
-// ***************************************************************************
-// Mark Message as Read
-function MarkMessageRead($mid)
-{
-    global $cfg, $db;
-
-    $sql = 'select * from tf_messages where mid = '.$mid;
-    $rs = $db->Execute($sql);
-    showError($db,$sql);
-
-    $rec = array('IsNew'=>0,
-             'force_read'=>0);
-
-    $sql = $db->GetUpdateSQL($rs, $rec);
-    $db->Execute($sql);
     showError($db,$sql);
 }
 
