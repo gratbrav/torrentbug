@@ -1,32 +1,32 @@
-FONT		{FONT-FAMILY: Verdana,Helvetica; FONT-SIZE: 12px}
-TD		{FONT-FAMILY: Verdana,Helvetica; FONT-SIZE: 12px}
-BODY		{FONT-FAMILY: Verdana,Helvetica; FONT-SIZE: 12px;background-color: #f5f5f5 !important;}
-P		{FONT-FAMILY: Verdana,Helvetica; FONT-SIZE: 12px}
-DIV		{FONT-FAMILY: Verdana,Helvetica; FONT-SIZE: 12px}
-INPUT 		{BORDER-TOP-COLOR: #000000; BORDER-LEFT-COLOR: #000000; BORDER-RIGHT-COLOR: #000000; BORDER-BOTTOM-COLOR: #000000; BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 1px; FONT-SIZE: 12px; BORDER-BOTTOM-WIDTH: 1px; FONT-FAMILY: Verdana,Helvetica; BORDER-RIGHT-WIDTH: 1px}
-TEXTAREA	{BORDER-TOP-COLOR: #000000; BORDER-LEFT-COLOR: #000000; BORDER-RIGHT-COLOR: #000000; BORDER-BOTTOM-COLOR: #000000; BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 1px; FONT-SIZE: 12px; BORDER-BOTTOM-WIDTH: 1px; FONT-FAMILY: Verdana,Helvetica; BORDER-RIGHT-WIDTH: 1px}
-SELECT 		{BORDER-TOP-COLOR: #000000; BORDER-LEFT-COLOR: #000000; BORDER-RIGHT-COLOR: #000000; BORDER-BOTTOM-COLOR: #000000; BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 1px; FONT-SIZE: 12px; BORDER-BOTTOM-WIDTH: 1px; FONT-FAMILY: Verdana,Helvetica; BORDER-RIGHT-WIDTH: 1px}
-FORM 		{FONT-FAMILY: Verdana,Helvetica; FONT-SIZE: 12px}
-.titleblack 		{BACKGROUND: none; COLOR: #000000; FONT-SIZE: 14px; FONT-WEIGHT: bold; FONT-FAMILY: Verdana, Helvetica; TEXT-DECORATION: none}
-.content 	{BACKGROUND: none; COLOR: #000000; FONT-SIZE: 12px; FONT-FAMILY: Verdana, Helvetica}
-.block-title	{BACKGROUND: none; COLOR: #FFFFFF; FONT-SIZE: 12px; FONT-FAMILY: Verdana, Helvetica}
-.storytitle 	{BACKGROUND: none; COLOR: #363636; FONT-SIZE: 12px; FONT-WEIGHT: bold; FONT-FAMILY: Verdana, Helvetica; TEXT-DECORATION: none}
-.storycat	{BACKGROUND: none; COLOR: #363636; FONT-SIZE: 12px; FONT-WEIGHT: bold; FONT-FAMILY: Verdana, Helvetica; TEXT-DECORATION: underline}
-.boxtitle 	{BACKGROUND: none; COLOR: #363636; FONT-SIZE: 12px; FONT-WEIGHT: bold; FONT-FAMILY: Verdana, Helvetica; TEXT-DECORATION: none}
-.boxcontent 	{BACKGROUND: none; COLOR: #000000; FONT-SIZE: 12px; FONT-FAMILY: Verdana, Helvetica}
-.option 	{BACKGROUND: none; COLOR: #000000; FONT-SIZE: 12px; FONT-WEIGHT: bold; FONT-FAMILY: Verdana, Helvetica; TEXT-DECORATION: none}
-.tiny		{BACKGROUND: none; COLOR: #000000; FONT-SIZE: 9px !important; FONT-WEIGHT: normal; FONT-FAMILY: Verdana, Helvetica; TEXT-DECORATION: none}
+FONT		{FONT-SIZE: 12px}
+TD		{FONT-SIZE: 12px}
+BODY		{FONT-SIZE: 12px;background-color: #f5f5f5 !important;}
+P		{FONT-SIZE: 12px}
+DIV		{FONT-SIZE: 12px}
+INPUT 		{BORDER-TOP-COLOR: #000000; BORDER-LEFT-COLOR: #000000; BORDER-RIGHT-COLOR: #000000; BORDER-BOTTOM-COLOR: #000000; BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 1px; FONT-SIZE: 12px; BORDER-BOTTOM-WIDTH: 1px; BORDER-RIGHT-WIDTH: 1px}
+TEXTAREA	{BORDER-TOP-COLOR: #000000; BORDER-LEFT-COLOR: #000000; BORDER-RIGHT-COLOR: #000000; BORDER-BOTTOM-COLOR: #000000; BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 1px; FONT-SIZE: 12px; BORDER-BOTTOM-WIDTH: 1px; BORDER-RIGHT-WIDTH: 1px}
+SELECT 		{BORDER-TOP-COLOR: #000000; BORDER-LEFT-COLOR: #000000; BORDER-RIGHT-COLOR: #000000; BORDER-BOTTOM-COLOR: #000000; BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 1px; FONT-SIZE: 12px; BORDER-BOTTOM-WIDTH: 1px; BORDER-RIGHT-WIDTH: 1px}
+FORM 		{FONT-SIZE: 12px}
+.titleblack 		{BACKGROUND: none; COLOR: #000000; FONT-SIZE: 14px; FONT-WEIGHT: bold; TEXT-DECORATION: none}
+.content 	{BACKGROUND: none; COLOR: #000000; FONT-SIZE: 12px;}
+.block-title	{BACKGROUND: none; COLOR: #FFFFFF; FONT-SIZE: 12px;}
+.storytitle 	{BACKGROUND: none; COLOR: #363636; FONT-SIZE: 12px; FONT-WEIGHT: bold; TEXT-DECORATION: none}
+.storycat	{BACKGROUND: none; COLOR: #363636; FONT-SIZE: 12px; FONT-WEIGHT: bold; FONT-FAMILY: TEXT-DECORATION: underline}
+.boxtitle 	{BACKGROUND: none; COLOR: #363636; FONT-SIZE: 12px; FONT-WEIGHT: bold; FONT-FAMILY: TEXT-DECORATION: none}
+.boxcontent 	{BACKGROUND: none; COLOR: #000000; FONT-SIZE: 12px;}
+.option 	{BACKGROUND: none; COLOR: #000000; FONT-SIZE: 12px; FONT-WEIGHT: bold; TEXT-DECORATION: none}
+.tiny		{BACKGROUND: none; COLOR: #000000; FONT-SIZE: 9px !important; FONT-WEIGHT: normal; TEXT-DECORATION: none}
 table#smallDownloadStats td { font-size: 9px; }
 table#smallDownloadStats td:first-child { text-align:right; }
 table#smallDownloadStats td:nth-child(2) { font-weight:bold; }
 table#torrentList td { text-align:center }
 table#torrentList td:first-child { text-align:left }
 table#torrentList td:nth-child(2) { text-align:right }
-.tinywhite		{BACKGROUND: none; COLOR: #ffffff; FONT-SIZE: 9px; FONT-WEIGHT: normal; FONT-FAMILY: Verdana, Helvetica; TEXT-DECORATION: none}
-.tinyunderline	{BACKGROUND: none; COLOR: #000000; FONT-SIZE: 9px; FONT-WEIGHT: normal; FONT-FAMILY: Verdana, Helvetica; TEXT-DECORATION: underline}
-.title {FONT-FAMILY: Verdana,Helvetica; FONT-WEIGHT: bold; COLOR: #ffffff; FONT-SIZE: 12px}
-.adminlink {BACKGROUND: none; COLOR: #ffffff; FONT-SIZE: 12px; FONT-FAMILY: Verdana, Helvetica; TEXT-DECORATION: underline}
-.tinypercent		{BACKGROUND: none; COLOR: #000000; FONT-SIZE: 9px; FONT-WEIGHT: normal; FONT-FAMILY: Verdana, Helvetica; TEXT-DECORATION: none}
+.tinywhite		{BACKGROUND: none; COLOR: #ffffff; FONT-SIZE: 9px; FONT-WEIGHT: normal; TEXT-DECORATION: none}
+.tinyunderline	{BACKGROUND: none; COLOR: #000000; FONT-SIZE: 9px; FONT-WEIGHT: normal; TEXT-DECORATION: underline}
+.title {FONT-WEIGHT: bold; COLOR: #ffffff; FONT-SIZE: 12px}
+.adminlink {BACKGROUND: none; COLOR: #ffffff; FONT-SIZE: 12px; TEXT-DECORATION: underline}
+.tinypercent		{BACKGROUND: none; COLOR: #000000; FONT-SIZE: 9px; FONT-WEIGHT: normal; TEXT-DECORATION: none}
 .bg { border: 0px outset #E6E6E6; background-color:#606060; }
 .fg { border: 0px outset #E6E6E6; background-color:#ffffff; }
 .overCaption {font-family:arial; color:#ffffff; font-size:9pt; font-weight:bold;}

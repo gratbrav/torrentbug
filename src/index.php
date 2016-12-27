@@ -1119,7 +1119,7 @@ $(document).ready(function() {
     			            if(trim($af->up_speed) != "" && $af->running == "1")
     			            {
     			                $popup_msg .= $timeStarted;
-    			                $output .= "<a class=\"downloaddetails\" href=\"downloaddetails.php?alias=".$alias."&torrent=".urlencode($entry)."\" style=\"font-size:7pt;\" onmouseover=\"return overlib('".$popup_msg."<br>', CSSCLASS);\" onmouseout=\"return nd();\">seeding (".$af->up_speed.") ".$sharing."</a>";
+    			                $output .= "<a class=\"downloaddetails\" href=\"downloaddetails.php?alias=".$alias."&torrent=".urlencode($entry)."\" onmouseover=\"return overlib('".$popup_msg."<br>', CSSCLASS);\" onmouseout=\"return nd();\">seeding (".$af->up_speed.") ".$sharing."</a>";
     			            }
     			            else
     			            {
