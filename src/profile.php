@@ -321,13 +321,6 @@ function ShowCookies()
 				<?php
 				    }
 				?>
-			        <tr>
-			            <td colspan="3">
-			                <div align="center">
-			                	<a href="javascript:popUp('cookiehelp.php')">How to get cookie information....</a>
-			                </div>
-			            </td>
-			        </tr>
 		        </table>
 		        </form>
 		</div>
