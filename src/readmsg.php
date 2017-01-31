@@ -173,11 +173,6 @@ if (!empty($mid) && is_numeric($mid)) {
                 </tbody>
             </table>
 
-            <?php
-                if (!count($messageList)) {
-                    echo "<div style=\"text-align:center\"><strong>-- "._NORECORDSFOUND." --</strong></div>";
-                }
-            ?>
         </div>
     </div>
 </div>
