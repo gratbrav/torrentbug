@@ -34,16 +34,16 @@ $db = getdb();
 
 	
 
-	session_name("TorrentFlux");
-	session_start();
+    session_name("TorrentFlux");
+    session_start();
+
+    if (isset($_SESSION['user'])) {
+        header('location: index.php');
+        exit;
+    }
+
 	include_once("config.php");
 	include_once 'themes/' . $settings->get('default_theme') . '/index.php';
-
-	if (isset($_SESSION['user'])) {
-	    header("location: index.php");
-	    exit;
-	}
-	
 
  	$user = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
  	$iamhim = filter_input(INPUT_POST, 'iamhim', FILTER_SANITIZE_STRING);
@@ -183,7 +183,9 @@ $db = getdb();
 <div class="container">
     <div id="loginbox" class="col-md-6 offset-md-3 col-sm-6 offset-sm-3">
 
-        <?php if (isset($loginFailed)) { ?><div class="alert alert-danger">Login failed. Please try again.</div><?php } ?>
+        <?php if (isset($loginFailed)) { ?>
+            <div class="alert alert-danger">Login failed. Please try again.</div>
+        <?php } ?>
 
         <div class="card">
             <div class="card-header">Please sign in</div>
