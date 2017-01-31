@@ -13,22 +13,54 @@ namespace User;
 
 class Authentication
 {
-	protected $db = null;
-	protected $user = null;
-	protected $password = null;
+    /**
+     * Database reference
+     * @var ressource
+     */
+    protected $db = null;
 
-	function __construct($user, $password)
-	{
-		$this->user = $user;
-		$this->password = $password;
-		
-		$db = \Database::getInstance();
-		$this->db = $db->getDatabase();
-	}
-	
-	public function checkLogin() 
-	{
-		if ($this->user && $this->password) {
+    /**
+     * User login
+     * 
+     * @var string
+     */
+    protected $user = '';
+
+    /**
+     * User password
+     * 
+     * @var string
+     */
+    protected $password = '';
+
+    /**
+     * Constructor
+     * 
+     * @param string $user      User login
+     * @param string $password  User password
+     */
+    function __construct($user = '', $password = '')
+    {
+        $this->setUser($user);
+        $this->setPassword($password);
+
+        $db = \Database::getInstance();
+        $this->db = $db->getDatabase();
+    }
+
+    /**
+     * Check if login exists
+     * 
+     * @param string $user      User login
+     * @param string $password  User password
+     * @return unknown|boolean
+     */
+    public function checkLogin($user = '', $password = '') 
+    {
+        $this->setUser($user);
+        $this->setPassword($password);
+
+		if (!empty($this->user) && !empty($this->password)) {
 			$user = $this->db->qstr($this->user);
 			$pwd = $this->db->qstr(md5($this->password));
 			
@@ -40,4 +72,35 @@ class Authentication
 		
 		return false;
 	}
+	
+    /**
+     * Set login
+     * 
+     * @param string $user  Login
+     * @return \User\Authentication
+     */
+    protected function setUser($user)
+    {
+        if (!empty($user)) {
+            $this->user = (string)$user;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set password
+     * 
+     * @param string $password  Password
+     * @return \User\Authentication
+     */
+    protected function setPassword($password)
+    {
+        if (!empty($password)) {
+            $this->password = (string)$password;
+        }
+
+        return $this;
+    }
+
 }
