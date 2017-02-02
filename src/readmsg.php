@@ -40,13 +40,13 @@
 
     include_once 'header.php';
 
-$mid = filter_input(INPUT_GET, 'mid', FILTER_VALIDATE_INT);
-if (!empty($mid) && is_numeric($mid)) {
+    $mid = filter_input(INPUT_GET, 'mid', FILTER_VALIDATE_INT);
+    if (!empty($mid) && is_numeric($mid)) {
 
-    $message = $msgService->getMessageById($mid);
-    if (!empty($message->getSender()) && $message->getIsNew() == 1) { 
-        $msgService->markAsRead($mid);
-    }
+        $message = $msgService->getMessageById($mid);
+        if (!empty($message->getSender()) && $message->getIsNew() == 1) { 
+            $msgService->markAsRead($mid);
+        }
 ?>
 
 <div style="text-align:center">[<a href="?"><?=_RETURNTOMESSAGES?></a>]</div>
@@ -142,7 +142,7 @@ if (!empty($mid) && is_numeric($mid)) {
 
                         $link = $_SERVER['PHP_SELF'] . '?mid=' . $message->getMessageId();
                     ?>
-                    <tr>
+                    <tr data-id="<?=$message->getMessageId()?>" data-sender="<?=$message->getSender()?>">
                         <td>
                             <a href="<?=$link?>"><i class="fa <?=$mailIcon?>" aria-hidden="true"></i></a>
                             <a href="<?=$link?>"><?=$message->getSender()?></a>
@@ -154,19 +154,20 @@ if (!empty($mid) && is_numeric($mid)) {
                             <a href="<?php echo $link ?>"><?php echo date(_DATETIMEFORMAT, $message->getTime()) ?></a>
                         </td>
                         <td style="text-align:center">
-                        <?php
-                            // Is this a force_read from an admin?
-                            if ($message->getForceRead()) {
-                                // Yes, then don't let them delete the message yet
-                                echo '<img src="images/delete_off.gif" alt="" title="" />';
-                            } else {
-                                // No, let them reply or delete it
-                                if (IsUser($message->getSender())) {
-                                    echo "<a href=\"message.php?to_user=".$message->getSender()."&rmid=".$message->getMessageId()."\"><i class=\"fa fa-reply\" aria-hidden=\"true\"></i></a>";
-                                }
-                                echo "<a href=\"".$_SERVER['PHP_SELF']."?delete=".$message->getMessageId()."\" style=\"margin-left:6px;\"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></a>";
-                            }
-                        ?>
+                            <?php if ($message->getForceRead()) { ?>
+                                <button type="button" class="btn btn-danger btn-sm" disabled>
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                </button>
+                            <?php } else { ?>
+                                <?php if (IsUser($message->getSender())) { ?>
+                                    <button type="button" class="create_message btn btn-primary btn-sm">
+                                        <i class="fa fa-reply" aria-hidden="true"></i>
+                                    </button>
+                                <?php } ?>
+                                    <button type="button" class="delete_message btn btn-danger btn-sm">
+                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                    </button>
+                            <?php } ?>
                         </td>
                     </tr>
                 <?php } ?>
@@ -178,11 +179,31 @@ if (!empty($mid) && is_numeric($mid)) {
 </div>
 
 <script>
-$(document).ready(function() {
-    $('#message-list').dataTable( {
+$( document ).ready( function () {
+    $( "#message-list" ).dataTable( {
         // lengthChange: false,
-    });
-});
+    } );
+
+    /**
+     * Reply to message
+     */
+    $( ".create_message" ).on( "click", function() {
+        var search = "?to_user=" + $( this ).closest( "tr" ).data( "sender" ) 
+            + "&rmid=" + $( this ).closest( "tr" ).data( "id" );
+
+        window.location.href = window.location.origin + "/message.php" + search;
+    } );
+
+    /**
+     * Delete message
+     */
+    $( ".delete_message" ).on( "click", function() {
+        var search = "?delete=" + $( this ).closest( "tr" ).data( "id" );
+
+        window.location.href = window.location.origin + window.location.pathname + search;
+    } );
+
+} );
 </script>
 
 <?php } ?>
