@@ -620,6 +620,7 @@ $drivespace = getDriveSpace($settings->get('path'));
 ?>
 <link rel="stylesheet" href="<?=$settings->get('base_url')?>/plugins/arboshiki/lobibox/dist/css/lobibox.min.css"/>
 <script src="<?=$settings->get('base_url')?>/plugins/arboshiki/lobibox/dist/js/lobibox.min.js"></script>
+<script src="<?=$settings->get('base_url')?>/js/index.js"></script>
 <script>
 <?php if (!isset($_SESSION['prefresh']) || ($_SESSION['prefresh'] == true)) { ?>
 
@@ -636,115 +637,11 @@ $drivespace = getDriveSpace($settings->get('path'));
 	}
 
 $(document).ready(function() {
-	updateRefresh();
+    updateRefresh();
 });
 
 <?php } ?>
-
-$(document).ready(function() {
-
-	$(".downloaddetails").click(function() {
-		var specs = 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=430,height=225';
-		window.open($(this).prop('href'), '_blank', specs);
-
-		return false;
-	});
-
-	$(".startTorrent").click(function() {
-		var specs = 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=700,height=530';
-		window.open($(this).prop('href'), '_blank', specs);
-
-		return false;
-	});
-
-	$(".deleteTorrent").click(function() {
-		return confirm("<?php echo _ABOUTTODELETE ?>: " + $(this).data('torrent'));
-	});
-
-    /**
-     * display torrent upload form
-     * and hide all visible forms
-    */
-    $( ".display_upload_form" ).click( function() {
-
-        var visible = $( this ).hasClass( "btn-primary" );
-
-        hideAllForms();
-
-        if ( visible ) {
-            $( "#form_upload" ).slideToggle();
-            $( ".display_upload_form" ).toggleClass( "btn-primary btn-success" );
-        }
-    } );
-
-    /**
-     * display torrent url form
-     * and hide all visible forms
-    */
-    $( ".display_url_form" ).click( function() {
-
-        var visible = $( this ).hasClass( "btn-primary" );
-
-        hideAllForms();
-
-        if ( visible ) {
-            $( "#form_url" ).slideToggle();
-            $( ".display_url_form" ).toggleClass( "btn-primary btn-success" );
-        }
-    } );
-
-    /**
-     * display torrent search form
-     * and hide all visible forms
-    */
-    $( ".display_search_form" ).click( function() {
-
-        var visible = $( this ).hasClass( "btn-primary" );
-
-        hideAllForms();
-
-        if ( visible ) {
-            $( "#form_search" ).slideToggle();
-            $( ".display_search_form" ).toggleClass( "btn-primary btn-success" );
-        }
-    } );
-
-    /**
-     * hide all visible forms
-    */
-    $( ".close_form" ).click( hideAllForms );
-
-    /**
-     * Select torrent file for upload
-    */
-    $( "#upload_file" ).on( "change", function() { 
-        $( "#upload_torrent" ).click(); 
-    } );
-
-    /**
-     * hide all visible forms
-    */
-    function hideAllForms() {
-
-        $( "#form_upload" ).hide( "fast" );
-        $( "#form_url" ).hide( "fast" );
-        $( "#form_search" ).hide( "fast" );
-
-        if ( $( ".display_url_form" ).hasClass( "btn-success" ) ) {
-            $( ".display_url_form" ).toggleClass( "btn-primary btn-success" );
-        }
-
-        if ( $( ".display_search_form" ).hasClass( "btn-success" ) ) {
-            $( ".display_search_form" ).toggleClass( "btn-primary btn-success" );
-        }
-
-        if ( $( ".display_upload_form" ).hasClass( "btn-success" ) ) {
-            $( ".display_upload_form" ).toggleClass( "btn-primary btn-success" );
-        }
-    }
-
-});
-
+    var confirmDeleteTorrent = "<?php echo _ABOUTTODELETE ?>: ";
     var ol_closeclick = "1";
     var ol_close = "<b style=\"color:#ffffff\">X</b>";
     var ol_fgclass = "fg";
