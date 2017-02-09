@@ -715,6 +715,13 @@ $(document).ready(function() {
     $( ".close_form" ).click( hideAllForms );
 
     /**
+     * Select torrent file for upload
+    */
+    $( "#upload_file" ).on( "change", function() { 
+        $( "#upload_torrent" ).click(); 
+    } );
+
+    /**
      * hide all visible forms
     */
     function hideAllForms() {
@@ -820,7 +827,7 @@ $(document).ready(function() {
                     <div class="input-group">
                         <input type="file" class="form-control" name="upload_file" id="upload_file" style="height:38px" />
                         <span class="input-group-btn">
-                            <button class="btn btn-secondary" type="submit">
+                            <button class="btn btn-secondary" id="upload_torrent" type="submit">
                                 <i class="fa fa-upload" aria-hidden="true" style="font-size:20px"></i>
                             </button>
                         </span>
