@@ -821,7 +821,7 @@ $(document).ready(function() {
                         <input type="file" class="form-control" name="upload_file" id="upload_file" style="height:38px" />
                         <span class="input-group-btn">
                             <button class="btn btn-secondary" type="submit">
-                                <i class="fa fa-upload" aria-hidden="true" style="font-size:24px"></i>
+                                <i class="fa fa-upload" aria-hidden="true" style="font-size:20px"></i>
                             </button>
                         </span>
                     </div>
