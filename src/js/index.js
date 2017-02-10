@@ -36,15 +36,16 @@ $( document ).ready( function() {
      * and hide all visible forms
     */
     $( ".display_upload_form" ).click( function() {
+ 
+        $( "#upload_file" ).trigger( "click" );
+    } );
 
-        var visible = $( this ).hasClass( "btn-primary" );
+    /**
+     * Select torrent file for upload
+    */
+    $( "#upload_file" ).on( "change", function() {
 
-        hideAllForms();
-
-        if ( visible ) {
-            $( "#form_upload" ).slideToggle();
-            $( ".display_upload_form" ).toggleClass( "btn-primary btn-success" );
-        }
+        $( "#form_file" ).submit(); 
     } );
 
     /**
@@ -85,18 +86,10 @@ $( document ).ready( function() {
     $( ".close_form" ).click( hideAllForms );
 
     /**
-     * Select torrent file for upload
-    */
-    $( "#upload_file" ).on( "change", function() { 
-        $( "#upload_torrent" ).click(); 
-    } );
-
-    /**
      * hide all visible forms
     */
     function hideAllForms() {
 
-        $( "#form_upload" ).hide( "fast" );
         $( "#form_url" ).hide( "fast" );
         $( "#form_search" ).hide( "fast" );
 
@@ -106,10 +99,6 @@ $( document ).ready( function() {
 
         if ( $( ".display_search_form" ).hasClass( "btn-success" ) ) {
             $( ".display_search_form" ).toggleClass( "btn-primary btn-success" );
-        }
-
-        if ( $( ".display_upload_form" ).hasClass( "btn-success" ) ) {
-            $( ".display_upload_form" ).toggleClass( "btn-primary btn-success" );
         }
     }
 

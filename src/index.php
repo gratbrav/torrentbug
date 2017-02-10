@@ -716,21 +716,9 @@ $(document).ready(function() {
 
         <div class="col-sm-12">
 
-            <fieldset class="form-group bd-example" id="form_upload" style="display:none;margin-right:-12px;margin-left:-15px;padding: 10px;">
-                <form name="form_file" action="index.php" method="post" enctype="multipart/form-data">
-                    <label for="upload_file"><?php echo _SELECTFILE ?></label>
-                    <button type="button" class="close_form btn btn-danger btn-sm pull-right"><span class="btn-label icon fa fa-times"></span></button>
-                    
-                    <div class="input-group">
-                        <input type="file" class="form-control" name="upload_file" id="upload_file" style="height:38px" />
-                        <span class="input-group-btn">
-                            <button class="btn btn-secondary" id="upload_torrent" type="submit">
-                                <i class="fa fa-upload" aria-hidden="true" style="font-size:20px"></i>
-                            </button>
-                        </span>
-                    </div>
-                </form>
-            </fieldset>
+            <form name="form_file" id="form_file" action="index.php" method="post" enctype="multipart/form-data" style="display:none;">
+                    <input type="file" name="upload_file" id="upload_file" />
+            </form>
 
             <fieldset class="form-group bd-example" id="form_url" style="display:none;margin-right:-12px;margin-left:-15px;padding: 10px;">
                 <form name="form_url" action="index.php" method="post">
