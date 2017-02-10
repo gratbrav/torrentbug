@@ -1304,21 +1304,11 @@ $(document).ready(function() {
 	</div>
 </div>
 
-<?php
-    // At this point Any User actions should have taken place
-    // Check to see if the user has a force_read message from an admin
-    if (IsForceReadMsg())
-    {
-        // Yes, then warn them
-?>
-        <script>
-        if (confirm("<?php echo _ADMINMESSAGE ?>"))
-        {
-            document.location = "readmsg.php";
-        }
-        </script>
-<?php
-    }
-?>
+<?php if (IsForceReadMsg()) { ?>
+<script>
+    Lobibox.notify('info', { size: 'mini', icon: false, sound: false, msg: '<?php echo _ADMINMESSAGE ?>', onClickUrl: "readmsg.php"});
+</script>
+<?php } ?>
+
 </body>
 </html>
