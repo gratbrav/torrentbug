@@ -18,7 +18,7 @@
 				<a class="nav-item nav-link active" href="<?php echo $settings->get('base_url') ?>/index.php"><?php echo _TORRENTS ?> <span class="sr-only">(current)</span></a>
 				<a class="nav-item nav-link" href="<?php echo $settings->get('base_url') ?>/dir.php"><?php echo _DIRECTORYLIST ?></a>
 				<a class="nav-item nav-link" href="<?php echo $settings->get('base_url') ?>/history.php"><?php echo _UPLOADHISTORY ?></a>
-				<a class="nav-item nav-link" href="<?php echo $settings->get('base_url') ?>/profile.php"><?php echo _MYPROFILE ?></a>
+				<a class="nav-item nav-link" href="<?php echo $settings->get('base_url') ?>/profile/edit.php"><?php echo _MYPROFILE ?></a>
 				<a class="nav-item nav-link" href="<?php echo $settings->get('base_url') ?>/readmsg.php"><?php echo _MESSAGES ?><?php echo $countMessages ?></a>
 				<?php if (IsAdmin()) { ?>
 					<a class="nav-item nav-link" href="<?php echo $settings->get('base_url') ?>/admin/admin.php"><?php echo _ADMINISTRATION ?></a>
