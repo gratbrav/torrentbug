@@ -72,9 +72,7 @@ class Service
 
     protected function loadMessages()
     {
-        $user = $this->db->qstr($this->user);
-
-        $sql = "SELECT "
+        $query = "SELECT "
                 . " mid, "
                 . " from_user, "
                 . " message, "
@@ -85,13 +83,13 @@ class Service
             . " FROM "
                 . " tf_messages "
             . " WHERE "
-                . "to_user = " . $user
+                . "to_user = :user "
             . " ORDER BY time";
 
-        $result = $this->db->Execute($sql);
-        // showError($db,$sql);
+        $statement = $this->db->prepare($query);
+        $statement->execute([':user' => $this->user]);
 
-        while ($data = $result->FetchRow()) {
+        while ($data = $statement->fetch()) {
             $this->messages[$data['mid']] = new Message($data);
         }
     }
@@ -104,19 +102,17 @@ class Service
      */
     public function delete($msgId)
     {
-        $user = $this->db->qstr($this->user);
-        $msgId = $this->db->qstr($msgId);
-
-        $sql = "DELETE " 
+        $query = "DELETE " 
             . " FROM "
                 . " tf_messages "
             . " WHERE "
-                . " mid = " . $msgId 
-                . " AND to_user = " . $user;
+                . " mid = :mid "
+                . " AND to_user = :user ";
 
-        $result = $this->db->Execute($sql);
-        // showError($db,$sql);
-        return $result;
+        $statement = $this->db->prepare($query);
+        $statement->execute([':mid' => $msgId, ':user' => $this->user]);
+
+        return $statement->fetch();
     }
 
     /**
@@ -127,21 +123,19 @@ class Service
      */
     public function markAsRead($msgId)
     {
-        $user = $this->db->qstr($this->user);
-        $msgId = $this->db->qstr($msgId);
-
-        $sql = "UPDATE "
+        $query = "UPDATE "
                 . " tf_messages "
             . " SET "
                 . " IsNew = 0, "
                 . " force_read = 0"
             . " WHERE "
-                . " mid = " . $msgId
-                . " AND to_user = " . $user;
-        
-        $result = $this->db->Execute($sql);
-        // showError($db,$sql);
-        return $result;
+                . " mid = :mid "
+                . " AND to_user = :user ";
+
+        $statement = $this->db->prepare($query);
+        $statement->execute([':mid' => $msgId, ':user' => $this->user]);
+
+        return $statement->fetch();
     }
 }
 

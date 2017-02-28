@@ -2,7 +2,7 @@
 /**
  * Database Class
  *
- * Class for database connectiony
+ * Class for database connections
  *
  * @package  Torrentbug
  * @author   Gratbrav
@@ -40,16 +40,23 @@ class Database
     }
 
     /**
+     * Alias for getDatabase()
+     * 
+     * @return string|PDO
+     */
+    public function getDB()
+    {
+        return $this->getDatabase();
+    }
+
+    /**
      * Constructor from Database Class
      */
     private function __construct()
     {
         include(__DIR__ . '/../config.php');
-        include(__DIR__ . '/../adodb/adodb.inc.php');
 
-        // 2004-12-09 PFM: connect to database.
-        $db = NewADOConnection($cfg['db_type']);
-        $db->Connect($cfg['db_host'], $cfg['db_user'], $cfg['db_pass'], $cfg['db_name']);
+        $db = new PDO("mysql:host={$cfg[db_host]};dbname={$cfg[db_name]};charset=utf8", $cfg['db_user'], $cfg['db_pass']);
 
         if (!$db) {
             die ('Could not connect to database: '.$db->ErrorMsg().'<br>Check your database settings in the config.php file.');

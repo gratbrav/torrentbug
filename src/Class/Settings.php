@@ -43,10 +43,10 @@ class Class_Settings
 	protected function load()
 	{
 	    $query = "SELECT tf_key, tf_value FROM tf_settings";
-	    $recordset = $this->db->Execute($query);
-	    // showError($db, $sql);
+	    $statement = $this->db->prepare($query);
+	    $statement->execute();
 	
-	    while (list($key, $value) = $recordset->FetchRow()) {
+	    while (list($key, $value) = $statement->fetch()) {
 	    	
 	        $tmpValue = '';
 	        if (strpos($key,"Filter") > 0) {
@@ -89,18 +89,16 @@ class Class_Settings
 	
 	protected function updateValue($key, $value)
 	{
-	    $query = "UPDATE tf_settings SET tf_value = '" . $value . "' WHERE tf_key = '" . $key . "'";
-
-        $result = $this->db->Execute($query);
-        // showError($db,$query);
+	    $query = "UPDATE tf_settings SET tf_value = :value WHERE tf_key = :key";
+	    $statement = $this->db->prepare($query);
+	    $statement->execute([':value' => $value, ':key' => $key]);
 	}
 	
 	protected function insertValue($key, $value)
 	{
-	    $query = "INSERT INTO tf_settings VALUES ('" . $key . "', '" . $value . "')";
-
-	    $result = $this->db->Execute($query);
-        // showError($db,$query);
+	    $query = "INSERT INTO tf_settings VALUES (:key, :value)";
+	    $statement = $this->db->prepare($query);
+	    $statement->execute([':value' => $value, ':key' => $key]);
 	}
 
 }

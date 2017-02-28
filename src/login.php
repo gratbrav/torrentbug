@@ -120,15 +120,14 @@ $db = getdb();
     	$result = $auth->checkLogin();
     	showError($db,$sql);
     	
-        list($uid, $hits, $cfg["hide_offline"], $cfg["theme"], $cfg["language_file"]) = $result->FetchRow();
+        list($uid, $hits, $cfg["hide_offline"], $cfg["theme"], $cfg["language_file"]) = $result;
     
         if(!array_key_exists("shutdown",$cfg))
             $cfg['shutdown'] = '';
         if(!array_key_exists("upload_rate",$cfg))
             $cfg['upload_rate'] = '';
     
-        if($result->RecordCount()==1)
-        {
+        if ($result !== false) {
             // Add a hit to the user
             $hits++;
     

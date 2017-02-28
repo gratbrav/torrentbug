@@ -61,13 +61,14 @@ class Authentication
         $this->setPassword($password);
 
 		if (!empty($this->user) && !empty($this->password)) {
-			$user = $this->db->qstr($this->user);
-			$pwd = $this->db->qstr(md5($this->password));
+			$user = $this->user;
+			$pwd = md5($this->password);
 			
-			$sql = "SELECT uid, hits, hide_offline, theme, language_file FROM tf_users WHERE user_id=".$user." AND password=".$pwd;
-			$result = $this->db->Execute($sql);
-			//showError($db,$sql);
-			return $result;
+			$query = "SELECT uid, hits, hide_offline, theme, language_file FROM tf_users WHERE user_id= :user AND password= :password";
+			$statement = $this->db->prepare($query);
+			$statement->execute([':user' => $user, ':password' => $pwd]);
+
+			return $statement->fetch();
 		}
 		
 		return false;
