@@ -3,7 +3,7 @@
     include_once '../Class/autoload.php';
     include_once '../config.php';
     
-    $settings = new Class_Settings();
+    $settings = new Gratbrav\Torrentbug\Settings();
     
     include_once '../functions.php';
 

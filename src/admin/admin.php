@@ -10,7 +10,7 @@
         header("location: ../index.php");
     }
     
-    $settings = new Class_Settings();
+    $settings = new Gratbrav\Torrentbug\Settings();
     
     $action = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING);
     if (empty($action)) {

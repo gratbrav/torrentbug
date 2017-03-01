@@ -64,14 +64,14 @@
         httpseeds = optional list of http-seed URLs, in the format:
                 url[|url...]
     *****/
-	
-	include_once './Class/autoload.php';
+
+    include_once './Class/autoload.php';
 
     include_once("config.php");
     include_once("functions.php");
 
-    $settings = new Class_Settings();
-    
+    $settings = new Gratbrav\Torrentbug\Settings();
+
     // Variable information
     $tpath    = $settings->get('torrent_file_path');
     $tfile    = getRequestVar('torrent');

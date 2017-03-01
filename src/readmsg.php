@@ -25,11 +25,11 @@
     include_once 'Class/autoload.php';
     include_once 'config.php';
 
-    $settings = new Class_Settings();
+    $settings = new Gratbrav\Torrentbug\Settings();
 
     include_once 'functions.php';
 
-    $msgService = new \Message\Service($cfg['user']);
+    $msgService = new Gratbrav\Torrentbug\Message\Service($cfg['user']);
 
     $delete = filter_input(INPUT_GET, 'delete', FILTER_VALIDATE_INT);
     if (!empty($delete)) {

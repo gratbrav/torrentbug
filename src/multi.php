@@ -27,7 +27,7 @@
 include_once("config.php");
 include_once("functions.php");
 
-    $settings = new Class_Settings();
+    $settings = new Gratbrav\Torrentbug\Settings();
 
 # what to do?
 $action = getRequestVar("action");

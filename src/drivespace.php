@@ -22,13 +22,13 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-	include_once './Class/autoload.php';
+    include_once './Class/autoload.php';
 
 include_once("config.php");
 include_once("functions.php");
 
-	$settings = new Class_Settings();
-	
+    $settings = new Gratbrav\Torrentbug\Settings();
+
 $result = shell_exec("df -h " . $settings->get('path'));
 $result2 = shell_exec("du -sh " . $settings->get('path') . "*");
 

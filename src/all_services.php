@@ -21,12 +21,12 @@
     along with TorrentFlux; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-	include_once './Class/autoload.php';
+    include_once './Class/autoload.php';
 
 include_once("config.php");
 include_once("functions.php");
 
-	$settings = new Class_Settings();
+    $settings = new Gratbrav\Torrentbug\Settings();
 
 if (! IsAdmin($cfg["user"])) {
     header("Location:index.php");

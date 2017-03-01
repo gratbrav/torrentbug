@@ -1,13 +1,31 @@
 <?php 
+/**
+ * TorrentBug
+ *
+ * @link      https://github.com/gratbrav/torrentbug
+ * @license   https://github.com/gratbrav/torrentbug/blob/master/LICENSE
+ */
 
-class Class_Settings
+namespace Gratbrav\Torrentbug;
+
+use Gratbrav\Torrentbug\Database;
+
+/**
+ * Setings Class
+ *
+ * Class for torrentbug settings
+ *
+ * @package  Torrentbug
+ * @author   Gratbrav
+ */
+class Settings
 {
 	protected $db = null;
 	protected $config = array();
 	
 	function __construct()
 	{
-		$db = \Database::getInstance();
+		$db = Database::getInstance();
 		$this->db = $db->getDatabase();
 		
 		$this->load();

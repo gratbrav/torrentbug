@@ -22,7 +22,7 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-	include_once './Class/autoload.php';
+    include_once './Class/autoload.php';
 
 include_once("config.php");
 include_once("functions.php");
@@ -35,7 +35,7 @@ if (!defined("ENT_COMPAT")) define("ENT_COMPAT", 2);
 if (!defined("ENT_NOQUOTES")) define("ENT_NOQUOTES", 0);
 if (!defined("ENT_QUOTES")) define("ENT_QUOTES", 3);
 
-	$settings = new Class_Settings();
+    $settings = new Gratbrav\Torrentbug\Settings();
 ?>
 <?php 
 	$subMenu = 'index';

@@ -28,11 +28,9 @@
 	include_once 'db.php';
 	include_once 'settingsfunctions.php';
 
-	$settings = new Class_Settings();
+    $settings = new Gratbrav\Torrentbug\Settings();
 // Create Connection.
 $db = getdb();
-
-	
 
     session_name("TorrentFlux");
     session_start();
@@ -116,7 +114,7 @@ $db = getdb();
         
     if ($allow_login)
     {
-    	$auth = new User\Authentication($user, $iamhim);
+    	$auth = new Gratbrav\Torrentbug\User\Authentication($user, $iamhim);
     	$result = $auth->checkLogin();
     	showError($db,$sql);
     	

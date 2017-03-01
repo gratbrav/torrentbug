@@ -1,14 +1,21 @@
 <?php
 /**
-* Message Class
-*
-* Message
-*
-* @package  Torrentbug
-* @author   Gratbrav
-*/
-namespace Message;
+ * TorrentBug
+ *
+ * @link      https://github.com/gratbrav/torrentbug
+ * @license   https://github.com/gratbrav/torrentbug/blob/master/LICENSE
+ */
 
+namespace Gratbrav\Torrentbug\Message;
+
+/**
+ * Message Class
+ *
+ * Message
+ *
+ * @package  Torrentbug
+ * @author   Gratbrav
+ */
 class Message
 {
     protected $messageId;

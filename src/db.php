@@ -4,7 +4,7 @@
 include_once('config.php');
 include_once('adodb/adodb.inc.php');
 
-	$settings = new Class_Settings();
+    $settings = new Gratbrav\Torrentbug\Settings();
 
 function getdb()
 {

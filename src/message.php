@@ -27,8 +27,8 @@
 
 include_once("functions.php");
 
-    $settings = new Class_Settings();
-    $msgService = new \Message\Service($cfg['user']);
+    $settings = new Gratbrav\Torrentbug\Settings();
+    $msgService = new Gratbrav\Torrentbug\Message\Service($cfg['user']);
 
     $to_user = filter_input(INPUT_POST, 'to_user', FILTER_SANITIZE_STRING);
     $message = filter_input(INPUT_POST, 'message', FILTER_SANITIZE_STRING);

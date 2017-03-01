@@ -1,34 +1,39 @@
 <?php
 /**
-* User Authentication Class
-*
-* Class for authentication a user
-*
-* @package  Torrentbug
-* @author   Gratbrav
-* @version  $Revision: 1.0 $
-* @access   public
-*/
-namespace User;
+ * TorrentBug
+ *
+ * @link      https://github.com/gratbrav/torrentbug
+ * @license   https://github.com/gratbrav/torrentbug/blob/master/LICENSE
+ */
 
+namespace Gratbrav\Torrentbug\User;
+
+use Gratbrav\Torrentbug\Database;
+
+/**
+ * User Authentication Class
+ *
+ * Class for authentication a user
+ *
+ * @package  Torrentbug
+ * @author   Gratbrav
+ */
 class Authentication
 {
     /**
      * Database reference
-     * @var ressource
+     * @var Database
      */
     protected $db = null;
 
     /**
      * User login
-     * 
      * @var string
      */
     protected $user = '';
 
     /**
      * User password
-     * 
      * @var string
      */
     protected $password = '';
@@ -44,7 +49,7 @@ class Authentication
         $this->setUser($user);
         $this->setPassword($password);
 
-        $db = \Database::getInstance();
+        $db = Database::getInstance();
         $this->db = $db->getDatabase();
     }
 
@@ -60,20 +65,22 @@ class Authentication
         $this->setUser($user);
         $this->setPassword($password);
 
-		if (!empty($this->user) && !empty($this->password)) {
-			$user = $this->user;
-			$pwd = md5($this->password);
-			
-			$query = "SELECT uid, hits, hide_offline, theme, language_file FROM tf_users WHERE user_id= :user AND password= :password";
-			$statement = $this->db->prepare($query);
-			$statement->execute([':user' => $user, ':password' => $pwd]);
+        if (!empty($this->user) && !empty($this->password)) {
+            $pwd = md5($this->password);
 
-			return $statement->fetch();
-		}
-		
-		return false;
-	}
-	
+            $query = "SELECT uid, hits, hide_offline, theme, language_file FROM tf_users WHERE user_id= :user AND password= :password";
+            $statement = $this->db->prepare($query);
+            $statement->execute([
+                ':user' => $this->user,
+                ':password' => $pwd,
+            ]);
+
+            return $statement->fetch();
+        }
+
+        return false;
+    }
+
     /**
      * Set login
      * 
@@ -93,7 +100,7 @@ class Authentication
      * Set password
      * 
      * @param string $password  Password
-     * @return \User\Authentication
+     * @return Authentication
      */
     protected function setPassword($password)
     {

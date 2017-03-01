@@ -32,7 +32,8 @@ class Autoloader
      */
     public function loadClass($className)
     {
-        $file = str_replace('\\', '/', $className);
+        $file = str_replace('Gratbrav\\Torrentbug\\', '', $className);
+        $file = str_replace('\\', '/', $file);
         $file = __DIR__ . '/' . $file . '.php';
 
         if (file_exists($file)) {
