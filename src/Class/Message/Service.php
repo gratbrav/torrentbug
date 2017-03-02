@@ -189,4 +189,24 @@ class Service
 
         return $statement->fetch();
     }
+
+    /**
+     * Check user has a force to read message
+     * 
+     * return boolean
+     */
+    public function hasForceReadMessage()
+    {
+        if (is_null($this->messages)) {
+            $this->loadMessages();
+        }
+
+        foreach ((array)$this->messages as $message) {
+            if ($message->getForceRead()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

@@ -28,6 +28,7 @@ include_once("config.php");
 include_once("functions.php");
 
     $settings = new Gratbrav\Torrentbug\Settings();
+    $msgService = new Gratbrav\Torrentbug\Message\Service($cfg['user']);
 
 $messages = "";
 
@@ -1304,7 +1305,7 @@ $(document).ready(function() {
 	</div>
 </div>
 
-<?php if (IsForceReadMsg()) { ?>
+<?php if ($msgService->hasForceReadMessage()) { ?>
 <script>
     Lobibox.notify('info', { size: 'mini', icon: false, sound: false, msg: '<?php echo _ADMINMESSAGE ?>', onClickUrl: "readmsg.php"});
 </script>
