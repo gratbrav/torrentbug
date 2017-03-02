@@ -175,55 +175,32 @@ function Authenticate()
 // SaveMessage
 function SaveMessage($to_user, $from_user, $message, $to_all=0, $force_read=0)
 {
-    global $_SERVER, $cfg, $db;
+    global $cfg, $db;
 
     $message = str_replace(array("'"), "", $message);
 
-    $create_time = time();
+    $message .= "\n\n__________________________________\n*** "._MESSAGETOALL." ***";
+    $sql = 'select user_id from tf_users';
+    $result = $db->Execute($sql);
+    showError($db,$sql);
 
-    $sTable = 'tf_messages';
-    if($to_all == 1)
+    while($row = $result->FetchRow())
     {
-        $message .= "\n\n__________________________________\n*** "._MESSAGETOALL." ***";
-        $sql = 'select user_id from tf_users';
-        $result = $db->Execute($sql);
-        showError($db,$sql);
-
-        while($row = $result->FetchRow())
-        {
-            $rec = array(
-                        'to_user' => $row['user_id'],
-                        'from_user' => $from_user,
-                        'message' => $message,
-                        'IsNew' => 1,
-                        'ip' => $cfg['ip'],
-                        'time' => $create_time,
-                        'force_read' => $force_read
-                        );
-
-            $sql = $db->GetInsertSql($sTable, $rec);
-
-            $result2 = $db->Execute($sql);
-            showError($db,$sql);
-        }
-    }
-    else
-    {
-        // Only Send to one Person
         $rec = array(
-                    'to_user' => $to_user,
-                    'from_user' => $from_user,
-                    'message' => $message,
-                    'IsNew' => 1,
-                    'ip' => $cfg['ip'],
-                    'time' => $create_time,
-                    'force_read' => $force_read
-                    );
-        $sql = $db->GetInsertSql($sTable, $rec);
-        $result = $db->Execute($sql);
+            'to_user' => $row['user_id'],
+            'from_user' => $from_user,
+            'message' => $message,
+            'IsNew' => 1,
+            'ip' => $cfg['ip'],
+            'time' => time(),
+            'force_read' => $force_read
+        );
+
+        $sql = $db->GetInsertSql('tf_messages', $rec);
+
+        $result2 = $db->Execute($sql);
         showError($db,$sql);
     }
-
 }
 
 

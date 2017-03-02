@@ -164,4 +164,29 @@ class Service
         return $statement->fetch();
     }
 
+    /**
+     * Save message
+     * 
+     * @param array $data
+     * @return unknown
+     */
+    public function save($data = [])
+    {
+        $message = str_replace(array("'"), "", $data['message']);
+
+        $query = "INSERT INTO tf_messages VALUES (:fromUser, :toUser, :message, :isNew, :ip, :time, :forceRead)";
+
+        $statement = $this->db->prepare($query);
+        $statement->execute([
+            ':fromUser' => $data['from_user'],
+            ':toUser' => $data['to_user'],
+            ':message' => $message,
+            ':isNew' => $data['is_new'],
+            ':ip' => $_SERVER['REMOTE_ADDR'],
+            ':time' => time(),
+            ':forceRead' => $data['force_read'],
+        ]);
+
+        return $statement->fetch();
+    }
 }

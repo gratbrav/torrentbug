@@ -39,7 +39,19 @@ if (!empty($message) && !empty($to_user) && !empty($cfg['user'])) {
     $force_read = filter_input(INPUT_POST, 'force_read', FILTER_VALIDATE_INT);
 
     $message = check_html($message, "nohtml");
-    SaveMessage($to_user, $cfg['user'], $message, $to_all, $force_read);
+
+    if ($to_all == 1) {
+        SaveMessage($to_user, $cfg['user'], $message, $to_all, $force_read);
+    } else {
+        $settings = [
+            'message' => $message,
+            'from_user' => $cfg['user'],
+            'to_user' => $to_user,
+            'is_new' => 1,
+            'force_read' => $force_read,
+        ];
+        $msgService->save($settings);
+    }
 
     header('location: readmsg.php');
     exit;
