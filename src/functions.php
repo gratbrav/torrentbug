@@ -23,7 +23,7 @@
 */
 
 // Start Session and grab user
-session_name("TorrentFlux");
+session_name("Torrentbug");
 session_start();
 
 if(isset($_SESSION['user']))

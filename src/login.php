@@ -32,7 +32,7 @@
 // Create Connection.
 $db = getdb();
 
-    session_name("TorrentFlux");
+    session_name("Torrentbug");
     session_start();
 
     if (isset($_SESSION['user'])) {
