@@ -46,10 +46,10 @@ class Service
      * 
      * @return array
      */
-    public function getLogss()
+    public function getLogs()
     {
         if (is_null($this->logs)) {
-            $this->loadLogss();
+            $this->loadLogs();
         }
 
         return (array)$this->logs;
