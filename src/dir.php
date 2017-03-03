@@ -66,16 +66,35 @@ if ($del != "")
                 array_pop($arTemp);
                 $current = implode("/", $arTemp);
             }
-            AuditAction($cfg["constants"]["fm_delete"], $del);
+
+            $options = [
+                'user_id' => $cfg['user'],
+                'file' => $del,
+                'action' => $cfg["constants"]["fm_delete"],
+            ];
+            $log = new \Gratbrav\Torrentbug\Log\Service();
+            $log->save($options);
         }
         else
         {
-            AuditAction($cfg["constants"]["error"], "ILLEGAL DELETE: ".$cfg['user']." tried to delete ".$del);
+            $options = [
+                'user_id' => $cfg['user'],
+                'file' => 'ILLEGAL DELETE: ' . $cfg['user'] . ' tried to delete ' . $del,
+                'action' => $cfg["constants"]["error"],
+            ];
+            $log = new \Gratbrav\Torrentbug\Log\Service();
+            $log->save($options);
         }
     }
     else
     {
-        AuditAction($cfg["constants"]["error"], "ILLEGAL DELETE: ".$cfg['user']." tried to delete ".$del);
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => 'ILLEGAL DELETE: ' . $cfg['user'] . ' tried to delete ' . $del,
+            'action' => $cfg["constants"]["error"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
     }
 
     header("Location: dir.php?dir=".urlencode($current));
@@ -126,17 +145,36 @@ if ($down != "" && $settings->get('enable_file_download')) {
             fpassthru($fp);
             pclose($fp);
 
-            AuditAction($cfg["constants"]["fm_download"], $down);
+            $options = [
+                'user_id' => $cfg['user'],
+                'file' => $down,
+                'action' => $cfg["constants"]["fm_download"],
+            ];
+            $log = new \Gratbrav\Torrentbug\Log\Service();
+            $log->save($options);
+
             exit();
         }
         else
         {
-            AuditAction($cfg["constants"]["error"], "File Not found for download: ".$cfg['user']." tried to download ".$down);
+            $options = [
+                'user_id' => $cfg['user'],
+                'file' => 'File Not found for download: ' . $cfg['user'] . ' tried to download ' . $down,
+                'action' => $cfg["constants"]["error"],
+            ];
+            $log = new \Gratbrav\Torrentbug\Log\Service();
+            $log->save($options);
         }
     }
     else
     {
-        AuditAction($cfg["constants"]["error"], "ILLEGAL DOWNLOAD: ".$cfg['user']." tried to download ".$down);
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => 'ILLEGAL DOWNLOAD: ' . $cfg['user'] . ' tried to download ' . $down,
+            'action' => $cfg["constants"]["error"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
     }
     header("Location: dir.php?dir=".urlencode($current));
 }
@@ -203,17 +241,36 @@ if ($tar != "" && $settings->get('enable_file_download')) {
             chdir(dirname($tar));
             passthru($command);
 
-            AuditAction($cfg["constants"]["fm_download"], $sendname.".".$settings->get('package_type'));
+            $options = [
+                'user_id' => $cfg['user'],
+                'file' => $sendname . '.' . $settings->get('package_type'),
+                'action' => $cfg["constants"]["fm_download"],
+            ];
+            $log = new \Gratbrav\Torrentbug\Log\Service();
+            $log->save($options);
+
             exit();
         }
         else
         {
-            AuditAction($cfg["constants"]["error"], "Illegal download: ".$cfg['user']." tried to download ".$tar);
+            $options = [
+                'user_id' => $cfg['user'],
+                'file' => 'Illegal download: ' . $cfg['user'] . ' tried to download ' . $tar,
+                'action' => $cfg["constants"]["error"],
+            ];
+            $log = new \Gratbrav\Torrentbug\Log\Service();
+            $log->save($options);
         }
     }
     else
     {
-        AuditAction($cfg["constants"]["error"], "ILLEGAL TAR DOWNLOAD: ".$cfg['user']." tried to download ".$tar);
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => 'ILLEGAL TAR DOWNLOAD: ' . $cfg['user'] . ' tried to download ' . $tar,
+            'action' => $cfg["constants"]["error"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
     }
     header("Location: dir.php?dir=".urlencode($current));
 }

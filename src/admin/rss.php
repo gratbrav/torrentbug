@@ -9,7 +9,14 @@
     
     if (!IsAdmin()) {
         // the user probably hit this page direct
-        AuditAction($cfg["constants"]["access_denied"], $_SERVER['PHP_SELF']);
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => $_SERVER['PHP_SELF'],
+            'action' => $cfg["constants"]["access_denied"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
+
         header("location: ../index.php");
     }
     
@@ -24,7 +31,13 @@
         
         if (!empty($newRSS)){
             addNewRSS($newRSS);
-            AuditAction($cfg["constants"]["admin"], "New RSS: ".$newRSS);
+            $options = [
+                'user_id' => $cfg['user'],
+                'file' => 'New RSS: ' . $newRSS,
+                'action' => $cfg["constants"]["admin"],
+            ];
+            $log = new \Gratbrav\Torrentbug\Log\Service();
+            $log->save($options);
         }
         header("location: rss.php");
         exit;
@@ -33,7 +46,13 @@
     } else if ($action == 'delete') {
         $rid = getRequestVar('rid');
 
-        AuditAction($cfg["constants"]["admin"], _DELETE." RSS: ".getRSS($rid));
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => _DELETE . ' RSS: ' . getRSS($rid),
+            'action' => $cfg["constants"]["admin"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
 
         $sql = "delete from tf_rss where rid=".$rid;
         $result = $db->Execute($sql);

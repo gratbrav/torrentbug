@@ -9,7 +9,14 @@
     
     if (!IsAdmin()) {
         // the user probably hit this page direct
-        AuditAction($cfg["constants"]["access_denied"], $_SERVER['PHP_SELF']);
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => $_SERVER['PHP_SELF'],
+            'action' => $cfg["constants"]["access_denied"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
+
         header("location: ../index.php");
     }
 
@@ -24,8 +31,15 @@
         }
         
         $settings->save($options);
-        AuditAction($cfg["constants"]["admin"], " Updating TorrentFlux Search Settings");
-        
+
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => ' Updating TorrentFlux Search Settings',
+            'action' => $cfg["constants"]["admin"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
+
         $searchEngine = getRequestVar('searchEngine');
         if (empty($searchEngine)) $searchEngine = $settings->get('searchEngine');
         header("location: search.php?searchEngine=" . $searchEngine);

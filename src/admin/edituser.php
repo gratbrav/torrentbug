@@ -9,7 +9,14 @@
     
     if (!IsAdmin()) {
         // the user probably hit this page direct
-        AuditAction($cfg["constants"]["access_denied"], $_SERVER['PHP_SELF']);
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => $_SERVER['PHP_SELF'],
+            'action' => $cfg["constants"]["access_denied"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
+
         header("location: ../index.php");
     }
 
@@ -40,7 +47,15 @@
                 $_SESSION['user'] = md5($cfg["pagetitle"]);
             }
             updateThisUser($user_id, $org_user_id, $pass1, $userType, $hideOffline);
-            AuditAction($cfg["constants"]["admin"], _EDITUSER.": ".$user_id);
+
+            $options = [
+                'user_id' => $cfg['user'],
+                'file' => _EDITUSER . ': ' . $user_id,
+                'action' => $cfg["constants"]["admin"],
+            ];
+            $log = new \Gratbrav\Torrentbug\Log\Service();
+            $log->save($options);
+
             header("location: admin.php");
         }
     }

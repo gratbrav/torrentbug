@@ -146,7 +146,13 @@
             $success = true;
 
             // Make an entry for the owner
-            AuditAction($cfg["constants"]["file_upload"], $tfile);
+            $options = [
+                'user_id' => $cfg['user'],
+                'file' => $tfile,
+                'action' => $cfg["constants"]["file_upload"],
+            ];
+            $log = new \Gratbrav\Torrentbug\Log\Service();
+            $log->save($options);
 
             // Check to see if one of the flags were set
             if( $private || $dht )
@@ -221,16 +227,34 @@
                 @fpassthru( $fp );
                 @fclose( $fp );
 
-                AuditAction($cfg["constants"]["fm_download"], $tfile);
+                $options = [
+                    'user_id' => $cfg['user'],
+                    'file' => $tfile,
+                    'action' => $cfg["constants"]["fm_download"],
+                ];
+                $log = new \Gratbrav\Torrentbug\Log\Service();
+                $log->save($options);
             }
             else
             {
-                AuditAction($cfg["constants"]["error"], "File Not found for download: ".$cfg['user']." tried to download ".$tfile);
+                $options = [
+                    'user_id' => $cfg['user'],
+                    'file' => 'File Not found for download: ' . $cfg['user'] . ' tried to download ' . $tfile,
+                    'action' => $cfg["constants"]["error"],
+                ];
+                $log = new \Gratbrav\Torrentbug\Log\Service();
+                $log->save($options);
             }
         }
         else
         {
-            AuditAction($cfg["constants"]["error"], "ILLEGAL DOWNLOAD: ".$cfg['user']." tried to download ".$tfile);
+            $options = [
+                'user_id' => $cfg['user'],
+                'file' => 'ILLEGAL DOWNLOAD: ' . $cfg['user'] . ' tried to download ' . $tfile,
+                'action' => $cfg["constants"]["error"],
+            ];
+            $log = new \Gratbrav\Torrentbug\Log\Service();
+            $log->save($options);
         }
         exit();
     }

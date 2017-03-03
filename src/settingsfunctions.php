@@ -50,34 +50,6 @@ function getRequestVar($varName)
     }
 }
 
-
-//*********************************************************
-// AuditAction
-function AuditAction($action, $file="")
-{
-    global $_SERVER, $cfg, $db;
-
-    $host_resolved = $cfg['ip'];
-    $create_time = time();
-
-    $rec = array(
-                    'user_id' => $cfg['user'],
-                    'file' => $file,
-                    'action' => $action,
-                    'ip' => htmlentities($cfg['ip'], ENT_QUOTES),
-                    'ip_resolved' => htmlentities($host_resolved, ENT_QUOTES),
-                    'user_agent' => htmlentities($_SERVER['HTTP_USER_AGENT'], ENT_QUOTES),
-                    'time' => $create_time
-                );
-
-    $sTable = 'tf_log';
-    $sql = $db->GetInsertSql($sTable, $rec);
-
-    // add record to the log
-    $result = $db->Execute($sql);
-    showError($db,$sql);
-}
-
 //*********************************************************
 function isFile($file)
 {

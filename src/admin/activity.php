@@ -9,7 +9,14 @@
     
     if (!IsAdmin()) {
         // the user probably hit this page direct
-        AuditAction($cfg["constants"]["access_denied"], $_SERVER['PHP_SELF']);
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => $_SERVER['PHP_SELF'],
+            'action' => $cfg["constants"]["access_denied"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
+
         header("location: ../index.php");
     }
 

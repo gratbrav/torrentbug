@@ -78,7 +78,14 @@ function SecurityCleanPath($string)
     }
     else
     {
-        AuditAction($cfg["constants"]["error"], "Not a text or NFO: " . $string);
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => 'Not a text or NFO: ' . $string,
+            'action' => $cfg["constants"]["error"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
+
         die("Invalid file specified.  Action has been logged.");
     }
     return $string;

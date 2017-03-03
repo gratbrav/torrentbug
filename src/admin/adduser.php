@@ -9,7 +9,14 @@
     
     if (!IsAdmin()) {
         // the user probably hit this page direct
-        AuditAction($cfg["constants"]["access_denied"], $_SERVER['PHP_SELF']);
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => $_SERVER['PHP_SELF'],
+            'action' => $cfg["constants"]["access_denied"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
+
         header("location: ../index.php");
     }
     
@@ -47,9 +54,16 @@
             $sql = $db->GetInsertSql($sTable, $record);
             $result = $db->Execute($sql);
             showError($db,$sql);
-            AuditAction($cfg["constants"]["admin"], _NEWUSER.": ".$newUser);
+
+            $options = [
+                'user_id' => $cfg['user'],
+                'file' => _NEWUSER . ': ' . $newUser,
+                'action' => $cfg["constants"]["admin"],
+            ];
+            $log = new \Gratbrav\Torrentbug\Log\Service();
+            $log->save($options);
         }
-        
+
         header("location: adduser.php");
         exit;
 
@@ -74,7 +88,14 @@
             $sql = "DELETE FROM tf_users WHERE user_id=".$db->qstr($user_id);
             $result = $db->Execute($sql);
             showError($db,$sql);
-            AuditAction($cfg["constants"]["admin"], _DELETE." "._USER.": ".$user_id);
+
+            $options = [
+                'user_id' => $cfg['user'],
+                'file' => _DELETE . ' ' . _USER . ': ' . $user_id,
+                'action' => $cfg["constants"]["admin"],
+            ];
+            $log = new \Gratbrav\Torrentbug\Log\Service();
+            $log->save($options);
         }
         header("location: adduser.php");
         exit;

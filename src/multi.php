@@ -74,23 +74,48 @@ if($action == "torrent" || $action == "data")
                            array_pop($arTemp);
                            $current = implode("/", $arTemp);
                        }
-                       AuditAction($cfg["constants"]["fm_delete"], $del);
+
+                       $options = [
+                           'user_id' => $cfg['user'],
+                           'file' => $del,
+                           'action' => $cfg["constants"]["fm_delete"],
+                       ];
+                       $log = new \Gratbrav\Torrentbug\Log\Service();
+                       $log->save($options);
                    }
                    else
                    {
-                       AuditAction($cfg["constants"]["error"], "ILLEGAL DELETE: ".$cfg['user']." tried to delete ".$del);
+                       $options = [
+                           'user_id' => $cfg['user'],
+                           'file' => 'ILLEGAL DELETE: ' . $cfg['user'] . ' tried to delete ' . $del,
+                           'action' => $cfg["constants"]["error"],
+                       ];
+                       $log = new \Gratbrav\Torrentbug\Log\Service();
+                       $log->save($options);
                    }
                }
            }
            @unlink($settings->get('torrent_file_path') . $element);
            @unlink($settings->get('torrent_file_path') . $alias);
            @unlink($settings->get('torrent_file_path') . getAliasName($element) . ".prio");
-           AuditAction($cfg["constants"]["delete_torrent"], $element);
 
+           $options = [
+               'user_id' => $cfg['user'],
+               'file' => $element,
+               'action' => $cfg["constants"]["delete_torrent"],
+           ];
+           $log = new \Gratbrav\Torrentbug\Log\Service();
+           $log->save($options);
        }
        else
        {
-           AuditAction($cfg["constants"]["error"], $cfg["user"]." attempted to delete ".$element);
+           $options = [
+               'user_id' => $cfg['user'],
+               'file' => $cfg['user'] . ' attempted to delete ' . $element,
+               'action' => $cfg["constants"]["error"],
+           ];
+           $log = new \Gratbrav\Torrentbug\Log\Service();
+           $log->save($options);
        }
    }
 }
@@ -145,16 +170,35 @@ function delFile($del)
                 array_pop($arTemp);
                 $current = implode("/", $arTemp);
             }
-            AuditAction($cfg["constants"]["fm_delete"], $del);
+
+            $options = [
+                'user_id' => $cfg['user'],
+                'file' => $del,
+                'action' => $cfg["constants"]["fm_delete"],
+            ];
+            $log = new \Gratbrav\Torrentbug\Log\Service();
+            $log->save($options);
         }
         else
         {
-            AuditAction($cfg["constants"]["error"], "ILLEGAL DELETE: ".$cfg['user']." tried to delete ".$del);
+            $options = [
+                'user_id' => $cfg['user'],
+                'file' => 'ILLEGAL DELETE: ' . $cfg['user'] . ' tried to delete ' . $del,
+                'action' => $cfg["constants"]["error"],
+            ];
+            $log = new \Gratbrav\Torrentbug\Log\Service();
+            $log->save($options);
         }
     }
     else
     {
-        AuditAction($cfg["constants"]["error"], "ILLEGAL DELETE: ".$cfg['user']." tried to delete ".$del);
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => 'ILLEGAL DELETE: ' . $cfg['user'] . ' tried to delete ' . $del,
+            'action' => $cfg["constants"]["error"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
     }
 }
 

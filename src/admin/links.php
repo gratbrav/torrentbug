@@ -9,7 +9,14 @@
     
     if (!IsAdmin()) {
         // the user probably hit this page direct
-        AuditAction($cfg["constants"]["access_denied"], $_SERVER['PHP_SELF']);
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => $_SERVER['PHP_SELF'],
+            'action' => $cfg["constants"]["access_denied"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
+
         header("location: ../index.php");
     }
 
@@ -30,7 +37,15 @@
             empty($newSite) && $newSite = $newLink;
 
             addNewLink($newLink, $newSite);
-            AuditAction($cfg["constants"]["admin"], "New "._LINKS_MENU.": ".$newSite." [".$newLink."]");
+
+            $options = [
+                'user_id' => $cfg['user'],
+                'file' => 'New ' . _LINKS_MENU . ': ' . $newSite . ' [' . $newLink . ']',
+                'action' => $cfg["constants"]["admin"],
+            ];
+            $log = new \Gratbrav\Torrentbug\Log\Service();
+            $log->save($options);
+
         }
         
         header("location: links.php");
@@ -55,8 +70,14 @@
             $sql = "UPDATE tf_links SET url='".$newLink."',`sitename`='".$newSite."' WHERE `lid`=".$lid;
             $db->Execute($sql);
             showError($db,$sql);
-    
-            AuditAction($cfg["constants"]["admin"], "Change Link: ".$oldSite." [".$oldLink."] -> ".$newSite." [".$newLink."]");
+
+            $options = [
+                'user_id' => $cfg['user'],
+                'file' => 'Change Link: ' . $oldSite . ' [' .$oldLink . '] -> ' . $newSite . ' [' . $newLink . ']',
+                'action' => $cfg["constants"]["admin"],
+            ];
+            $log = new \Gratbrav\Torrentbug\Log\Service();
+            $log->save($options);
         }
         header("location: links.php");
         exit;
@@ -64,11 +85,17 @@
 
     } else if ($action == 'delete') {
         $lid = getRequestVar('lid');
-        
-        AuditAction($cfg["constants"]["admin"], _DELETE." Link: ".getSite($lid)." [".getLink($lid)."]");
+
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => _DELETE . ' Link: ' . getSite($lid) . ' [' . getLink($lid) . ']',
+            'action' => $cfg["constants"]["admin"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
 
         $idx = getLinkSortOrder($lid);
-    
+
         // Fetch all link ids and their sort orders where the sort order is greater
         // than the one we're removing - we need to shuffle each sort order down
         // one:

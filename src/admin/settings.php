@@ -9,7 +9,14 @@
 
     if (!IsAdmin()) {
         // the user probably hit this page direct
-        AuditAction($cfg["constants"]["access_denied"], $_SERVER['PHP_SELF']);
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => $_SERVER['PHP_SELF'],
+            'action' => $cfg["constants"]["access_denied"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
+
         header("location: ../index.php");
     }
 
@@ -44,7 +51,14 @@
             unset($options['action']);
             
             $settings->save($options);
-            AuditAction($cfg["constants"]["admin"], " Updating TorrentFlux Settings");
+
+            $options = [
+                'user_id' => $cfg['user'],
+                'file' => ' Updating TorrentFlux Settings',
+                'action' => $cfg["constants"]["admin"],
+            ];
+            $log = new \Gratbrav\Torrentbug\Log\Service();
+            $log->save($options);
 
             // if enabling Start QManager
             if($settings->get('AllowQueing')) {
@@ -57,7 +71,14 @@
             unset($options['action']);
             
             $settings->save($options);
-            AuditAction($cfg["constants"]["admin"], " Updating TorrentFlux Settings");
+
+            $options = [
+                'user_id' => $cfg['user'],
+                'file' => ' Updating TorrentFlux Settings',
+                'action' => $cfg["constants"]["admin"],
+            ];
+            $log = new \Gratbrav\Torrentbug\Log\Service();
+            $log->save($options);
         }
 
         $continue = getRequestVar('continue');

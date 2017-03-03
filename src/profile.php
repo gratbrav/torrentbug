@@ -183,7 +183,14 @@ function addCookie( $newCookie )
     {
         global $cfg;
         AddCookieInfo( $newCookie );
-        AuditAction( $cfg["constants"]["admin"], "New Cookie: " . $newCookie["host"] . " | " . $newCookie["data"] );
+
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => 'New Cookie: ' . $newCookie['host'] . ' | ' . $newCookie['data'],
+            'action' => $cfg["constants"]["admin"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
     }
     header( "location: profile.php?op=showCookies" );
 }
@@ -196,7 +203,15 @@ function deleteCookie($cid)
     global $cfg;
     $cookie = getCookie( $cid );
     deleteCookieInfo( $cid );
-    AuditAction( $cfg["constants"]["admin"], _DELETE . " Cookie: " . $cookie["host"] );
+
+    $options = [
+        'user_id' => $cfg['user'],
+        'file' => _DELETE . ' Cookie: ' . $cookie['host'],
+        'action' => $cfg["constants"]["admin"],
+    ];
+    $log = new \Gratbrav\Torrentbug\Log\Service();
+    $log->save($options);
+
     header( "location: profile.php?op=showCookies" );
 }
 
@@ -207,7 +222,15 @@ function modCookie($cid,$newCookie)
 {
     global $cfg;
     modCookieInfo($cid,$newCookie);
-    AuditAction($cfg["constants"]["admin"], "Modified Cookie: ".$newCookie["host"]." | ".$newCookie["data"]);
+
+    $options = [
+        'user_id' => $cfg['user'],
+        'file' => 'Modified Cookie: ' . $newCookie['host'] . ' | ' . $newCookie['data'],
+        'action' => $cfg["constants"]["admin"],
+    ];
+    $log = new \Gratbrav\Torrentbug\Log\Service();
+    $log->save($options);
+
     header("location: profile.php?op=showCookies");
 }
 

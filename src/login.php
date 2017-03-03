@@ -108,7 +108,15 @@ $db = getdb();
         );
 
         $settings->save($options);
-        AuditAction($cfg["constants"]["update"], "Initial Settings Updated for first login.");
+
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => 'Initial Settings Updated for first login.',
+            'action' => $cfg["constants"]["update"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
+
         $next_loc = "admin.php?op=configSettings";
     }
         
@@ -160,7 +168,14 @@ $db = getdb();
     }
     
     if (!$allow_login) {
-        AuditAction($cfg["constants"]["access_denied"], $log_msg);
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => $log_msg,
+            'action' => $cfg["constants"]["access_denied"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
+
         $loginFailed = 1;
     }
 }

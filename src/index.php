@@ -54,12 +54,26 @@ if (checkQManager() == 0 )
 {
     if ($settings->get('AllowQueing')) {
         if (is_dir($settings->get('path')) && is_writable($settings->get('path'))) {
-            AuditAction($cfg["constants"]["QManager"], "QManager Not Running");
+            $options = [
+                'user_id' => $cfg['user'],
+                'file' => 'QManager Not Running',
+                'action' => $cfg["constants"]["QManager"],
+            ];
+            $log = new \Gratbrav\Torrentbug\Log\Service();
+            $log->save($options);
+
             sleep(2);
             startQManager($settings->get('maxServerThreads'), $settings->get('maxUserThreads'), $settings->get('sleepInterval'));
             sleep(2);
         } else {
-            AuditAction($cfg["constants"]["error"], "Error starting Queue Manager -- TorrentFlux settings are not correct (path is not valid)");
+            $options = [
+                'user_id' => $cfg['user'],
+                'file' => 'Error starting Queue Manager -- TorrentFlux settings are not correct (path is not valid)',
+                'action' => $cfg["constants"]["error"],
+            ];
+            $log = new \Gratbrav\Torrentbug\Log\Service();
+            $log->save($options);
+
             if (IsAdmin())
             {
                 header("location: admin.php?op=configSettings");
@@ -95,7 +109,14 @@ if(!empty($torrent))
 
         // check to see if the path to the python script is valid
         if (!is_file($settings->get('btphpbin'))) {
-            AuditAction($cfg["constants"]["error"], "Error  Path for " . $settings->get('btphpbin') . " is not valid");
+            $options = [
+                'user_id' => $cfg['user'],
+                'file' => 'Error  Path for ' . $settings->get('btphpbin') . ' is not valid',
+                'action' => $cfg["constants"]["error"],
+            ];
+            $log = new \Gratbrav\Torrentbug\Log\Service();
+            $log->save($options);
+
             if (IsAdmin())
             {
                 header("location: admin.php?op=configSettings");
@@ -207,7 +228,14 @@ if(!empty($torrent))
             if (is_writable($settings->get('path'))) {
                 mkdir($settings->get('path') . "/".$owner, 0777);
             } else {
-                AuditAction($cfg["constants"]["error"], "Error -- " . $settings->get('path') . " is not writable.");
+                $options = [
+                    'user_id' => $cfg['user'],
+                    'file' => 'Error -- ' . $settings->get('path') . ' is not writable.',
+                    'action' => $cfg["constants"]["error"],
+                ];
+                $log = new \Gratbrav\Torrentbug\Log\Service();
+                $log->save($options);
+
                 if (IsAdmin()) {
                     header("location: admin.php?op=configSettings");
                     exit();
@@ -280,13 +308,28 @@ if(!empty($torrent))
 
         if($af->running == "3") {
             writeQinfo($settings->get('torrent_file_path')."queue/".$alias.".stat",$command);
-            AuditAction($cfg["constants"]["queued_torrent"], $torrent."<br>Die:".$runtime.", Sharekill:".$sharekill.", MaxUploads:".$maxuploads.", DownRate:".$drate.", UploadRate:".$rate.", Ports:".$minport."-".$maxport.", SuperSeed:".$superseeder.", Rerequest Interval:".$rerequest);
-            AuditAction($cfg["constants"]["queued_torrent"], $command);
+
+            $log = new \Gratbrav\Torrentbug\Log\Service();
+            $options = [
+                'user_id' => $cfg['user'],
+                'file' => $torrent."<br>Die:".$runtime.", Sharekill:".$sharekill.", MaxUploads:".$maxuploads.", DownRate:".$drate.", UploadRate:".$rate.", Ports:".$minport."-".$maxport.", SuperSeed:".$superseeder.", Rerequest Interval:".$rerequest,
+                'action' => $cfg["constants"]["queued_torrent"],
+            ];
+            $log->save($options);
+
+            $options['file'] = $command;
+            $log->save($options);
         } else {
             // The following command starts the torrent running! w00t!
             passthru($command);
 
-            AuditAction($cfg["constants"]["start_torrent"], $torrent."<br>Die:".$runtime.", Sharekill:".$sharekill.", MaxUploads:".$maxuploads.", DownRate:".$drate.", UploadRate:".$rate.", Ports:".$minport."-".$maxport.", SuperSeed:".$superseeder.", Rerequest Interval:".$rerequest);
+            $options = [
+                'user_id' => $cfg['user'],
+                'file' => $torrent."<br>Die:".$runtime.", Sharekill:".$sharekill.", MaxUploads:".$maxuploads.", DownRate:".$drate.", UploadRate:".$rate.", Ports:".$minport."-".$maxport.", SuperSeed:".$superseeder.", Rerequest Interval:".$rerequest,
+                'action' => $cfg["constants"]["start_torrent"],
+            ];
+            $log = new \Gratbrav\Torrentbug\Log\Service();
+            $log->save($options);
 
             // slow down and wait for thread to kick off.
             // otherwise on fast servers it will kill stop it before it gets a chance to run.
@@ -313,7 +356,13 @@ if(!empty($torrent))
         }
         else
         {
-            AuditAction($cfg["constants"]["error"], $messages);
+            $options = [
+                'user_id' => $cfg['user'],
+                'file' => $messages,
+                'action' => $cfg["constants"]["error"],
+            ];
+            $log = new \Gratbrav\Torrentbug\Log\Service();
+            $log->save($options);
         }
     }
 }
@@ -395,14 +444,27 @@ if(! $url_upload == '')
 
     if ($messages == "")
     {
-        AuditAction($cfg["constants"]["url_upload"], $file_name);
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => $file_name,
+            'action' => $cfg["constants"]["url_upload"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
+
         header("location: index.php");
         exit();
     }
     else
     {
         // there was an error
-        AuditAction($cfg["constants"]["error"], $cfg["constants"]["url_upload"]." :: ".$ext_msg.$file_name);
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => $cfg["constants"]["url_upload"]." :: ".$ext_msg.$file_name,
+            'action' => $cfg["constants"]["error"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
     }
 }
 
@@ -429,7 +491,13 @@ if(!empty($_FILES['upload_file']['name']))
                 {
                     chmod($settings->get('torrent_file_path').$file_name, 0644);
 
-                    AuditAction($cfg["constants"]["file_upload"], $file_name);
+                    $options = [
+                        'user_id' => $cfg['user'],
+                        'file' => $file_name,
+                        'action' => $cfg["constants"]["file_upload"],
+                    ];
+                    $log = new \Gratbrav\Torrentbug\Log\Service();
+                    $log->save($options);
 
                     header("location: index.php");
                 }
@@ -452,7 +520,13 @@ if(!empty($_FILES['upload_file']['name']))
     if($messages != "")
     {
         // there was an error
-        AuditAction($cfg["constants"]["error"], $cfg["constants"]["file_upload"]." :: ".$ext_msg.$file_name);
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => $cfg["constants"]["file_upload"]." :: ".$ext_msg.$file_name,
+            'action' => $cfg["constants"]["error"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
     }
 }  // End File Upload
 
@@ -473,14 +547,26 @@ if(! $delfile == '')
         @unlink($settings->get('torrent_file_path').$alias_file.".pid");
         @unlink($settings->get('torrent_file_path').getAliasName($delfile).".prio");
 
-        AuditAction($cfg["constants"]["delete_torrent"], $delfile);
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => $delfile,
+            'action' => $cfg["constants"]["delete_torrent"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
 
         header("location: index.php");
         exit();
     }
     else
     {
-        AuditAction($cfg["constants"]["error"], $cfg["user"]." attempted to delete ".$delfile);
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => $cfg["user"]." attempted to delete ".$delfile,
+            'action' => $cfg["constants"]["error"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
     }
 }
 
@@ -522,8 +608,13 @@ if(! $kill == '' && is_numeric($kill) )
         {
             $rt = new RunningTorrent($value);
             if ($rt->statFile == $alias_file) {
-                AuditAction($cfg["constants"]["error"], "Posible Hung Process " . $rt->processId);
-            //    $result = exec("kill ".$rt->processId);
+                $options = [
+                    'user_id' => $cfg['user'],
+                    'file' => "Posible Hung Process " . $rt->processId,
+                    'action' => $cfg["constants"]["error"],
+                ];
+                $log = new \Gratbrav\Torrentbug\Log\Service();
+                $log->save($options);
             }
         }
     }
@@ -531,7 +622,14 @@ if(! $kill == '' && is_numeric($kill) )
     // Write out the new Stat File
     $af->WriteFile();
 
-    AuditAction($cfg["constants"]["kill_torrent"], $kill_torrent);
+    $options = [
+        'user_id' => $cfg['user'],
+        'file' => $kill_torrent,
+        'action' => $cfg["constants"]["kill_torrent"],
+    ];
+    $log = new \Gratbrav\Torrentbug\Log\Service();
+    $log->save($options);
+
     $return = getRequestVar('return');
     if (!empty($return))
     {
@@ -593,12 +691,25 @@ if(isset($_REQUEST["dQueue"]))
         // Remove Qinfo file.
         @unlink($settings->get('torrent_file_path') . "queue/".$alias_file.".Qinfo");
 
-        AuditAction($cfg["constants"]["unqueued_torrent"], $QEntry);
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => $QEntry,
+            'action' => $cfg["constants"]["unqueued_torrent"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
     }
     else
     {
         // torrent has been started... try and kill it.
-        AuditAction($cfg["constants"]["unqueued_torrent"], $QEntry . "has been started -- TRY TO KILL IT");
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => $QEntry . "has been started -- TRY TO KILL IT",
+            'action' => $cfg["constants"]["unqueued_torrent"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
+
         header("location: index.php?alias_file=".$alias_file."&kill=true&kill_torrent=".urlencode($QEntry));
         exit();
     }

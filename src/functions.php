@@ -46,7 +46,15 @@ Authenticate();
 
 include_once("language/".$cfg["language_file"]);
 include_once("themes/".$cfg["theme"]."/index.php");
-AuditAction($cfg["constants"]["hit"], $_SERVER['PHP_SELF']);
+
+    $options = [
+        'user_id' => $cfg['user'],
+        'file' => $_SERVER['PHP_SELF'],
+        'action' => $cfg["constants"]["hit"],
+    ];
+    $log = new \Gratbrav\Torrentbug\Log\Service();
+    $log->save($options);
+
 PruneDB();
 
 // is there a stat and torrent dir?  If not then it will create it.
@@ -122,7 +130,14 @@ function Authenticate()
 
     if($recordset->RecordCount() != 1)
     {
-        AuditAction($cfg["constants"]["error"], "FAILED AUTH: ".$cfg['user']);
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => 'FAILED AUTH: ' . $cfg['user'],
+            'action' => $cfg["constants"]["error"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
+
         session_destroy();
         header('location: ' . $settings->get('base_url') . '/login.php');
         exit();
@@ -133,13 +148,28 @@ function Authenticate()
     // Check for valid theme
     if (!ereg('^[^./][^/]*$', $cfg["theme"]))
     {
-        AuditAction($cfg["constants"]["error"], "THEME VARIABLE CHANGE ATTEMPT: ".$cfg["theme"]." from ".$cfg['user']);
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => 'THEME VARIABLE CHANGE ATTEMPT: ' . $cfg["theme"] . ' from ' . $cfg['user'],
+            'action' => $cfg["constants"]["error"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
+
         $cfg["theme"] = $settings->get('default_theme');
     }
 
     // Check for valid language file
     if(!ereg('^[^./][^/]*$', $cfg["language_file"])) {
-        AuditAction($cfg["constants"]["error"], "LANGUAGE VARIABLE CHANGE ATTEMPT: ".$cfg["language_file"]." from ".$cfg['user']);
+
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => 'LANGUAGE VARIABLE CHANGE ATTEMPT: ' . $cfg["language_file"] . ' from ' . $cfg['user'],
+            'action' => $cfg["constants"]["error"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
+
         $cfg["language_file"] = $settings->get('default_language');
     }
 
@@ -717,7 +747,14 @@ function UpdateUserProfile($user_id, $pass1, $hideOffline, $theme, $language)
     if ($pass1 != "")
     {
         $rec['password'] = md5($pass1);
-        AuditAction($cfg["constants"]["update"], _PASSWORD);
+
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => _PASSWORD,
+            'action' => $cfg["constants"]["update"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
     }
 
     $sql = 'select * from tf_users where user_id = '.$db->qstr($user_id);
@@ -1323,7 +1360,14 @@ function FetchTorrent($url)
             if( strpos( $html, "d8:" ) === false )
             {
                 // We don't have a Torrent File... it is something else
-                AuditAction( $cfg["constants"]["error"], "BAD TORRENT for: " . $url . "\n" . $html );
+                $options = [
+                    'user_id' => $cfg['user'],
+                    'file' => 'BAD TORRENT for: ' . $url . '\n' . $html,
+                    'action' => $cfg["constants"]["error"],
+                ];
+                $log = new \Gratbrav\Torrentbug\Log\Service();
+                $log->save($options);
+
                 $html = "";
             }
 
@@ -1358,7 +1402,14 @@ function FetchTorrent($url)
             if( strpos( $html, "d8:" ) === false )
             {
                 // We don't have a Torrent File... it is something else
-                AuditAction( $cfg["constants"]["error"], "BAD TORRENT for: " . $url . "\n" . $html );
+                $options = [
+                    'user_id' => $cfg['user'],
+                    'file' => 'BAD TORRENT for: ' . $url . '\n' . $html,
+                    'action' => $cfg["constants"]["error"],
+                ];
+                $log = new \Gratbrav\Torrentbug\Log\Service();
+                $log->save($options);
+
                 $html = "";
             }
 
@@ -1384,7 +1435,14 @@ function FetchTorrent($url)
                 if (strpos($html2, "d8:") === false)
                 {
                     // We don't have a Torrent File... it is something else
-                    AuditAction($cfg["constants"]["error"], "BAD TORRENT for: ".$url."\n".$html2);
+                    $options = [
+                        'user_id' => $cfg['user'],
+                        'file' => 'BAD TORRENT for: ' . $url . '\n' . $html2,
+                        'action' => $cfg["constants"]["error"],
+                    ];
+                    $log = new \Gratbrav\Torrentbug\Log\Service();
+                    $log->save($options);
+
                     $html2 = "";
                 }
                 return $html2;
@@ -1416,7 +1474,14 @@ function FetchTorrent($url)
                 if( strpos( $html, "d8:" ) === false )
                 {
                     // We don't have a Torrent File... it is something else
-                    AuditAction( $cfg["constants"]["error"], "BAD TORRENT for: " . $url . "\n" . $html );
+                    $options = [
+                        'user_id' => $cfg['user'],
+                        'file' => 'BAD TORRENT for: ' . $url . '\n' . $html,
+                        'action' => $cfg["constants"]["error"],
+                    ];
+                    $log = new \Gratbrav\Torrentbug\Log\Service();
+                    $log->save($options);
+
                     $html = "";
                 }
                 return $html;
@@ -1433,7 +1498,14 @@ function FetchTorrent($url)
     if( strpos( $html, "d8:" ) === false )
     {
         // We don't have a Torrent File... it is something else
-        AuditAction( $cfg["constants"]["error"], "BAD TORRENT for: " . $url.  "\n" . $html );
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => 'BAD TORRENT for: ' . $url . '\n' . $html,
+            'action' => $cfg["constants"]["error"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
+
         $html = "";
     }
     else
@@ -1959,10 +2031,22 @@ function startQManager($maxServerThreads=5,$maxUserThreads=2,$sleepInterval=10)
 
         sleep(2); // wait for it to start prior to getting pid
 
-        AuditAction($cfg["constants"]["QManager"], "Started PID:" . getQManagerPID());
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => 'Started PID:' . getQManagerPID(),
+            'action' => $cfg["constants"]["QManager"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
 
-    }else{
-        AuditAction($cfg["constants"]["QManager"], "QManager Already Started  PID:" . getQManagerPID());
+    } else {
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => 'QManager Already Started  PID:' . getQManagerPID(),
+            'action' => $cfg["constants"]["QManager"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
     }
 }
 
@@ -1974,7 +2058,14 @@ function stopQManager()
     $QmgrPID = getQManagerPID();
     if($QmgrPID != "")
     {
-        AuditAction($cfg["constants"]["QManager"], "Stopping PID:" . $QmgrPID);
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => 'Stopping PID:' . $QmgrPID,
+            'action' => $cfg["constants"]["QManager"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
+
         $result = exec("kill ".escapeshellarg($QmgrPID));
         unlink($settings->get('torrent_file_path') . "queue/tfQManager.pid");
     }
@@ -2017,7 +2108,14 @@ function SecurityClean($string)
     }
     else
     {
-        AuditAction($cfg["constants"]["error"], "Not a stat or torrent: " . $string);
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => 'Not a stat or torrent: ' . $string,
+            'action' => $cfg["constants"]["error"],
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
+
         die("Invalid file specified.  Action has been logged.");
     }
     return $string;
