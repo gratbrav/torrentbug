@@ -27,7 +27,7 @@
 include_once("config.php");
 
 // Start Session and grab user
-session_name("TorrentFlux");
+session_name("Torrentbug");
 session_start();
 $cfg["user"] = strtolower($_SESSION['user']);
 
