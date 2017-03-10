@@ -21,6 +21,7 @@
     }
 
     $user_id = getRequestVar('user_id');
+    $uid = getRequestVar('uid');
 
     $action = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING);
     if (empty($action)) {
@@ -39,7 +40,7 @@
         if (IsUser($user_id) && ($user_id != $org_user_id)) {
             echo "<br><div style=\"text-align:center\">"._TRYDIFFERENTUSERID."<br><strong>".$user_id."</strong> "._HASBEENUSED."<br><br><br>";
         
-            echo "[<a href=\"edituser.php?user_id=".$org_user_id."\">"._RETURNTOEDIT." ".$org_user_id."</a>]</div><br><br><br>";
+            echo "[<a href=\"edituser.php?uid=".$uid."\">"._RETURNTOEDIT." ".$org_user_id."</a>]</div><br><br><br>";
         } else {
             // Admin is changing id or password through edit screen
             if(($user_id == $cfg["user"] || $cfg["user"] == $org_user_id) && $pass1 != "") {
@@ -67,30 +68,29 @@
     $hide_checked = "";
     
     $total_activity = GetActivityCount();
-    
-    $sql= "SELECT user_id, hits, last_visit, time_created, user_level, hide_offline, theme, language_file FROM tf_users WHERE user_id=".$db->qstr($user_id);
-    
-    list($user_id, $hits, $last_visit, $time_created, $user_level, $hide_offline, $theme, $language_file) = $db->GetRow($sql);
-    
+
+    $userService = new Gratbrav\Torrentbug\User\Service();
+    $user = $userService->getUserById($uid);
+
     $user_type = _NORMALUSER;
-    if ($user_level == 1) {
+    if ($user->getUserLevel() == 1) {
         $user_type = _ADMINISTRATOR;
         $selected_n = "";
         $selected_a = "selected";
         $editUserImage = "../images/admin_user.gif";
     }
     
-    if ($user_level >= 2) {
+    if ($user->getUserLevel() >= 2) {
         $user_type = _SUPERADMIN;
         $editUserImage = "../images/superadmin.gif";
     }
     
-    if ($hide_offline == 1) {
+    if ($user->getHideOffline() == 1) {
         $hide_checked = "checked";
     }
     
     
-    $user_activity = GetActivityCount($user_id);
+    $user_activity = GetActivityCount($user->getUserId());
     
     if ($user_activity == 0) {
         $user_percent = 0;
@@ -108,7 +108,7 @@
     			<tr>
     				<thd colspan=6>
     					<img src="<?php echo $editUserImage ?>" alt="" />&nbsp;&nbsp;&nbsp;
-    					<?php echo _EDITUSER . ": " . $user_id ?>
+    					<?php echo _EDITUSER . ": " . $user->getUserId() ?>
     				</th>
     			</tr>
     			<tr>
@@ -121,12 +121,12 @@
         <div style="text-align:center">
         <table border="0" cellpadding="0" cellspacing="0">
         <tr>
-            <td style="text-align:right"><?php echo $user_id." "._JOINED ?>:&nbsp;</td>
-            <td><strong><?php echo date(_DATETIMEFORMAT, $time_created) ?></strong></td>
+            <td style="text-align:right"><?php echo $user->getUserId()." "._JOINED ?>:&nbsp;</td>
+            <td><strong><?= date(_DATETIMEFORMAT, $user->getTimeCreated()) ?></strong></td>
         </tr>
         <tr>
             <td style="text-align:right"><?php echo _LASTVISIT ?>:&nbsp;</td>
-            <td><strong><?php echo date(_DATETIMEFORMAT, $last_visit) ?></strong></td>
+            <td><strong><?= date(_DATETIMEFORMAT, $user->getLastVisit()) ?></strong></td>
         </tr>
         <tr>
             <td colspan="2" style="text-align:center">&nbsp;</td>
@@ -155,22 +155,22 @@
         </tr>
         <tr>
             <td style="text-align:right"><?php echo _TOTALPAGEVIEWS ?>:&nbsp;</td>
-            <td><strong><?php echo $hits ?></strong></td>
+            <td><strong><?= $user->getHits() ?></strong></td>
         </tr>
         <tr>
             <td style="text-align:right"><?php echo _THEME ?>:&nbsp;</td>
-            <td><strong><?php echo $theme ?></strong><br></td>
+            <td><strong><?= $user->getTheme() ?></strong><br></td>
         </tr>
         <tr>
             <td style="text-align:right"><?php echo _LANGUAGE ?>:&nbsp;</td>
-            <td><strong><?php echo GetLanguageFromFile($language_file) ?></strong><br><br></td>
+            <td><strong><?= GetLanguageFromFile($user->getLanguageFile()) ?></strong><br><br></td>
         </tr>
         <tr>
             <td style="text-align:right"><?php echo _USERTYPE ?>:&nbsp;</td>
             <td><strong><?php echo $user_type ?></strong><br></td>
         </tr>
         <tr>
-            <td colspan="2" style="text-align:center"><div style="text-align:center">[<a href="activity.php?user_id=<?php echo $user_id ?>"><?php echo _USERSACTIVITY ?></a>]</div></td>
+            <td colspan="2" style="text-align:center"><div style="text-align:center">[<a href="activity.php?user_id=<?php echo $user->getUserId() ?>"><?php echo _USERSACTIVITY ?></a>]</div></td>
         </tr>
         </table>
         </div>
@@ -179,14 +179,16 @@
         <td bgcolor="<?php echo $cfg["body_data_bg"] ?>">
         <div style="text-align:center">
         <form name="theForm" action="edituser.php" method="post" onsubmit="return validateUser()">
-        	<input type="hidden" name="action" value="update" />
+            <input type="hidden" name="action" value="update" />
+            <input type="hidden" name="uid" value="<?=$uid?>" />
+
         <table cellpadding="5" cellspacing="0" border="0">
 
         <tr>
             <td style="text-align:right"><?php echo _USER ?>:</td>
             <td>
-            <input name="user_id" type="Text" value="<?php echo $user_id ?>" size="15">
-            <input name="org_user_id" type="Hidden" value="<?php echo $user_id ?>">
+            <input name="user_id" type="Text" value="<?php echo $user->getUserId() ?>" size="15">
+            <input name="org_user_id" type="Hidden" value="<?php echo $user->getUserId() ?>">
             </td>
         </tr>
         <tr>
@@ -204,15 +206,15 @@
         <tr>
             <td style="text-align:right"><?php echo _USERTYPE ?>:</td>
             <td>
-<?php if ($user_level <= 1) { ?>
-            <select name="userType">
-                <option value="0" <?php echo $selected_n ?>><?php echo _NORMALUSER ?></option>
-                <option value="1" <?php echo $selected_a ?>><?php echo _ADMINISTRATOR ?></option>
-            </select>
-<?php } else { ?>
-            <strong><?php echo _SUPERADMIN ?></strong>
-            <input type="Hidden" name="userType" value="2">
-<?php } ?>
+            <?php if ($user->getUserLevel() <= 1) { ?>
+                <select name="userType">
+                    <option value="0" <?php echo $selected_n ?>><?php echo _NORMALUSER ?></option>
+                    <option value="1" <?php echo $selected_a ?>><?php echo _ADMINISTRATOR ?></option>
+                </select>
+            <?php } else { ?>
+                <strong><?php echo _SUPERADMIN ?></strong>
+                <input type="Hidden" name="userType" value="2">
+            <?php } ?>
             </td>
         </tr>
         <tr>

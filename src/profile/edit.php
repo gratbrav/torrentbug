@@ -16,7 +16,10 @@
                 $total_activity = GetActivityCount();
                 $sql= "SELECT user_id, hits, last_visit, time_created, user_level FROM tf_users WHERE user_id=".$db->qstr($cfg["user"]);
                 list($user_id, $hits, $last_visit, $time_created, $user_level) = $db->GetRow($sql);
-    
+
+                $userService = new Gratbrav\Torrentbug\User\Service();
+                $user = $userService->getUserById($_SESSION['uid']);
+
                 $user_type = _NORMALUSER;
                 if (IsSuperAdmin()) {
                     $user_type = _SUPERADMIN;

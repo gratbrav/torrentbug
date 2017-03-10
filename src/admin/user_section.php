@@ -19,11 +19,11 @@
 				<?php 
 				    $total_activity = GetActivityCount();
 
-				    $sql= "SELECT user_id, hits, last_visit, time_created, user_level FROM tf_users ORDER BY user_id";
-				    $result = $db->Execute($sql);
-				    while(list($user_id, $hits, $last_visit, $time_created, $user_level) = $result->FetchRow())
-				    {
-				        $user_activity = GetActivityCount($user_id);
+                    $userService = new Gratbrav\Torrentbug\User\Service();
+                    $users = $userService->getUsers();
+
+                    foreach ($users as $user) {
+				        $user_activity = GetActivityCount($user->getUserId());
 				
 				        if ($user_activity == 0) {
 				            $user_percent = 0;
@@ -32,18 +32,18 @@
 				        }
 				        
 				        $user_icon = "../images/user_offline.gif";
-				        if (IsOnline($user_id)) {
+				        if (IsOnline($user->getUserId())) {
 				            $user_icon = "../images/user.gif";
 				        }
 				
 				        echo "<tr>";
-				        if (IsUser($user_id)) {
-				            echo "<td><a href=\"../message.php?to_user=" . $user_id . "\"><img src=\"" . $user_icon . "\" alt=\"\" title=\""._SENDMESSAGETO." ".$user_id."\" />".$user_id."</a></td>";
+				        if (IsUser($user->getUserId())) {
+				            echo "<td><a href=\"../message.php?to_user=" . $user->getUserId() . "\"><img src=\"" . $user_icon . "\" alt=\"\" title=\""._SENDMESSAGETO." " . $user->getUserId() . "\" />" . $user->getUserId() . "</a></td>";
 				        } else {
-				            echo "<td><img src=\"".$user_icon."\" alt=\"\" title=\"n/a\" />".$user_id."</td>";
+				            echo "<td><img src=\"".$user_icon."\" alt=\"\" title=\"n/a\" />".$user->getUserId()."</td>";
 				        }
 				        
-				        echo "<td><div class=\"tiny\" style=\"text-align:right\">".$hits."</div></td>";
+				        echo "<td><div class=\"tiny\" style=\"text-align:right\">" . $user->getHits() . "</div></td>";
 				        echo "<td>";
 				       ?>
 					        <table class="table table-striped">
@@ -53,35 +53,35 @@
 							        </td>
 							        <td style="text-align:right;width:40"><div class="tiny" style="text-align:right"><?php echo $user_activity ?></div></td>
 							        <td style="text-align:right;width:40"><div class="tiny" style="text-align:right"><?php echo $user_percent ?>%</div></td>
-							        <td style="text-align:right"><a href="activity.php?user_id=<?php echo $user_id ?>"><img src="../images/properties.png" alt="" title="<?php echo $user_id."'s "._USERSACTIVITY ?>" /></a></td>
+							        <td style="text-align:right"><a href="activity.php?user_id=<?= $user->getUserId() ?>"><img src="../images/properties.png" alt="" title="<?= $user->getUserId() . "'s "._USERSACTIVITY ?>" /></a></td>
 							        </tr>
 						        </table>
 					        
 					        
 					        </td>
-        					<td class="tiny" style="text-align:center"><?php echo date(_DATEFORMAT, $time_created) ?></td>
-        					<td class="tiny" style="text-align:center"><?php echo date(_DATETIMEFORMAT, $last_visit) ?></td>
+        					<td class="tiny" style="text-align:center"><?php echo date(_DATEFORMAT, $user->getTimeCreated()) ?></td>
+        					<td class="tiny" style="text-align:center"><?php echo date(_DATETIMEFORMAT, $user->getLastVisit()) ?></td>
         					<td><div style="text-align:right" class="tiny">
 							<?php
 					        $user_image = "../images/user.gif";
 					        $type_user = _NORMALUSER;
-					        if ($user_level == 1) {
+					        if ($user->getUserLevel() == 1) {
 					            $user_image = "../images/admin_user.gif";
 					            $type_user = _ADMINISTRATOR;
 					        }
 					        
-					        if ($user_level == 2) {
+					        if ($user->getUserLevel() == 2) {
 					            $user_image = "../images/superadmin.gif";
 					            $type_user = _SUPERADMIN;
 					        }
 					        
-					        if ($user_level <= 1 || IsSuperAdmin()) {
-					            echo "<a href=\"edituser.php?user_id=".$user_id."\"><img src=\"../images/edit.png\" alt=\"\" title=\""._EDIT." ".$user_id."\" /></a>";
+					        if ($user->getUserLevel() <= 1 || IsSuperAdmin()) {
+					            echo "<a href=\"edituser.php?uid=" . $user->getUid() . "\"><img src=\"../images/edit.png\" alt=\"\" title=\""._EDIT." ".$user->getUserId()."\" /></a>";
 					        }
 					        
-					        echo "<img src=\"".$user_image."\" title=\"".$user_id." - ".$type_user."\" alt=\"\" />";
-					        if ($user_level <= 1) {
-					            echo "<a href=\"adduser.php?action=deleteUser&user_id=".$user_id."\"><img src=\"../images/delete_on.gif\" alt=\"\" title=\""._DELETE." ".$user_id."\" onclick=\"return ConfirmDeleteUser('".$user_id."')\" /></a>";
+					        echo "<img src=\"".$user_image."\" title=\"".$user->getUserId()." - ".$type_user."\" alt=\"\" />";
+					        if ($user->getUserLevel() <= 1) {
+					            echo "<a href=\"adduser.php?action=deleteUser&uid=" .$user->getUid() . "\"><img src=\"../images/delete_on.gif\" alt=\"\" title=\""._DELETE." " . $user->getUserId() . "\" onclick=\"return ConfirmDeleteUser('" . $user->getUserId() . "')\" /></a>";
 					        } else {
 					            echo "<img src=\"../images/delete_off.gif\" alt=\"\" title=\"n/a\" />";
 					        }

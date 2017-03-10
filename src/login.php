@@ -64,19 +64,21 @@ $db = getdb();
         // This user is first in DB.  Make them super admin.
         // this is The Super USER, add them to the user table
 
-        $record = array(
-        	'user_id'		=> $user,
-            'password'		=> md5($iamhim),
-            'hits'			=> 1,
-            'last_visit'	=> $create_time,
-            'time_created'	=> $create_time,
-            'user_level'	=> 2,
-            'hide_offline'	=> 0,
-            'theme'			=> $settings->get('default_theme'),
-            'language_file'	=> $settings->get('default_language')
-        );
-        $sTable = 'tf_users';
-        $sql = $db->GetInsertSql($sTable, $record);
+        $userData = [
+            'user_id' => $user,
+            'password' => md5($iamhim),
+            'hits' => 1,
+            'last_visit' => time(),
+            'time_created' => time(),
+            'user_level' => 2,
+            'hide_offline' => 0,
+            'theme' => $settings->get('default_theme'),
+            'language_file' => $settings->get('default_language')
+        ];
+        $user= new Gratbrav\Torrentbug\User\User($userData);
+
+        $userService = new Gratbrav\Torrentbug\User\Service();
+        $userService->save($user);
 
         $result = $db->Execute($sql);
         showError($db,$sql);
@@ -155,8 +157,10 @@ $db = getdb();
             showError($db, $sql);
     
             $_SESSION['user'] = $user;
+            $_SESSION['uid'] = $uid;
+
             session_write_close();
-    
+
             header("location: ".$next_loc);
             exit();
         }

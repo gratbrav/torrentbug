@@ -184,20 +184,15 @@ function Authenticate()
 
     $hits++;
 
-    $sql = 'select * from tf_users where uid = '.$uid;
-    $rs = $db->Execute($sql);
-    showError($db, $sql);
+    $userService = new Gratbrav\Torrentbug\User\Service();
+    $user = $userService->getUserById($uid);
 
-    $rec = array(
-                    'hits' => $hits,
-                    'last_visit' => $create_time,
-                    'theme' => $cfg['theme'],
-                    'language_file' => $cfg['language_file']
-                );
-    $sql = $db->GetUpdateSQL($rs, $rec);
+    $user->setHits($hits);
+    $user->setLastVisit(time());
+    $user->setTheme($cfg['theme']);
+    $user->setLanguageFile($cfg['language_file']);
 
-    $result = $db->Execute($sql);
-    showError($db,$sql);
+    $userService->save($user);
 }
 
 

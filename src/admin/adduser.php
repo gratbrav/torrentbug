@@ -24,36 +24,35 @@
     if (empty($action)) {
         $action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING);
     }
-    
-    
+
+
     if ($action == 'add') {
 
         $newUser = getRequestVar('newUser');
         $pass1 = getRequestVar('pass1');
         $userType = getRequestVar('userType');
-        
+
         $newUser = strtolower($newUser);
         if (IsUser($newUser)) {
             echo "<br><div style=\"text-align:center\">"._TRYDIFFERENTUSERID."<br><strong>".$newUser."</strong> "._HASBEENUSED."</div><br><br><br>";
         } else {
             $create_time = time();
 
-            $record = array(
-            	'user_id'		=> strtolower($newUser),
-                'password'		=> md5($pass1),
-                'hits'			=> 0,
-                'last_visit'	=> $create_time,
-                'time_created'	=> $create_time,
-                'user_level'	=> $userType,
-                'hide_offline'	=> "0",
-                'theme'			=> $settings->get('default_theme'),
-                'language_file'	=> $settings->get('default_language')
-        	);
-        
-            $sTable = 'tf_users';
-            $sql = $db->GetInsertSql($sTable, $record);
-            $result = $db->Execute($sql);
-            showError($db,$sql);
+            $userData = [
+                'user_id' => strtolower($newUser),
+                'password' => md5($pass1),
+                'hits' => 0,
+                'last_visit' => $create_time,
+                'time_created' => $create_time,
+                'user_level' => $userType,
+                'hide_offline' => "0",
+                'theme' => $settings->get('default_theme'),
+                'language_file' => $settings->get('default_language'),
+            ];
+            $user = new Gratbrav\Torrentbug\User\User($userData);
+
+            $userService = new Gratbrav\Torrentbug\User\Service();
+            $userService->save($user);
 
             $options = [
                 'user_id' => $cfg['user'],
@@ -68,26 +67,25 @@
         exit;
 
     } else if ($action == 'delete') {
-        $user_id = getRequestVar('user_id');
-        if (!IsSuperAdmin($user_id)) {
-            $sql = "SELECT uid FROM tf_users WHERE user_id = ".$db->qstr($user_id);
-            $uid = $db->GetOne( $sql );
-            showError($db,$sql);
-        
+        $uid = filter_input(INPUT_GET, 'uid', FILTER_VALIDATE_INT);
+
+        $userService = new Gratbrav\Torrentbug\User\Service();
+        $user = $userService->getUserById($uid);
+
+        if ($user->getUid() && !IsSuperAdmin($user->getUserId())) {
+
             // delete any cookies this user may have had
-            $sql = "DELETE FROM tf_cookies WHERE uid=".$uid;
+            $sql = "DELETE FROM tf_cookies WHERE uid=" . $user->getUid();
             $result = $db->Execute($sql);
             showError($db,$sql);
-        
+
             // Now cleanup any message this person may have had
-            $sql = "DELETE FROM tf_messages WHERE to_user=".$db->qstr($user_id);
+            $sql = "DELETE FROM tf_messages WHERE to_user=" . $db->qstr($user->getUserId());
             $result = $db->Execute($sql);
             showError($db,$sql);
-        
+
             // now delete the user from the table
-            $sql = "DELETE FROM tf_users WHERE user_id=".$db->qstr($user_id);
-            $result = $db->Execute($sql);
-            showError($db,$sql);
+            $userService->delete($uid);
 
             $options = [
                 'user_id' => $cfg['user'],
