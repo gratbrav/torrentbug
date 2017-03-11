@@ -14,11 +14,12 @@ include_once __DIR__ . '/../db.php';
  *
  * Class for database connections
  *
- * @package  Torrentbug
- * @author   Gratbrav
+ * @package Torrentbug
+ * @author Gratbrav
  */
 class Database
 {
+
     /**
      * Database
      */
@@ -26,15 +27,15 @@ class Database
 
     /**
      * Instance
-     * 
+     *
      * @var self
      */
-    static private $instance = null;
+    private static $instance = null;
 
     static public function getInstance()
     {
         if (null === self::$instance) {
-            self::$instance = new self;
+            self::$instance = new self();
         }
         return self::$instance;
     }
@@ -49,7 +50,7 @@ class Database
 
     /**
      * Alias for getDatabase()
-     * 
+     *
      * @return string|PDO
      */
     public function getDB()
@@ -62,19 +63,20 @@ class Database
      */
     private function __construct()
     {
-        include(__DIR__ . '/../config.php');
-
+        include (__DIR__ . '/../config.php');
+        
         $db = new \PDO("mysql:host={$cfg[db_host]};dbname={$cfg[db_name]};charset=utf8", $cfg['db_user'], $cfg['db_pass']);
-
-        if (!$db) {
-            die ('Could not connect to database: '.$db->ErrorMsg().'<br>Check your database settings in the config.php file.');
+        
+        if (! $db) {
+            die('Could not connect to database: ' . $db->ErrorMsg() . '<br>Check your database settings in the config.php file.');
         }
-
+        
         $this->db = $db;
     }
 
     /**
      * disable clone of class
      */
-    private function __clone(){}
+    private function __clone()
+    {}
 }

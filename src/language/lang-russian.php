@@ -1,161 +1,162 @@
 <?php
 
 /**************************************************************************/
-/* TorrentFlux - PHP Torrent Client
-/* ============================================
 /*
-/* This is the language file with all the system messages
-/*
-/* If you would like to make a translation, please email qrome@yahoo.com
-/* the translated file. Please keep the original text order,
-/* and just one message per line, also double check your translation!
-/*
-/* You need to change the second quoted phrase, not the capital one!
-/*
-/* If you need to use double quotes (") remember to add a backslash (\),
-/* so your entry will look like: This is \"double quoted\" text.
-/* And, if you use HTML code, please double check it.
-/**************************************************************************/
+ * TorrentFlux - PHP Torrent Client
+ * /* ============================================
+ * /*
+ * /* This is the language file with all the system messages
+ * /*
+ * /* If you would like to make a translation, please email qrome@yahoo.com
+ * /* the translated file. Please keep the original text order,
+ * /* and just one message per line, also double check your translation!
+ * /*
+ * /* You need to change the second quoted phrase, not the capital one!
+ * /*
+ * /* If you need to use double quotes (") remember to add a backslash (\),
+ * /* so your entry will look like: This is \"double quoted\" text.
+ * /* And, if you use HTML code, please double check it.
+ * /*************************************************************************
+ */
+define("_CHARSET", "iso-8859-1"); // if you don't know... then leave this as is.
+define("_SELECTFILE", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_URLFILE", "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_UPLOAD", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_GETFILE", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_TORRENTLINKS", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_ONLINE", "пїЅ пїЅпїЅпїЅпїЅ");
+define("_OFFLINE", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_STORAGE", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_DRIVESPACE", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_SERVERSTATS", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_DIRECTORYLIST", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_ALL", "пїЅпїЅпїЅ");
+define("_PAGEWILLREFRESH", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_SECONDS", "пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_TURNONREFRESH", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_TURNOFFREFRESH", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_WARNING", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_DRIVESPACEUSED", "пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ!");
+define("_ADMINMESSAGE", "пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.");
+define("_TORRENTS", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_UPLOADHISTORY", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MYPROFILE", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_ADMINISTRATION", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_SENDMESSAGETO", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_TORRENTFILE", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_FILESIZE", "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_STATUS", "пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_ADMIN", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_BADFILE", "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_DATETIMEFORMAT", "m/d/y g:i a"); // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ '02/26/04 03:53 pm'
+define("_DATEFORMAT", "m/d/y"); // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ '02/26/04'
+define("_ESTIMATEDTIME", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_DOWNLOADSPEED", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_UPLOADSPEED", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_SHARING", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_USER", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_DONE", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_INCOMPLETE", "пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_NEW", "пїЅпїЅпїЅпїЅпїЅ");
+define("_TORRENTDETAILS", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_STOPDOWNLOAD", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_RUNTORRENT", "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_SEEDTORRENT", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_DELETE", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_ABOUTTODELETE", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ?");
+define("_NOTOWNER", "пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MESSAGETOALL", "пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_TRYDIFFERENTUSERID", "пїЅпїЅпїЅпїЅпїЅпїЅ: пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.");
+define("_HASBEENUSED", "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.");
+define("_RETURNTOEDIT", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_ADMINUSERACTIVITY", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_ADMIN_MENU", "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_ACTIVITY_MENU", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_LINKS_MENU", "пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_NEWUSER_MENU", "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_BACKUP_MENU", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_ALLUSERS", "пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_NORECORDSFOUND", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_SHOWPREVIOUS", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_SHOWMORE", "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_ACTIVITYSEARCH", "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_FILE", "пїЅпїЅпїЅпїЅ");
+define("_ACTION", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_SEARCH", "пїЅпїЅпїЅпїЅпїЅ");
+define("_ACTIVITYLOG", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅ");
+define("_DAYS", "пїЅпїЅпїЅпїЅ");
+define("_IP", "IP");
+define("_TIMESTAMP", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_USERDETAILS", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_HITS", "пїЅпїЅпїЅпїЅ");
+define("_UPLOADACTIVITY", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_JOINED", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"); // header for the date when the user joined (became a member)
+define("_LASTVISIT", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ"); // header for when the user last visited the site
+define("_USERSACTIVITY", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"); // used for popup to display Activity next to users name
+define("_NORMALUSER", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"); // used to describe a normal user's account type
+define("_ADMINISTRATOR", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"); // used to describe an administrator's account type
+define("_SUPERADMIN", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"); // used to describe Super Admin's account type
+define("_EDIT", "пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_USERADMIN", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ - User Admin"); // title of page for user administration
+define("_EDITUSER", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_UPLOADPARTICIPATION", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_UPLOADS", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"); // Number of uploads a user has contributed
+define("_PERCENTPARTICIPATION", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_PARTICIPATIONSTATEMENT", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"); // ends with 15 Days
+define("_TOTALPAGEVIEWS", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_THEME", "пїЅпїЅпїЅпїЅ");
+define("_USERTYPE", "пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_NEWPASSWORD", "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_CONFIRMPASSWORD", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_HIDEOFFLINEUSERS", "пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_UPDATE", "Update");
+define("_USERIDREQUIRED", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.");
+define("_PASSWORDLENGTH", "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ 6 пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.");
+define("_PASSWORDNOTMATCH", "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.");
+define("_PLEASECHECKFOLLOWING", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"); // Displays errors after this statement
+define("_NEWUSER", "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_PASSWORD", "пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_CREATE", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"); // button text to create a new user
+define("_ADMINEDITLINKS", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_FULLURLLINK", "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_BACKTOPARRENT", "пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"); // indicates going back to parent directory
+define("_DOWNLOADDETAILS", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_PERCENTDONE", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_RETURNTOTORRENTS", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"); // Link at the bottom of each page
+define("_DATE", "пїЅпїЅпїЅпїЅ");
+define("_WROTE", "пїЅпїЅпїЅпїЅпїЅ"); // Used in a reply to tag what the user had writen
+define("_SENDMESSAGETITLE", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"); // Title of page
+define("_TO", "пїЅпїЅпїЅпїЅ");
+define("_FROM", "пїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_YOURMESSAGE", "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_SENDTOALLUSERS", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_FORCEUSERSTOREAD", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"); // Admin option in messaging
+define("_SEND", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"); // Button to send private message
+define("_PROFILE", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_PROFILEUPDATEDFOR", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"); // Profile updated for 'username'
+define("_REPLY", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"); // popup text for reply button
+define("_MESSAGE", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MESSAGES", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"); // plural (more than one)
+define("_RETURNTOMESSAGES", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_COMPOSE", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"); // As in 'Compose a message' for button
+define("_LANGUAGE", "пїЅпїЅпїЅпїЅ"); // label
 
-define("_CHARSET","iso-8859-1");  // if you don't know... then leave this as is.
-define("_SELECTFILE","Выберите файл для загрузки");
-define("_URLFILE","Ссылка на торрент файл");
-define("_UPLOAD","Загрузить");
-define("_GETFILE","Загрузить файл");
-define("_TORRENTLINKS","Торрент ссылки");
-define("_ONLINE","В сети");
-define("_OFFLINE","Отключены");
-define("_STORAGE","Хранилище");
-define("_DRIVESPACE","Свободное место");
-define("_SERVERSTATS","Статистика посещаемости");
-define("_DIRECTORYLIST","Каталоги");
-define("_ALL","Все");
-define("_PAGEWILLREFRESH","Страница обновляется каждые");
-define("_SECONDS","Секунд");
-define("_TURNONREFRESH","Включить обновление страницы");
-define("_TURNOFFREFRESH","Отключить обновление страницы");
-define("_WARNING","ВНИМАНИЕ");
-define("_DRIVESPACEUSED","Нет свободного места!");
-define("_ADMINMESSAGE","Вам пришло сообщение от администратора.");
-define("_TORRENTS","Торренты");
-define("_UPLOADHISTORY","История загрузок");
-define("_MYPROFILE","Редактировать профиль");
-define("_ADMINISTRATION","Администрация");
-define("_SENDMESSAGETO","Отправить письмо");
-define("_TORRENTFILE","Торрент файл");
-define("_FILESIZE","Размер файла");
-define("_STATUS","Статус");
-define("_ADMIN","Администратор");
-define("_BADFILE","плохой файл");
-define("_DATETIMEFORMAT","m/d/y g:i a"); //Формат времени и даты '02/26/04 03:53 pm'
-define("_DATEFORMAT","m/d/y"); //Формат даты '02/26/04'
-define("_ESTIMATEDTIME","Осталось");
-define("_DOWNLOADSPEED","Скорость загрузки");
-define("_UPLOADSPEED","Скорость раздачи");
-define("_SHARING","Рейтинг");
-define("_USER","Пользователь");
-define("_DONE","Выполнено");
-define("_INCOMPLETE","Не закончено");
-define("_NEW","Новый");
-define("_TORRENTDETAILS","Описание торрента");
-define("_STOPDOWNLOAD","Остановить торрент");
-define("_RUNTORRENT","Старт торрента");
-define("_SEEDTORRENT","Раздать торрент");
-define("_DELETE","Удалить");
-define("_ABOUTTODELETE","Удалить торрент?");
-define("_NOTOWNER","Не ваш торрент");
-define("_MESSAGETOALL","Это сообщение будет отправлено всем пользователям");
-define("_TRYDIFFERENTUSERID","Ошибка: Попробуйте другое имя пользователя.");
-define("_HASBEENUSED","было использовано.");
-define("_RETURNTOEDIT","Вернуться к редактированию");
-define("_ADMINUSERACTIVITY","Администрация - Активность пользователей");
-define("_ADMIN_MENU","Админ панель");
-define("_ACTIVITY_MENU","активность");
-define("_LINKS_MENU","ссылки");
-define("_NEWUSER_MENU","новый пользователь");
-define("_BACKUP_MENU","резервное копирование");
-define("_ALLUSERS","Все пользователи");
-define("_NORECORDSFOUND","Записей не найдено");
-define("_SHOWPREVIOUS","Предъидущий");
-define("_SHOWMORE","Покать больше");
-define("_ACTIVITYSEARCH","Поиск активности");
-define("_FILE","Файл");
-define("_ACTION","Действие");
-define("_SEARCH","Поиск");
-define("_ACTIVITYLOG","Последняя активность - логи");
-define("_DAYS","Дней");
-define("_IP","IP");
-define("_TIMESTAMP","Временной штамп");
-define("_USERDETAILS","Информация о пользователе");
-define("_HITS","Хиты");
-define("_UPLOADACTIVITY","Активность загрузок");
-define("_JOINED","Зарегистрирован"); // header for the date when the user joined (became a member)
-define("_LASTVISIT","Последний визит"); // header for when the user last visited the site
-define("_USERSACTIVITY","Активность"); // used for popup to display Activity next to users name
-define("_NORMALUSER","Пользователь"); // used to describe a normal user's account type
-define("_ADMINISTRATOR","Администратор"); // used to describe an administrator's account type
-define("_SUPERADMIN","Администратор сервера"); // used to describe Super Admin's account type
-define("_EDIT","Правка");
-define("_USERADMIN","Администрация - User Admin"); // title of page for user administration
-define("_EDITUSER","Редактировать пользователя");
-define("_UPLOADPARTICIPATION","Участие в загрузках");
-define("_UPLOADS","Загрузок"); // Number of uploads a user has contributed
-define("_PERCENTPARTICIPATION","Процент загрузок");
-define("_PARTICIPATIONSTATEMENT","Активность и загрузки за последние"); // ends with 15 Days
-define("_TOTALPAGEVIEWS","Посещений страниц");
-define("_THEME","Тема");
-define("_USERTYPE","Тип пользователя");
-define("_NEWPASSWORD","Новый пароль");
-define("_CONFIRMPASSWORD","Подтвердите пароль");
-define("_HIDEOFFLINEUSERS","Не отображать отключенных пользователей");
-define("_UPDATE","Update");
-define("_USERIDREQUIRED","Необходимо имя пользователя.");
-define("_PASSWORDLENGTH","Пароль должен состоять из 6 и более символов.");
-define("_PASSWORDNOTMATCH","Пароли не совпадают.");
-define("_PLEASECHECKFOLLOWING","Пожалуйста проверьте"); // Displays errors after this statement
-define("_NEWUSER","Новый пользователь");
-define("_PASSWORD","Пароль");
-define("_CREATE","Создать"); // button text to create a new user
-define("_ADMINEDITLINKS","Администрация - Править ссылки");
-define("_FULLURLLINK","Полный путь ссылки");
-define("_BACKTOPARRENT","В корневую");  // indicates going back to parent directory
-define("_DOWNLOADDETAILS","Информация о загрузке");
-define("_PERCENTDONE","Выполнено");
-define("_RETURNTOTORRENTS","Вернуться к торрентам"); // Link at the bottom of each page
-define("_DATE","Дата");
-define("_WROTE","Писал");  // Used in a reply to tag what the user had writen
-define("_SENDMESSAGETITLE","Отправить сообщение");  // Title of page
-define("_TO","Кому");
-define("_FROM","От кого");
-define("_YOURMESSAGE","Ваше сообщение");
-define("_SENDTOALLUSERS","Отправить всем пользователям");
-define("_FORCEUSERSTOREAD","Заставить прочесть это сообщение"); // Admin option in messaging
-define("_SEND","Отправить");  // Button to send private message
-define("_PROFILE","Профиль");
-define("_PROFILEUPDATEDFOR","Обновлён профиль пользователя");  // Profile updated for 'username'
-define("_REPLY","Ответить");  // popup text for reply button
-define("_MESSAGE","Сообщение");
-define("_MESSAGES","Сообщения");  // plural (more than one)
-define("_RETURNTOMESSAGES","Вернуться к сообщениям");
-define("_COMPOSE","Написать");  // As in 'Compose a message' for button
-define("_LANGUAGE","Язык"); // label
+define("_CURRENTDOWNLOAD", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_CURRENTUPLOAD", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_SERVERLOAD", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_FREESPACE", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_UPLOADED", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
-define("_CURRENTDOWNLOAD","Текущие закачки");
-define("_CURRENTUPLOAD","Текущие раздачи");
-define("_SERVERLOAD","Загруженность сервера");
-define("_FREESPACE","Свободное место");
-define("_UPLOADED", "Роздано");
-
-define("_QMANAGER_MENU","очередь");
-define("_SETTINGS_MENU","Настройки");
-define("_SEARCHSETTINGS_MENU","Поиск настроек");
-define("_ERRORSREPORTED","Ошибки");
-define("_STARTED", "Запущен");
-define("_ENDED", "Завершен");
-define("_QUEUED","В очереди");
-define("_DELQUEUE","Убрать из очереди");
-define("_FORCESTOP","Убить торрент");
-define("_STOPPING","Остановка");
-define("_COOKIE_MENU","cookies");
+define("_QMANAGER_MENU", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_SETTINGS_MENU", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_SEARCHSETTINGS_MENU", "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_ERRORSREPORTED", "пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_STARTED", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_ENDED", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_QUEUED", "пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_DELQUEUE", "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_FORCESTOP", "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_STOPPING", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_COOKIE_MENU", "cookies");
 
 ?>

@@ -1,50 +1,54 @@
 <?php
 
 /*************************************************************
-*  TorrentFlux PHP Torrent Manager
-*  www.torrentflux.com
-**************************************************************/
+ *  TorrentFlux PHP Torrent Manager
+ *  www.torrentflux.com
+ **************************************************************/
 /*
-    This file is part of TorrentFlux.
+ * This file is part of TorrentFlux.
+ *
+ * TorrentFlux is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * TorrentFlux is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with TorrentFlux; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ */
 
-    TorrentFlux is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    TorrentFlux is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with TorrentFlux; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
-
-
-/**************************************************************************/
+/**
+ * ***********************************************************************
+ */
 // YOUR DATABASE CONNECTION INFORMATION
-/**************************************************************************/
+/**
+ * ***********************************************************************
+ */
 // Check the adodb/drivers/ directory for support for your database
 // you may choose from many (mysql is the default)
-$cfg["db_type"] = "mysql";       // mysql, postgres7, postgres8 view adodb/drivers/
-$cfg["db_host"] = "localhost";   // DB host computer name or IP
+$cfg["db_type"] = "mysql"; // mysql, postgres7, postgres8 view adodb/drivers/
+$cfg["db_host"] = "localhost"; // DB host computer name or IP
 $cfg["db_name"] = "flux"; // Name of the Database
-$cfg["db_user"] = "flux";        // username for your MySQL database
-$cfg["db_pass"] = "fluxuser";            // password for database
-/**************************************************************************/
+$cfg["db_user"] = "flux"; // username for your MySQL database
+$cfg["db_pass"] = "fluxuser"; // password for database
+/**
+ * ***********************************************************************
+ */
 
-
-/*****************************************************************************
-    TorrentFlux
-    Torrent (n.) A violent or rapid flow; a strong current; a flood;
-            as, a torrent vices; a torrent of eloquence.
-    Flux    (n.) The act of flowing; a continuous moving on or passing by,
-            as of a flowing stream; constant succession; change.
-*****************************************************************************/
-
-
+/**
+ * ***************************************************************************
+ * TorrentFlux
+ * Torrent (n.) A violent or rapid flow; a strong current; a flood;
+ * as, a torrent vices; a torrent of eloquence.
+ * Flux (n.) The act of flowing; a continuous moving on or passing by,
+ * as of a flowing stream; constant succession; change.
+ * ***************************************************************************
+ */
 
 // ***************************************************************************
 // ***************************************************************************
@@ -79,7 +83,9 @@ $cfg["constants"]["admin"] = "ADMIN";
 asort($cfg["constants"]);
 
 // Add file extensions here that you will allow to be uploaded
-$cfg["file_types_array"] = array("torrent");
+$cfg["file_types_array"] = array(
+    "torrent"
+);
 
 // Capture username
 $cfg["user"] = "";

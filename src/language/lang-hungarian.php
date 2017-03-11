@@ -1,165 +1,165 @@
 <?php
 
 /**************************************************************************/
-/* TorrentFlux - PHP Torrent Client
-/* ============================================
 /*
-/* This is the language file with all the system messages
-/*
-/* If you would like to make a translation, please email qrome@yahoo.com
-/* the translated file. Please keep the original text order,
-/* and just one message per line, also double check your translation!
-/*
-/* You need to change the second quoted phrase, not the capital one!
-/*
-/* If you need to use double quotes (") remember to add a backslash (\),
-/* so your entry will look like: This is \"double quoted\" text.
-/* And, if you use HTML code, please double check it.
-/* Translated by: Sore Wa Himitsu Desu ;)
-/* Thanks to: Mocsok&Tygryss
-/* Dedicated to: The pervs of #Sailormoon.hu
-/**************************************************************************/
+ * TorrentFlux - PHP Torrent Client
+ * /* ============================================
+ * /*
+ * /* This is the language file with all the system messages
+ * /*
+ * /* If you would like to make a translation, please email qrome@yahoo.com
+ * /* the translated file. Please keep the original text order,
+ * /* and just one message per line, also double check your translation!
+ * /*
+ * /* You need to change the second quoted phrase, not the capital one!
+ * /*
+ * /* If you need to use double quotes (") remember to add a backslash (\),
+ * /* so your entry will look like: This is \"double quoted\" text.
+ * /* And, if you use HTML code, please double check it.
+ * /* Translated by: Sore Wa Himitsu Desu ;)
+ * /* Thanks to: Mocsok&Tygryss
+ * /* Dedicated to: The pervs of #Sailormoon.hu
+ * /*************************************************************************
+ */
+define("_CHARSET", "iso-8859-1"); // if you don't know... then leave this as is.
+define("_SELECTFILE", "Torrent kivï¿½lasztï¿½sa feltï¿½ltï¿½shez");
+define("_URLFILE", "A Torrent fï¿½jl URL hivatkozï¿½sa");
+define("_UPLOAD", "Feltï¿½ltï¿½s");
+define("_GETFILE", "Fï¿½jl tï¿½ltï¿½se");
+define("_TORRENTLINKS", "Torrent Hivatkozï¿½sok");
+define("_ONLINE", "Bejelentkezve");
+define("_OFFLINE", "Kijelentkezve");
+define("_STORAGE", "Tï¿½rolï¿½kapacitï¿½s");
+define("_DRIVESPACE", "Meghajtï¿½ Kihasznï¿½ltsï¿½g");
+define("_SERVERSTATS", "Szerver Statisztikï¿½k / Felhasznï¿½lï¿½k");
+define("_DIRECTORYLIST", "Kï¿½nyvtï¿½rlista");
+define("_ALL", "ï¿½sszes");
+define("_PAGEWILLREFRESH", "Az Oldal Minden");
+define("_SECONDS", "Mï¿½sodpercben Frissï¿½l");
+define("_TURNONREFRESH", "Oldalfrissï¿½tï¿½s Bekapcsolï¿½sa");
+define("_TURNOFFREFRESH", "Oldalfrissï¿½tï¿½s Kikapcsolï¿½sa");
+define("_WARNING", "FIGYELMEZTETï¿½S");
+define("_DRIVESPACEUSED", "Helyhiï¿½ny a meghajtï¿½n!");
+define("_ADMINMESSAGE", "ï¿½zenete ï¿½rkezett egy Rendszergazdï¿½tï¿½l.");
+define("_TORRENTS", "Torrentek");
+define("_UPLOADHISTORY", "Feltï¿½ltï¿½si Naplï¿½");
+define("_MYPROFILE", "Profil Szerkesztï¿½se");
+define("_ADMINISTRATION", "Adminisztrï¿½ciï¿½");
+define("_SENDMESSAGETO", "ï¿½zenet kï¿½ldï¿½se a kï¿½vetkezï¿½ felhasznï¿½lï¿½nak");
+define("_TORRENTFILE", "Torrent Fï¿½jl");
+define("_FILESIZE", "Fï¿½jl Mï¿½ret");
+define("_STATUS", "ï¿½llapot");
+define("_ADMIN", "Mï¿½velet");
+define("_BADFILE", "hibï¿½s fï¿½jl");
+define("_DATETIMEFORMAT", "y/m/d g:i"); // Date Time mask '02/26/04 03:53 pm'
+define("_DATEFORMAT", "y/m/d"); // Date mask '02/26/04'
+define("_ESTIMATEDTIME", "Becsï¿½lt Idï¿½");
+define("_DOWNLOADSPEED", "Letï¿½ltï¿½si Sebessï¿½g");
+define("_UPLOADSPEED", "Feltï¿½ltï¿½si Sebessï¿½g");
+define("_SHARING", "Megosztï¿½s");
+define("_USER", "Felhasznï¿½lï¿½");
+define("_DONE", "Kï¿½SZ");
+define("_INCOMPLETE", "BEFEJEZETLEN");
+define("_NEW", "ï¿½J");
+define("_TORRENTDETAILS", "Torrent Adatok");
+define("_STOPDOWNLOAD", "Torrent Letï¿½ltï¿½s Leï¿½llï¿½tï¿½sa");
+define("_RUNTORRENT", "Torrent Indï¿½tï¿½sa");
+define("_SEEDTORRENT", "Torrent Seed-elï¿½se");
+define("_DELETE", "Tï¿½rï¿½l");
+define("_ABOUTTODELETE", "Tï¿½rï¿½lni kï¿½szï¿½l");
+define("_NOTOWNER", "Nem a Torrent Tulajdonosa");
+define("_MESSAGETOALL", "Ez az ï¿½zenet MINDEN FELHASZNï¿½Lï¿½NAK el lett kï¿½ldve");
+define("_TRYDIFFERENTUSERID", "Hiba: Prï¿½bï¿½ljon mï¿½sik Felhasznï¿½lï¿½i Azonosï¿½tï¿½t.");
+define("_HASBEENUSED", "mï¿½r hasznï¿½lt.");
+define("_RETURNTOEDIT", "Vissza a Szerkesztï¿½shez");
+define("_ADMINUSERACTIVITY", "Adminisztrï¿½ciï¿½ - Felhasznï¿½lï¿½i Aktivitï¿½s");
+define("_ADMIN_MENU", "felï¿½gyelet");
+define("_ACTIVITY_MENU", "Aktivitï¿½s");
+define("_LINKS_MENU", "hivatkozï¿½sok");
+define("_NEWUSER_MENU", "ï¿½j felhasznï¿½lï¿½");
+define("_BACKUP_MENU", "archivï¿½lï¿½s");
+define("_ALLUSERS", "Minden Felhasznï¿½lï¿½");
+define("_NORECORDSFOUND", "NINCS BEJEGYZï¿½S");
+define("_SHOWPREVIOUS", "Elï¿½zï¿½");
+define("_SHOWMORE", "Tovï¿½bbi bejegyzï¿½sek");
+define("_ACTIVITYSEARCH", "Keresï¿½s");
+define("_FILE", "Fï¿½jl");
+define("_ACTION", "Mï¿½velet");
+define("_SEARCH", "Keresï¿½s");
+define("_ACTIVITYLOG", "Aktivitï¿½s Naplï¿½ - Utolsï¿½");
+define("_DAYS", "Nap");
+define("_IP", "IP");
+define("_TIMESTAMP", "Dï¿½tum");
+define("_USERDETAILS", "Felhasznï¿½lï¿½i Adatok");
+define("_HITS", "Talï¿½lat");
+define("_UPLOADACTIVITY", "Feltï¿½ltï¿½si Aktivitï¿½s");
+define("_JOINED", "Csatlakozott"); // header for the date when the user joined (became a member)
+define("_LASTVISIT", "Legutoljï¿½ra"); // header for when the user last visited the site
+define("_USERSACTIVITY", "naplï¿½bejegyzï¿½sei"); // used for popup to display Activity next to users name
+define("_NORMALUSER", "Felhasznï¿½lï¿½"); // used to describe a normal user's account type
+define("_ADMINISTRATOR", "Rendszergazda"); // used to describe an administrator's account type
+define("_SUPERADMIN", "Szuper Rendszergazda"); // used to describe Super Admin's account type
+define("_EDIT", "Mï¿½dosï¿½t");
+define("_USERADMIN", "Adminisztrï¿½ciï¿½ - Felhasznï¿½lï¿½ Karbantartï¿½s"); // title of page for user administration
+define("_EDITUSER", "Felhasznï¿½lï¿½ Mï¿½dosï¿½tï¿½sa");
+define("_UPLOADPARTICIPATION", "Feltï¿½ltï¿½si Rï¿½szesedï¿½s");
+define("_UPLOADS", "Feltï¿½ltï¿½sek"); // Number of uploads a user has contributed
+define("_PERCENTPARTICIPATION", "Szï¿½zalï¿½k Rï¿½szesedï¿½s");
+define("_PARTICIPATIONSTATEMENT", "A Rï¿½szesedï¿½s ï¿½s Feltï¿½ltï¿½s szï¿½mï¿½tï¿½sa visszamenï¿½leg"); // ends with 15 Days
+define("_TOTALPAGEVIEWS", "ï¿½sszes oldallï¿½togatï¿½s");
+define("_THEME", "Tï¿½ma");
+define("_USERTYPE", "Felhasznï¿½lï¿½tï¿½pus");
+define("_NEWPASSWORD", "ï¿½j Jelszï¿½");
+define("_CONFIRMPASSWORD", "Jelszï¿½ Megerï¿½sï¿½tï¿½se");
+define("_HIDEOFFLINEUSERS", "Kijelentkezett Felhasznï¿½lï¿½k Elrejtï¿½se a Fï¿½oldalon");
+define("_UPDATE", "Alkalmaz");
+define("_USERIDREQUIRED", "Felhasznï¿½lï¿½ Azonosï¿½tï¿½ Szï¿½ksï¿½ges.");
+define("_PASSWORDLENGTH", "A Jelszï¿½nak legalï¿½bb 6 karakter hosszï¿½nak kell lennie.");
+define("_PASSWORDNOTMATCH", "A jelszï¿½k nem egyeznek.");
+define("_PLEASECHECKFOLLOWING", "Kï¿½rem ellenï¿½rizze a kï¿½vetkezï¿½ket"); // Displays errors after this statement
+define("_NEWUSER", "ï¿½j Felhasznï¿½lï¿½");
+define("_PASSWORD", "Jelszï¿½");
+define("_CREATE", "Lï¿½trehoz"); // button text to create a new user
+define("_ADMINEDITLINKS", "Adminisztrï¿½ciï¿½ - Hivatkozï¿½sok Szerkesztï¿½se");
+define("_FULLURLLINK", "Teljes URL hivatkozï¿½s");
+define("_BACKTOPARRENT", "Vissza a Fï¿½kï¿½nyvtï¿½rhoz"); // indicates going back to parent directory
+define("_DOWNLOADDETAILS", "Letï¿½ltï¿½si Adatok");
+define("_PERCENTDONE", "Szï¿½zalï¿½k Kï¿½sz");
+define("_RETURNTOTORRENTS", "Vissza a Torrentekhez"); // Link at the bottom of each page
+define("_DATE", "Dï¿½tum");
+define("_WROTE", "ï¿½rta"); // Used in a reply to tag what the user had writen
+define("_SENDMESSAGETITLE", "ï¿½zenet kï¿½ldï¿½se"); // Title of page
+define("_TO", "Kinek");
+define("_FROM", "Kitï¿½l");
+define("_YOURMESSAGE", "ï¿½zenet");
+define("_SENDTOALLUSERS", "MINDEN Felhasznï¿½lï¿½nak Elkï¿½ld");
+define("_FORCEUSERSTOREAD", "Felhasznï¿½lï¿½(k) Kï¿½nyszerï¿½tï¿½se az ï¿½zenet olvasï¿½sï¿½ra"); // Admin option in messaging
+define("_SEND", "Kï¿½ld"); // Button to send private message
+define("_PROFILE", "Profil");
+define("_PROFILEUPDATEDFOR", "ï¿½j Profil Alkalmazva:"); // Profile updated for 'username'
+define("_REPLY", "Vï¿½lasz"); // popup text for reply button
+define("_MESSAGE", "ï¿½zenet");
+define("_MESSAGES", "ï¿½zenetek"); // plural (more than one)
+define("_RETURNTOMESSAGES", "Vissza az ï¿½zenetekhez");
+define("_COMPOSE", "ï¿½zenet ï¿½rï¿½sa"); // As in 'Compose a message' for button
+define("_LANGUAGE", "Nyelv"); // label
 
-define("_CHARSET","iso-8859-1");  // if you don't know... then leave this as is.
-define("_SELECTFILE","Torrent kiválasztása feltöltéshez");
-define("_URLFILE","A Torrent fájl URL hivatkozása");
-define("_UPLOAD","Feltöltés");
-define("_GETFILE","Fájl töltése");
-define("_TORRENTLINKS","Torrent Hivatkozások");
-define("_ONLINE","Bejelentkezve");
-define("_OFFLINE","Kijelentkezve");
-define("_STORAGE","Tárolókapacitás");
-define("_DRIVESPACE","Meghajtó Kihasználtság");
-define("_SERVERSTATS","Szerver Statisztikák / Felhasználók");
-define("_DIRECTORYLIST","Könyvtárlista");
-define("_ALL","Összes");
-define("_PAGEWILLREFRESH","Az Oldal Minden");
-define("_SECONDS","Másodpercben Frissül");
-define("_TURNONREFRESH","Oldalfrissítés Bekapcsolása");
-define("_TURNOFFREFRESH","Oldalfrissítés Kikapcsolása");
-define("_WARNING","FIGYELMEZTETÉS");
-define("_DRIVESPACEUSED","Helyhiány a meghajtón!");
-define("_ADMINMESSAGE","Üzenete érkezett egy Rendszergazdától.");
-define("_TORRENTS","Torrentek");
-define("_UPLOADHISTORY","Feltöltési Napló");
-define("_MYPROFILE","Profil Szerkesztése");
-define("_ADMINISTRATION","Adminisztráció");
-define("_SENDMESSAGETO","Üzenet küldése a következõ felhasználónak");
-define("_TORRENTFILE","Torrent Fájl");
-define("_FILESIZE","Fájl Méret");
-define("_STATUS","Állapot");
-define("_ADMIN","Mûvelet");
-define("_BADFILE","hibás fájl");
-define("_DATETIMEFORMAT","y/m/d g:i"); //Date Time mask '02/26/04 03:53 pm'
-define("_DATEFORMAT","y/m/d"); //Date mask '02/26/04'
-define("_ESTIMATEDTIME","Becsült Idõ");
-define("_DOWNLOADSPEED","Letöltési Sebesség");
-define("_UPLOADSPEED","Feltöltési Sebesség");
-define("_SHARING","Megosztás");
-define("_USER","Felhasználó");
-define("_DONE","KÉSZ");
-define("_INCOMPLETE","BEFEJEZETLEN");
-define("_NEW","ÚJ");
-define("_TORRENTDETAILS","Torrent Adatok");
-define("_STOPDOWNLOAD","Torrent Letöltés Leállítása");
-define("_RUNTORRENT","Torrent Indítása");
-define("_SEEDTORRENT","Torrent Seed-elése");
-define("_DELETE","Töröl");
-define("_ABOUTTODELETE","Törölni készül");
-define("_NOTOWNER","Nem a Torrent Tulajdonosa");
-define("_MESSAGETOALL","Ez az üzenet MINDEN FELHASZNÁLÓNAK el lett küldve");
-define("_TRYDIFFERENTUSERID","Hiba: Próbáljon másik Felhasználói Azonosítót.");
-define("_HASBEENUSED","már használt.");
-define("_RETURNTOEDIT","Vissza a Szerkesztéshez");
-define("_ADMINUSERACTIVITY","Adminisztráció - Felhasználói Aktivitás");
-define("_ADMIN_MENU","felügyelet");
-define("_ACTIVITY_MENU","Aktivitás");
-define("_LINKS_MENU","hivatkozások");
-define("_NEWUSER_MENU","új felhasználó");
-define("_BACKUP_MENU","archiválás");
-define("_ALLUSERS","Minden Felhasználó");
-define("_NORECORDSFOUND","NINCS BEJEGYZÉS");
-define("_SHOWPREVIOUS","Elõzõ");
-define("_SHOWMORE","További bejegyzések");
-define("_ACTIVITYSEARCH","Keresés");
-define("_FILE","Fájl");
-define("_ACTION","Mûvelet");
-define("_SEARCH","Keresés");
-define("_ACTIVITYLOG","Aktivitás Napló - Utolsó");
-define("_DAYS","Nap");
-define("_IP","IP");
-define("_TIMESTAMP","Dátum");
-define("_USERDETAILS","Felhasználói Adatok");
-define("_HITS","Találat");
-define("_UPLOADACTIVITY","Feltöltési Aktivitás");
-define("_JOINED","Csatlakozott"); // header for the date when the user joined (became a member)
-define("_LASTVISIT","Legutoljára"); // header for when the user last visited the site
-define("_USERSACTIVITY","naplóbejegyzései"); // used for popup to display Activity next to users name
-define("_NORMALUSER","Felhasználó"); // used to describe a normal user's account type
-define("_ADMINISTRATOR","Rendszergazda"); // used to describe an administrator's account type
-define("_SUPERADMIN","Szuper Rendszergazda"); // used to describe Super Admin's account type
-define("_EDIT","Módosít");
-define("_USERADMIN","Adminisztráció - Felhasználó Karbantartás"); // title of page for user administration
-define("_EDITUSER","Felhasználó Módosítása");
-define("_UPLOADPARTICIPATION","Feltöltési Részesedés");
-define("_UPLOADS","Feltöltések"); // Number of uploads a user has contributed
-define("_PERCENTPARTICIPATION","Százalék Részesedés");
-define("_PARTICIPATIONSTATEMENT","A Részesedés és Feltöltés számítása visszamenõleg"); // ends with 15 Days
-define("_TOTALPAGEVIEWS","Összes oldallátogatás");
-define("_THEME","Téma");
-define("_USERTYPE","Felhasználótípus");
-define("_NEWPASSWORD","Új Jelszó");
-define("_CONFIRMPASSWORD","Jelszó Megerõsítése");
-define("_HIDEOFFLINEUSERS","Kijelentkezett Felhasználók Elrejtése a Fõoldalon");
-define("_UPDATE","Alkalmaz");
-define("_USERIDREQUIRED","Felhasználó Azonosító Szükséges.");
-define("_PASSWORDLENGTH","A Jelszónak legalább 6 karakter hosszúnak kell lennie.");
-define("_PASSWORDNOTMATCH","A jelszók nem egyeznek.");
-define("_PLEASECHECKFOLLOWING","Kérem ellenõrizze a következõket"); // Displays errors after this statement
-define("_NEWUSER","Új Felhasználó");
-define("_PASSWORD","Jelszó");
-define("_CREATE","Létrehoz"); // button text to create a new user
-define("_ADMINEDITLINKS","Adminisztráció - Hivatkozások Szerkesztése");
-define("_FULLURLLINK","Teljes URL hivatkozás");
-define("_BACKTOPARRENT","Vissza a Fõkönyvtárhoz");  // indicates going back to parent directory
-define("_DOWNLOADDETAILS","Letöltési Adatok");
-define("_PERCENTDONE","Százalék Kész");
-define("_RETURNTOTORRENTS","Vissza a Torrentekhez"); // Link at the bottom of each page
-define("_DATE","Dátum");
-define("_WROTE","írta");  // Used in a reply to tag what the user had writen
-define("_SENDMESSAGETITLE","Üzenet küldése");  // Title of page
-define("_TO","Kinek");
-define("_FROM","Kitõl");
-define("_YOURMESSAGE","Üzenet");
-define("_SENDTOALLUSERS","MINDEN Felhasználónak Elküld");
-define("_FORCEUSERSTOREAD","Felhasználó(k) Kényszerítése az Üzenet olvasására"); // Admin option in messaging
-define("_SEND","Küld");  // Button to send private message
-define("_PROFILE","Profil");
-define("_PROFILEUPDATEDFOR","Új Profil Alkalmazva:");  // Profile updated for 'username'
-define("_REPLY","Válasz");  // popup text for reply button
-define("_MESSAGE","Üzenet");
-define("_MESSAGES","Üzenetek");  // plural (more than one)
-define("_RETURNTOMESSAGES","Vissza az Üzenetekhez");
-define("_COMPOSE","Üzenet írása");  // As in 'Compose a message' for button
-define("_LANGUAGE","Nyelv"); // label
-
-
-define("_CURRENTDOWNLOAD","Current Download");
-define("_CURRENTUPLOAD","Current Upload");
-define("_SERVERLOAD","Server Load");
-define("_FREESPACE","Free Space");
+define("_CURRENTDOWNLOAD", "Current Download");
+define("_CURRENTUPLOAD", "Current Upload");
+define("_SERVERLOAD", "Server Load");
+define("_FREESPACE", "Free Space");
 define("_UPLOADED", "Uploaded");
 
-define("_QMANAGER_MENU","queue");
-define("_SETTINGS_MENU","settings");
-define("_SEARCHSETTINGS_MENU","search settings");
-define("_ERRORSREPORTED","Errors");
+define("_QMANAGER_MENU", "queue");
+define("_SETTINGS_MENU", "settings");
+define("_SEARCHSETTINGS_MENU", "search settings");
+define("_ERRORSREPORTED", "Errors");
 define("_STARTED", "Started");
 define("_ENDED", "Ended");
-define("_QUEUED","Queued");
-define("_DELQUEUE","Remove from Queue");
-define("_FORCESTOP","Kill Torrent");
-define("_STOPPING","Stopping");
-define("_COOKIE_MENU","cookies");
+define("_QUEUED", "Queued");
+define("_DELQUEUE", "Remove from Queue");
+define("_FORCESTOP", "Kill Torrent");
+define("_STOPPING", "Stopping");
+define("_COOKIE_MENU", "cookies");
 
 ?>

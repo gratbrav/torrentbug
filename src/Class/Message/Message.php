@@ -5,7 +5,6 @@
  * @link      https://github.com/gratbrav/torrentbug
  * @license   https://github.com/gratbrav/torrentbug/blob/master/LICENSE
  */
-
 namespace Gratbrav\Torrentbug\Message;
 
 /**
@@ -13,18 +12,26 @@ namespace Gratbrav\Torrentbug\Message;
  *
  * Message
  *
- * @package  Torrentbug
- * @author   Gratbrav
+ * @package Torrentbug
+ * @author Gratbrav
  */
 class Message
 {
+
     protected $messageId;
+
     protected $recipient;
+
     protected $sender;
+
     protected $message;
+
     protected $isNew;
+
     protected $ip;
+
     protected $time;
+
     protected $forceRead;
 
     function __construct($data)
@@ -40,6 +47,7 @@ class Message
     }
 
     /**
+     *
      * @return the $messageId
      */
     public function getMessageId()
@@ -48,6 +56,7 @@ class Message
     }
 
     /**
+     *
      * @return the $recipient
      */
     public function getRecipient()
@@ -56,6 +65,7 @@ class Message
     }
 
     /**
+     *
      * @return the $sender
      */
     public function getSender()
@@ -64,6 +74,7 @@ class Message
     }
 
     /**
+     *
      * @return the $message
      */
     public function getMessage()
@@ -72,6 +83,7 @@ class Message
     }
 
     /**
+     *
      * @return the $isNew
      */
     public function getIsNew()
@@ -80,6 +92,7 @@ class Message
     }
 
     /**
+     *
      * @return the $ip
      */
     public function getIp()
@@ -88,6 +101,7 @@ class Message
     }
 
     /**
+     *
      * @return the $time
      */
     public function getTime()
@@ -96,6 +110,7 @@ class Message
     }
 
     /**
+     *
      * @return the $forceRead
      */
     public function getForceRead()
@@ -104,7 +119,8 @@ class Message
     }
 
     /**
-     * @param field_type $messageId
+     *
+     * @param field_type $messageId            
      */
     public function setMessageId($messageId)
     {
@@ -112,7 +128,8 @@ class Message
     }
 
     /**
-     * @param field_type $recipient
+     *
+     * @param field_type $recipient            
      */
     public function setRecipient($recipient)
     {
@@ -120,7 +137,8 @@ class Message
     }
 
     /**
-     * @param field_type $sender
+     *
+     * @param field_type $sender            
      */
     public function setSender($sender)
     {
@@ -128,7 +146,8 @@ class Message
     }
 
     /**
-     * @param field_type $message
+     *
+     * @param field_type $message            
      */
     public function setMessage($message)
     {
@@ -136,7 +155,8 @@ class Message
     }
 
     /**
-     * @param field_type $isNew
+     *
+     * @param field_type $isNew            
      */
     public function setIsNew($isNew)
     {
@@ -144,7 +164,8 @@ class Message
     }
 
     /**
-     * @param field_type $ip
+     *
+     * @param field_type $ip            
      */
     public function setIp($ip)
     {
@@ -152,7 +173,8 @@ class Message
     }
 
     /**
-     * @param field_type $time
+     *
+     * @param field_type $time            
      */
     public function setTime($time)
     {
@@ -160,11 +182,11 @@ class Message
     }
 
     /**
-     * @param field_type $forceRead
+     *
+     * @param field_type $forceRead            
      */
     public function setForceRead($forceRead)
     {
         $this->forceRead = $forceRead;
     }
-
 }

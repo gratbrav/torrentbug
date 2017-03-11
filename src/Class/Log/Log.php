@@ -5,7 +5,6 @@
  * @link      https://github.com/gratbrav/torrentbug
  * @license   https://github.com/gratbrav/torrentbug/blob/master/LICENSE
  */
-
 namespace Gratbrav\Torrentbug\Log;
 
 /**
@@ -13,18 +12,26 @@ namespace Gratbrav\Torrentbug\Log;
  *
  * Log
  *
- * @package  Torrentbug
- * @author   Gratbrav
+ * @package Torrentbug
+ * @author Gratbrav
  */
 class Log
 {
+
     protected $cid;
+
     protected $userId;
+
     protected $file;
+
     protected $action;
+
     protected $ip;
+
     protected $ipResolved;
+
     protected $userAgent;
+
     protected $time;
 
     function __construct($data)
@@ -40,6 +47,7 @@ class Log
     }
 
     /**
+     *
      * @return the $cid
      */
     public function getCid()
@@ -48,6 +56,7 @@ class Log
     }
 
     /**
+     *
      * @return the $userId
      */
     public function getUserId()
@@ -56,6 +65,7 @@ class Log
     }
 
     /**
+     *
      * @return the $file
      */
     public function getFile()
@@ -64,6 +74,7 @@ class Log
     }
 
     /**
+     *
      * @return the $action
      */
     public function getAction()
@@ -72,6 +83,7 @@ class Log
     }
 
     /**
+     *
      * @return the $ip
      */
     public function getIp()
@@ -80,6 +92,7 @@ class Log
     }
 
     /**
+     *
      * @return the $ipResolved
      */
     public function getIpResolved()
@@ -88,6 +101,7 @@ class Log
     }
 
     /**
+     *
      * @return the $userAgent
      */
     public function getUserAgent()
@@ -96,6 +110,7 @@ class Log
     }
 
     /**
+     *
      * @return the $time
      */
     public function getTime()
@@ -104,7 +119,8 @@ class Log
     }
 
     /**
-     * @param field_type $cid
+     *
+     * @param field_type $cid            
      */
     public function setCid($cid)
     {
@@ -112,7 +128,8 @@ class Log
     }
 
     /**
-     * @param field_type $userId
+     *
+     * @param field_type $userId            
      */
     public function setUserId($userId)
     {
@@ -120,7 +137,8 @@ class Log
     }
 
     /**
-     * @param field_type $file
+     *
+     * @param field_type $file            
      */
     public function setFile($file)
     {
@@ -128,7 +146,8 @@ class Log
     }
 
     /**
-     * @param field_type $action
+     *
+     * @param field_type $action            
      */
     public function setAction($action)
     {
@@ -136,7 +155,8 @@ class Log
     }
 
     /**
-     * @param field_type $ip
+     *
+     * @param field_type $ip            
      */
     public function setIp($ip)
     {
@@ -144,7 +164,8 @@ class Log
     }
 
     /**
-     * @param field_type $ipResolved
+     *
+     * @param field_type $ipResolved            
      */
     public function setIpResolved($ipResolved)
     {
@@ -152,7 +173,8 @@ class Log
     }
 
     /**
-     * @param field_type $userAgent
+     *
+     * @param field_type $userAgent            
      */
     public function setUserAgent($userAgent)
     {
@@ -160,11 +182,11 @@ class Log
     }
 
     /**
-     * @param field_type $time
+     *
+     * @param field_type $time            
      */
     public function setTime($time)
     {
         $this->time = $time;
     }
-
 }

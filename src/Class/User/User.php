@@ -5,7 +5,6 @@
  * @link      https://github.com/gratbrav/torrentbug
  * @license   https://github.com/gratbrav/torrentbug/blob/master/LICENSE
  */
-
 namespace Gratbrav\Torrentbug\User;
 
 /**
@@ -13,20 +12,30 @@ namespace Gratbrav\Torrentbug\User;
  *
  * User
  *
- * @package  Torrentbug
- * @author   Gratbrav
+ * @package Torrentbug
+ * @author Gratbrav
  */
 class User
 {
+
     protected $uid = 0;
+
     protected $userId;
+
     protected $password;
+
     protected $hits;
+
     protected $lastVisit;
+
     protected $timeCreated;
+
     protected $userLevel;
+
     protected $hideOffline;
+
     protected $theme;
+
     protected $languageFile;
 
     function __construct($data)
@@ -44,14 +53,16 @@ class User
     }
 
     /**
+     *
      * @return the $uid
      */
     public function getUid()
     {
-        return $this->uid;
+        return (int) $this->uid;
     }
 
     /**
+     *
      * @return the $userId
      */
     public function getUserId()
@@ -60,6 +71,7 @@ class User
     }
 
     /**
+     *
      * @return the $password
      */
     public function getPassword()
@@ -68,6 +80,7 @@ class User
     }
 
     /**
+     *
      * @return the $hits
      */
     public function getHits()
@@ -76,6 +89,7 @@ class User
     }
 
     /**
+     *
      * @return the $lastVisit
      */
     public function getLastVisit()
@@ -84,6 +98,7 @@ class User
     }
 
     /**
+     *
      * @return the $timeCreated
      */
     public function getTimeCreated()
@@ -92,6 +107,7 @@ class User
     }
 
     /**
+     *
      * @return the $userLevel
      */
     public function getUserLevel()
@@ -100,6 +116,7 @@ class User
     }
 
     /**
+     *
      * @return the $hideOffline
      */
     public function getHideOffline()
@@ -108,6 +125,7 @@ class User
     }
 
     /**
+     *
      * @return the $theme
      */
     public function getTheme()
@@ -116,6 +134,7 @@ class User
     }
 
     /**
+     *
      * @return the $languageFile
      */
     public function getLanguageFile()
@@ -124,7 +143,8 @@ class User
     }
 
     /**
-     * @param field_type $uid
+     *
+     * @param field_type $uid            
      */
     public function setUid($uid)
     {
@@ -134,7 +154,8 @@ class User
     }
 
     /**
-     * @param field_type $userId
+     *
+     * @param field_type $userId            
      */
     public function setUserId($userId)
     {
@@ -142,7 +163,8 @@ class User
     }
 
     /**
-     * @param field_type $password
+     *
+     * @param field_type $password            
      */
     public function setPassword($password)
     {
@@ -150,7 +172,8 @@ class User
     }
 
     /**
-     * @param field_type $hits
+     *
+     * @param field_type $hits            
      */
     public function setHits($hits)
     {
@@ -158,7 +181,8 @@ class User
     }
 
     /**
-     * @param field_type $lastVisit
+     *
+     * @param field_type $lastVisit            
      */
     public function setLastVisit($lastVisit)
     {
@@ -166,7 +190,8 @@ class User
     }
 
     /**
-     * @param field_type $timeCreated
+     *
+     * @param field_type $timeCreated            
      */
     public function setTimeCreated($timeCreated)
     {
@@ -174,7 +199,8 @@ class User
     }
 
     /**
-     * @param field_type $userLevel
+     *
+     * @param field_type $userLevel            
      */
     public function setUserLevel($userLevel)
     {
@@ -182,7 +208,8 @@ class User
     }
 
     /**
-     * @param field_type $hideOffline
+     *
+     * @param field_type $hideOffline            
      */
     public function setHideOffline($hideOffline)
     {
@@ -190,7 +217,8 @@ class User
     }
 
     /**
-     * @param field_type $theme
+     *
+     * @param field_type $theme            
      */
     public function setTheme($theme)
     {
@@ -198,13 +226,11 @@ class User
     }
 
     /**
-     * @param field_type $languageFile
+     *
+     * @param field_type $languageFile            
      */
     public function setLanguageFile($languageFile)
     {
         $this->languageFile = $languageFile;
     }
-
-
-
 }

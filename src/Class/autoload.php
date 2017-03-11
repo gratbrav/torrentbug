@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Autoloader
  *
@@ -9,12 +10,16 @@
  */
 class Autoloader
 {
+
     /**
      * Constructor
      */
     public function __construct()
     {
-        spl_autoload_register([$this, 'loadClass']);
+        spl_autoload_register([
+            $this,
+            'loadClass'
+        ]);
     }
 
     /**
@@ -27,15 +32,15 @@ class Autoloader
 
     /**
      * Load class
-     * 
-     * @param string $className
+     *
+     * @param string $className            
      */
     public function loadClass($className)
     {
         $file = str_replace('Gratbrav\\Torrentbug\\', '', $className);
         $file = str_replace('\\', '/', $file);
         $file = __DIR__ . '/' . $file . '.php';
-
+        
         if (file_exists($file)) {
             require_once $file;
         } else {
@@ -45,20 +50,20 @@ class Autoloader
 
     /**
      * Fallback to load class without namespace
-     * 
-     * @param string $className
+     *
+     * @param string $className            
      */
-    protected function fallback ($className)
+    protected function fallback($className)
     {
         $className = ltrim($className, '\\');
-        $fileName  = '';
+        $fileName = '';
         if ($lastNsPos = strrpos($className, '\\')) {
             $namespace = substr($className, 0, $lastNsPos);
             $className = substr($className, $lastNsPos + 1);
-            $fileName  = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
+            $fileName = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
         }
         $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
-
+        
         require __DIR__ . '/../' . $fileName;
     }
 }
