@@ -115,17 +115,13 @@ function Authenticate()
         exit();
     }
     
-    // $sql = "SELECT uid, hits, hide_offline, theme, language_file FROM tf_users WHERE user_id=".$db->qstr($cfg['user']);
-    // $recordset = $db->Execute($sql);
-    // showError($db, $sql);
-    
     $userService = new Gratbrav\Torrentbug\User\Service();
     $user = $userService->getUserById($_SESSION['uid']);
     
-    if ($user->getUid()) {
+    if (!$user->getUid()) {
         $options = [
-            'user_id' => $cfg['user'],
-            'file' => 'FAILED AUTH: ' . $cfg['user'],
+            'user_id' => $user->getUserId(),
+            'file' => 'FAILED AUTH: ' . $user->getUserId(),
             'action' => $cfg["constants"]["error"]
         ];
         $log = new \Gratbrav\Torrentbug\Log\Service();
@@ -136,15 +132,11 @@ function Authenticate()
         exit();
     }
     
-    $cfg["hide_offline"] = $user->getHideOffline();
-    $cfg["theme"] = $user->getTheme();
-    $cfg["language_file"] = $user->getLanguageFile();
-    
     // Check for valid theme
     if (! ereg('^[^./][^/]*$', $user->getTheme())) {
         $options = [
-            'user_id' => $cfg['user'],
-            'file' => 'THEME VARIABLE CHANGE ATTEMPT: ' . $user->getTheme() . ' from ' . $cfg['user'],
+            'user_id' => $user->getUserId(),
+            'file' => 'THEME VARIABLE CHANGE ATTEMPT: ' . $user->getTheme() . ' from ' . $user->getUserId(),
             'action' => $cfg["constants"]["error"]
         ];
         $log = new \Gratbrav\Torrentbug\Log\Service();
@@ -154,17 +146,17 @@ function Authenticate()
     }
     
     // Check for valid language file
-    if (! ereg('^[^./][^/]*$', $cfg["language_file"])) {
+    if (! ereg('^[^./][^/]*$', $user->getLanguageFile())) {
         
         $options = [
-            'user_id' => $cfg['user'],
-            'file' => 'LANGUAGE VARIABLE CHANGE ATTEMPT: ' . $cfg["language_file"] . ' from ' . $cfg['user'],
+            'user_id' => $user->getUserId(),
+            'file' => 'LANGUAGE VARIABLE CHANGE ATTEMPT: ' . $user->getLanguageFile() . ' from ' . $user->getUserId(),
             'action' => $cfg["constants"]["error"]
         ];
         $log = new \Gratbrav\Torrentbug\Log\Service();
         $log->save($options);
         
-        $cfg["language_file"] = $settings->get('default_language');
+        $user->setLanguageFile($settings->get('default_language'));
     }
     
     if (! is_dir("themes/" . $user->getTheme())) {
@@ -172,15 +164,17 @@ function Authenticate()
     }
     
     // Check for valid language file
-    if (! is_file("language/" . $cfg["language_file"])) {
-        $cfg["language_file"] = $settings->get('default_language');
+    if (! is_file("language/" . $user->getLanguageFile())) {
+        $user->setLanguageFile($settings->get('default_language'));
     }
     
     $user->setHits($user->getHits() + 1);
     $user->setLastVisit((new \DateTime())->format('Y-m-d'));
-    $user->setLanguageFile($cfg['language_file']);
     
     $userService->save($user);
+    
+    $cfg['theme'] = $user->getTheme();
+    $cfg['language_file'] = $user->getLanguageFile();
 }
 
 // *********************************************************
