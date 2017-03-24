@@ -21,34 +21,10 @@
  * along with TorrentFlux; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-include_once './Class/autoload.php';
 
-include_once ("config.php");
+    session_name("Torrentbug");
 
-// Start Session and grab user
-session_name("Torrentbug");
-session_start();
-$cfg["user"] = strtolower($_SESSION['user']);
+    session_start();
+    session_destroy();
 
-// 2004-12-09 PFM
-include_once ('db.php');
-
-// Create Connection.
-$db = getdb();
-
-logoutUser();
-session_destroy();
-header('location: login.php');
-
-// Remove history for user so they are logged off from screen
-function logoutUser()
-{
-    global $cfg, $db;
-    
-    $sql = "DELETE FROM tf_log WHERE user_id=" . $db->qstr($cfg["user"]) . " and action=" . $db->qstr($cfg["constants"]["hit"]);
-    
-    // do the SQL
-    $result = $db->Execute($sql);
-    showError($db, $sql);
-}
-?>
+    header('location: login.php');
