@@ -24,14 +24,10 @@
 include_once './Class/autoload.php';
 
 // ADODB support.
-include_once 'db.php';
 include_once 'settingsfunctions.php';
 
 $settings = new Gratbrav\Torrentbug\Settings();
 $userService = new \Gratbrav\Torrentbug\User\Service();
-
-// Create Connection.
-$db = getdb();
 
 session_name("Torrentbug");
 session_start();
@@ -113,15 +109,15 @@ if (! empty($userName) && ! empty($iamhim)) {
         $log = new \Gratbrav\Torrentbug\Log\Service();
         $log->save($options);
         
-        $next_loc = "admin.php?op=configSettings";
+        $next_loc = "./admin/admin.php?op=configSettings";
     }
     
     if ($allow_login) {
         $auth = new Gratbrav\Torrentbug\User\Authentication($userName, $iamhim);
         $result = $auth->checkLogin();
-        showError($db, $sql);
+        // showError($db, $sql);
         
-        list ($uid, $hits, $cfg["hide_offline"], $cfg["theme"], $cfg["language_file"]) = $result;
+        list ($uid, $hits, $cfg["hide_offline"], $cfg["theme"], $cfg["language_file"], $level) = $result;
         
         if (! array_key_exists("shutdown", $cfg))
             $cfg['shutdown'] = '';
@@ -132,6 +128,7 @@ if (! empty($userName) && ! empty($iamhim)) {
             
             $_SESSION['user'] = $userName;
             $_SESSION['uid'] = $uid;
+            $_SESSION['is_admin'] = ($level == 2) ? true: false;
             
             header("location: " . $next_loc);
             exit();
@@ -222,9 +219,5 @@ if (! empty($userName) && ! empty($iamhim)) {
     <script async src="./js/login.js"></script>
 </body>
 </html>
-<link rel="stylesheet"
-    href="./plugins/twitter/bootstrap/dist/css/bootstrap.min.css"
-    type="text/css" />
-<link rel="stylesheet"
-    href="./plugins/components/font-awesome/css/font-awesome.min.css"
-    type="text/css" />
+<link rel="stylesheet" href="./plugins/twitter/bootstrap/dist/css/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" href="./plugins/components/font-awesome/css/font-awesome.min.css" type="text/css" />

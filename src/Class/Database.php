@@ -7,8 +7,6 @@
  */
 namespace Gratbrav\Torrentbug;
 
-include_once __DIR__ . '/../db.php';
-
 /**
  * Database Class
  *
@@ -65,7 +63,7 @@ class Database
     {
         include (__DIR__ . '/../config.php');
         
-        $db = new \PDO("mysql:host={$cfg[db_host]};dbname={$cfg[db_name]};charset=utf8", $cfg['db_user'], $cfg['db_pass']);
+        $db = new \PDO("mysql:host={$cfg['db_host']};dbname={$cfg['db_name']};charset=utf8", $cfg['db_user'], $cfg['db_pass']);
         
         if (! $db) {
             die('Could not connect to database: ' . $db->ErrorMsg() . '<br>Check your database settings in the config.php file.');
