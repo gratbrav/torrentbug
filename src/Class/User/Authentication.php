@@ -75,7 +75,7 @@ class Authentication
         if (! empty($this->user) && ! empty($this->password)) {
             $pwd = md5($this->password);
             
-            $query = "SELECT uid, hits, hide_offline, theme, language_file FROM tf_users WHERE user_id= :user AND password= :password";
+            $query = "SELECT uid, hits, hide_offline, theme, language_file, user_level FROM tf_users WHERE user_id= :user AND password= :password";
             $statement = $this->db->prepare($query);
             $statement->execute([
                 ':user' => $this->user,
