@@ -66,14 +66,14 @@
                         <td style="text-align: center"><?php echo date(_DATETIMEFORMAT, $user->getLastVisit()) ?></td>
                         <td>
                             <?php if ($user->getUserLevel() <= 1 || IsSuperAdmin()) { ?>
-                                <a href="edituser.php?uid=<?= $user->getUid() ?>" title="<?= _EDIT . " " . $user->getUserId() ?>">
+                                <a href="./user/edit.php?userid=<?= $user->getUid() ?>" title="<?= _EDIT . " " . $user->getUserId() ?>">
                                     <i class="fa fa-pencil" aria-hidden="true"></i>
                                 </a>
                             <?php } ?>
                         </td>
                         <td>
                             <?php if ($user->getUserLevel() <= 1) { ?>
-                                <a href="adduser.php?action=deleteUser&uid=<?= $user->getUid() ?>" onclick="return ConfirmDeleteUser('<?= $user->getUserId() ?>')">
+                                <a href="./user/index.php?action=deleteuser&userid=<?= $user->getUid() ?>" onclick="return ConfirmDeleteUser('<?= $user->getUserId() ?>')">
                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                 </a>
                             <?php } ?>

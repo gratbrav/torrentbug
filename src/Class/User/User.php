@@ -26,7 +26,7 @@ class User
 
     protected $hits;
 
-    protected $lastVisit;
+    protected $lastVisit = '';
 
     protected $timeCreated;
 
@@ -38,7 +38,7 @@ class User
 
     protected $languageFile;
 
-    function __construct($data)
+    function __construct($data = [])
     {
         $this->setUid($data['uid']);
         $this->setUserId($data['user_id']);
@@ -58,7 +58,7 @@ class User
      */
     public function getUid()
     {
-        return (int) $this->uid;
+        return (int)$this->uid;
     }
 
     /**
@@ -67,7 +67,7 @@ class User
      */
     public function getUserId()
     {
-        return $this->userId;
+        return (string)$this->userId;
     }
 
     /**
@@ -76,7 +76,7 @@ class User
      */
     public function getPassword()
     {
-        return $this->password;
+        return (string)$this->password;
     }
 
     /**
@@ -85,7 +85,7 @@ class User
      */
     public function getHits()
     {
-        return $this->hits;
+        return (int)$this->hits;
     }
 
     /**
@@ -94,7 +94,7 @@ class User
      */
     public function getLastVisit()
     {
-        return $this->lastVisit;
+        return (string)$this->lastVisit;
     }
 
     /**
@@ -103,7 +103,7 @@ class User
      */
     public function getTimeCreated()
     {
-        return $this->timeCreated;
+        return (int)$this->timeCreated;
     }
 
     /**
@@ -112,7 +112,7 @@ class User
      */
     public function getUserLevel()
     {
-        return $this->userLevel;
+        return (int)$this->userLevel;
     }
 
     /**
@@ -121,7 +121,7 @@ class User
      */
     public function getHideOffline()
     {
-        return $this->hideOffline;
+        return (int)$this->hideOffline;
     }
 
     /**
@@ -130,7 +130,7 @@ class User
      */
     public function getTheme()
     {
-        return $this->theme;
+        return (string)$this->theme;
     }
 
     /**
@@ -139,7 +139,7 @@ class User
      */
     public function getLanguageFile()
     {
-        return $this->languageFile;
+        return (string)$this->languageFile;
     }
 
     /**

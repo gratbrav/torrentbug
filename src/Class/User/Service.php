@@ -60,18 +60,39 @@ class Service
     /**
      * Return single user by id
      *
-     * @param numeric $userId            
+     * @param numeric $userId
      * @return User
      */
     public function getUserById($userId)
     {
-        if (is_null($this->users) || ! isset($this->users[$userId])) {
+        if (is_null($this->users) || !isset($this->users[$userId])) {
             $this->loadUsers();
         }
-        
+
         $user = isset($this->users[$userId]) ? $this->users[$userId] : new User();
-        
+
         return $user;
+    }
+
+    /**
+     * Is login in use
+     * 
+     * @param string $login
+     * @return boolean
+     */
+    public function isLoginInUse($login)
+    {
+        if (is_null($this->users) || !isset($this->users[$userId])) {
+            $this->loadUsers();
+        }
+
+        foreach ($this->users as $user) {
+            if ($user->getUserId() == $login) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -123,7 +144,7 @@ class Service
         } else {
             $query = "INSERT INTO tf_users VALUES (:uid, :userId, :password, :hits, :lastVisit, :timeCreated, :userLevel, :hideOffline, :theme, :languageFile)";
         }
-        
+        error_log($query);
         $statement = $this->db->prepare($query);
         $statement->execute([
             ':uid' => $user->getUid(),
@@ -131,13 +152,13 @@ class Service
             ':password' => $user->getPassword(),
             ':hits' => $user->getHits(),
             ':lastVisit' => $user->getLastVisit(),
-            ':timeCreated' => $user->getTimeCreated(),
+            ':timeCreated' => ($user->getUid()) ? $user->getTimeCreated() : time(),
             ':userLevel' => $user->getUserLevel(),
             ':hideOffline' => $user->getHideOffline(),
             ':theme' => $user->getTheme(),
             ':languageFile' => $user->getLanguageFile()
         ]);
-        
+        error_log(print_r($user, true));
         return $statement->fetch();
     }
 }

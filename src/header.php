@@ -83,7 +83,7 @@
                     <a class="nav-item nav-link"
                         href="<?php echo $settings->get('base_url') ?>/admin/rss.php"><small>rss</small></a>
                     <a class="nav-item nav-link"
-                        href="<?php echo $settings->get('base_url') ?>/admin/adduser.php"><small><?php echo _NEWUSER_MENU ?></small></a>
+                        href="<?php echo $settings->get('base_url') ?>/admin/user"><small><?php echo _NEWUSER_MENU ?></small></a>
                     <a class="nav-item nav-link"
                         href="<?php echo $settings->get('base_url') ?>/admin/admin.php?action=backupDatabase"><small><?php echo _BACKUP_MENU ?></small></a>
                 </div>
