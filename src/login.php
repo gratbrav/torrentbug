@@ -114,21 +114,26 @@ if (! empty($userName) && ! empty($iamhim)) {
     
     if ($allow_login) {
         $auth = new Gratbrav\Torrentbug\User\Authentication($userName, $iamhim);
-        $result = $auth->checkLogin();
+        $userId = $auth->checkLogin();
         // showError($db, $sql);
-        
-        list ($uid, $hits, $cfg["hide_offline"], $cfg["theme"], $cfg["language_file"], $level) = $result;
-        
-        if (! array_key_exists("shutdown", $cfg))
-            $cfg['shutdown'] = '';
-        if (! array_key_exists("upload_rate", $cfg))
-            $cfg['upload_rate'] = '';
-        
-        if ($result !== false) {
-            
+
+        if ($userId !== 0) {
+
+            $userService = new Gratbrav\Torrentbug\User\Service();
+            $user = $userService->getUserById($userId);
+
+            $cfg["hide_offline"] = $user->getHideOffline();
+            $cfg["theme"] = $user->getTheme();
+            $cfg["language_file"] = $user->getLanguageFile();
+
+            if (! array_key_exists("shutdown", $cfg))
+                $cfg['shutdown'] = '';
+            if (! array_key_exists("upload_rate", $cfg))
+                $cfg['upload_rate'] = '';
+
             $_SESSION['user'] = $userName;
-            $_SESSION['uid'] = $uid;
-            $_SESSION['is_admin'] = ($level == 2) ? true: false;
+            $_SESSION['uid'] = $user->getUid();
+            $_SESSION['is_admin'] = ($user->getUserLevel() == 2) ? true: false;
             
             header("location: " . $next_loc);
             exit();
