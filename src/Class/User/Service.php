@@ -82,7 +82,7 @@ class Service
      */
     public function isLoginInUse($login)
     {
-        if (is_null($this->users) || !isset($this->users[$userId])) {
+        if (is_null($this->users) || !isset($this->users[$login])) {
             $this->loadUsers();
         }
 
