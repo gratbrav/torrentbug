@@ -12,7 +12,7 @@ use Gratbrav\Torrentbug\Database;
 /**
  * User Service
  *
- * Handle alle user events
+ * Handle all user events
  *
  * @package Torrentbug
  * @author Gratbrav
