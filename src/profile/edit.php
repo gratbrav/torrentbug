@@ -21,7 +21,7 @@ $user = $userService->getUserById($_SESSION['uid']);
             if (IsSuperAdmin()) {
                 $user_type = _SUPERADMIN;
             } else 
-                if (IsAdmin()) {
+                if ($_SESSION['is_admin']) {
                     $user_type = _ADMINISTRATOR;
                 }
             

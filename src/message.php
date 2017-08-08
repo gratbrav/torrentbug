@@ -104,7 +104,7 @@ if (! empty($message) && ! empty($to_user) && ! empty($cfg['user'])) {
                             value="1"> <label for="to_all"><?=_SENDTOALLUSERS?></label>
 
                         <input type="hidden" name="force_read" value="0">
-                    <?php if (IsAdmin()) { ?>
+                    <?php if ($_SESSION['is_admin']) { ?>
                         <input type="checkbox" name="force_read"
                             id="force_read" value="1"> <label
                             for="force_read"><?=_FORCEUSERSTOREAD?></label>

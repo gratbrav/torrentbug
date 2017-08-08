@@ -39,7 +39,7 @@
                         href="<?php echo $settings->get('base_url') ?>/profile/edit.php"><?php echo _MYPROFILE ?></a>
                     <a class="nav-item nav-link"
                         href="<?php echo $settings->get('base_url') ?>/readmsg.php"><?php echo _MESSAGES ?><?php echo $countMessages ?></a>
-				<?php if (IsAdmin()) { ?>
+				<?php if ($_SESSION['is_admin']) { ?>
 					<a class="nav-item nav-link"
                         href="<?php echo $settings->get('base_url') ?>/admin/admin.php"><?php echo _ADMINISTRATION ?></a>
 				<?php } ?>

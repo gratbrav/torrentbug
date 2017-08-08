@@ -9,7 +9,7 @@
 
 include_once '../../functions.php';
 
-if (!IsAdmin()) {
+if (!$_SESSION['is_admin']) {
     // the user probably hit this page direct
     $options = [
         'user_id' => $cfg['user'],

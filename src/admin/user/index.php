@@ -7,18 +7,18 @@
 
 include_once '../../functions.php';
 
-if (!IsAdmin()) {
-    // the user probably hit this page direct
-    $options = [
-        'user_id' => $cfg['user'],
-        'file' => $_SERVER['PHP_SELF'],
-        'action' => $cfg["constants"]["access_denied"]
-    ];
-    $log = new \Gratbrav\Torrentbug\Log\Service();
-    $log->save($options);
+    // redirect if no admin
+    if (!$_SESSION['is_admin']) {
+        $options = [
+            'user_id' => $cfg['user'],
+            'file' => $_SERVER['PHP_SELF'],
+            'action' => $cfg["constants"]["access_denied"]
+        ];
+        $log = new \Gratbrav\Torrentbug\Log\Service();
+        $log->save($options);
 
-    header("location: ../../index.php");
-}
+        header("location: ../../index.php");
+    }
 
     $subMenu = 'admin';
     include_once '../../header.php';

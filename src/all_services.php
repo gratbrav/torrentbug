@@ -28,7 +28,7 @@ include_once ("functions.php");
 
 $settings = new Gratbrav\Torrentbug\Settings();
 
-if (! IsAdmin($cfg["user"])) {
+if (!$_SESSION['is_admin']) {
     header("Location:index.php");
 }
 

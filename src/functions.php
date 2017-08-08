@@ -473,28 +473,6 @@ function GetSpeedValue($inValue)
 }
 
 // ***************************************************************************
-// Is User Admin
-// user is Admin if level is 1 or higher
-function IsAdmin($user = "")
-{
-    global $cfg, $db;
-    
-    $isAdmin = false;
-    
-    if ($user == "") {
-        $user = $cfg["user"];
-    }
-    
-    $sql = "SELECT user_level FROM tf_users WHERE user_id=" . $db->qstr($user);
-    $user_level = $db->GetOne($sql);
-    
-    if ($user_level >= 1) {
-        $isAdmin = true;
-    }
-    return $isAdmin;
-}
-
-// ***************************************************************************
 // Is User SUPER Admin
 // user is Super Admin if level is higher than 1
 function IsSuperAdmin($user = "")
@@ -1020,7 +998,7 @@ function DisplayTitleBar($pageTitleText, $showButtons = true)
         
         echo "<a href=\"readmsg.php\"><img src=\"" . $message_image . "\" width=49 height=13 title=\"" . _MESSAGES . "\"></a>";
         
-        if (IsAdmin()) {
+        if ($_SESSION['is_admin']) {
             echo "&nbsp;<a href=\"admin.php\"><img src=\"themes/" . $cfg["theme"] . "/images/admin.gif\" width=49 height=13 title=\"" . _ADMINISTRATION . "\"></a>";
         }
         
@@ -1663,7 +1641,7 @@ function RunningProcessInfo()
 {
     global $settings;
     
-    if (IsAdmin()) {
+    if ($_SESSION['is_admin']) {
         include_once ("RunningTorrent.php");
         
         $screenStatus = runPS();

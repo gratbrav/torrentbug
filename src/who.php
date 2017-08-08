@@ -28,7 +28,7 @@ include_once ("functions.php");
 
 $settings = new Gratbrav\Torrentbug\Settings();
 
-if (! IsAdmin($cfg["user"])) {
+if (!$_SESSION['is_admin']) {
     header("Location:index.php");
 }
 
@@ -53,7 +53,7 @@ include_once 'header.php'?>
         <div class="col-sm-12 bd-example" style="padding: 10px;">
             <pre><?php echo $result; ?><hr><?php echo $result2; ?></pre>
 			<?php
-if (IsAdmin()) {
+if ($_SESSION['is_admin']) {
     echo "<hr>";
     echo "<pre>";
     RunningProcessInfo();

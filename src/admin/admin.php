@@ -3,7 +3,7 @@ include_once '../Class/autoload.php';
 include_once '../config.php';
 include_once '../functions.php';
 
-if (! IsAdmin()) {
+if (!$_SESSION['is_admin']) {
     // the user probably hit this page direct
     $options = [
         'user_id' => $cfg['user'],

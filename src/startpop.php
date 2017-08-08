@@ -213,7 +213,7 @@ function isNumber(sText)
                                     valign="top">
 <?php
 if ($settings->get('AllowQueing') == true) {
-    if (IsAdmin()) {
+    if ($_SESSION['is_admin']) {
         echo "<input type='Checkbox' name='queue' checked>Add to Queue";
     } else {
         // Force Queuing if not an admin.

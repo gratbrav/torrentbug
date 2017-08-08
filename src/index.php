@@ -69,7 +69,7 @@ if (checkQManager() == 0) {
             $log = new \Gratbrav\Torrentbug\Log\Service();
             $log->save($options);
             
-            if (IsAdmin()) {
+            if ($_SESSION['is_admin']) {
                 header("location: admin.php?op=configSettings");
                 exit();
             } else {
@@ -106,7 +106,7 @@ if (! empty($torrent)) {
             $log = new \Gratbrav\Torrentbug\Log\Service();
             $log->save($options);
             
-            if (IsAdmin()) {
+            if ($_SESSION['is_admin']) {
                 header("location: admin.php?op=configSettings");
                 exit();
             } else {
@@ -174,7 +174,7 @@ if (! empty($torrent)) {
         }
         
         if ($settings->get('AllowQueing')) {
-            if (IsAdmin()) {
+            if ($_SESSION['is_admin']) {
                 $queue = getRequestVar('queue');
                 if ($queue == 'on') {
                     $queue = "1";
@@ -220,7 +220,7 @@ if (! empty($torrent)) {
                 $log = new \Gratbrav\Torrentbug\Log\Service();
                 $log->save($options);
                 
-                if (IsAdmin()) {
+                if ($_SESSION['is_admin']) {
                     header("location: admin.php?op=configSettings");
                     exit();
                 } else {
@@ -489,7 +489,7 @@ if (! empty($_FILES['upload_file']['name'])) {
 $delfile = SecurityClean(getRequestVar('delfile'));
 if (! $delfile == '') {
     $alias_file = SecurityClean(getRequestVar('alias_file'));
-    if (($cfg["user"] == getOwner($delfile)) || IsAdmin()) {
+    if (($cfg["user"] == getOwner($delfile)) || $_SESSION['is_admin']) {
         @unlink($settings->get('torrent_file_path') . $delfile);
         @unlink($settings->get('torrent_file_path') . $alias_file);
         // try to remove the QInfo if in case it was queued.
@@ -932,7 +932,7 @@ if (is_dir($dirName)) {
     $handle = opendir($dirName);
 } else {
     // nothing to read
-    if (IsAdmin()) {
+    if ($_SESSION['is_admin']) {
         echo "<b>ERROR:</b> " . $dirName . " Path is not valid. Please edit <a href='admin.php?op=configSettings'>settings</a><br>";
     } else {
         echo "<b>ERROR:</b> Contact an admin the Path is not valid.<br>";
@@ -1135,7 +1135,7 @@ foreach ($arList as $entry) {
     $output .= "\">";
     $output .= "<i class=\"fa fa-info\" aria-hidden=\"true\" title=\"$torrentDetails\"></i></a> ";
     
-    if ($owner || IsAdmin($cfg["user"])) {
+    if ($owner || $_SESSION['is_admin']) {
         if ($kill_id != "" && $af->percent_done >= 0 && $af->running == 1) {
             $output .= " <a href=\"index.php?alias_file=" . $alias . "&kill=" . $kill_id . "&kill_torrent=" . urlencode($entry) . "\">";
             $output .= "<i class=\"fa fa-arrow-circle-o-down\" style=\"color:red\" aria-hidden=\"true\" title=\"" . _STOPDOWNLOAD . "\"></i>";

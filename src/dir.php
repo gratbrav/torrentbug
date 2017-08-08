@@ -44,7 +44,7 @@ if ($del != "") {
     $current = "";
     // The following lines of code were suggested by Jody Steele jmlsteele@stfu.ca
     // this is so only the owner of the file(s) or admin can delete
-    if (IsAdmin($cfg["user"]) || preg_match("/^" . $cfg["user"] . "/", $del)) {
+    if ($_SESSION['is_admin'] || preg_match("/^" . $cfg["user"] . "/", $del)) {
         // Yes, then delete it
         
         // we need to strip slashes twice in some circumstances
@@ -356,7 +356,7 @@ if (! file_exists($settings->get('path') . $dir)) {
                                 title="Download as '<?php echo $settings->get('package_type'); ?>"></i></a> 
     			            <?php } ?>
     			    
-    			            <?php if (IsAdmin($cfg["user"]) || preg_match("/^" . $cfg["user"] . "/",$dir)) { ?>
+    			            <?php if ($_SESSION['is_admin'] || preg_match("/^" . $cfg["user"] . "/",$dir)) { ?>
     			            	<a class="delete"
                             href="dir.php?del=<?php echo urlencode($dir . $entry); ?>"
                             data-file="<?php echo addslashes($entry); ?>"><i
@@ -436,7 +436,7 @@ if (! file_exists($settings->get('path') . $dir)) {
                                 aria-hidden="true" title="Download"></i></a>
 			                <?php } ?>
     			    
-			                <?php if (IsAdmin($cfg["user"]) || preg_match("/^" . $cfg["user"] . "/",$dir)) { ?>
+			                <?php if ($_SESSION['is_admin'] || preg_match("/^" . $cfg["user"] . "/",$dir)) { ?>
     			            	<a class="delete"
                             href="dir.php?del=<?php echo urlencode($dir.$entry); ?>"
                             data-file="<?php echo addslashes($entry); ?>"><i

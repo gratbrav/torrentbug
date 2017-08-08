@@ -39,7 +39,7 @@ if ($action == "torrent" || $action == "data") {
         // and we need to call it serveral times in a row
         $element = urldecode($element);
         
-        if (($cfg["user"] == getOwner($element)) || IsAdmin()) {
+        if (($cfg["user"] == getOwner($element)) || $_SESSION['is_admin']) {
             // the user is the owner of the torrent -> delete it
             // FIRST delete data, then the torrent
             if ($action == "data") {
@@ -128,7 +128,7 @@ function delFile($del)
 {
     global $cfg, $settings;
     
-    if (IsAdmin($cfg["user"]) || preg_match("/^" . $cfg["user"] . "/", $del)) {
+    if ($_SESSION['is_admin'] || preg_match("/^" . $cfg["user"] . "/", $del)) {
         // Yes, then delete it
         
         // we need to strip slashes twice in some circumstances
