@@ -135,7 +135,8 @@ class Service
     /**
      * Save user
      *
-     * @param User $user            
+     * @param User $user
+     * @return Service
      */
     public function save(User $user)
     {
@@ -144,7 +145,7 @@ class Service
         } else {
             $query = "INSERT INTO tf_users VALUES (:uid, :userId, :password, :hits, :lastVisit, :timeCreated, :userLevel, :hideOffline, :theme, :languageFile)";
         }
-        error_log($query);
+
         $statement = $this->db->prepare($query);
         $statement->execute([
             ':uid' => $user->getUid(),
@@ -158,7 +159,7 @@ class Service
             ':theme' => $user->getTheme(),
             ':languageFile' => $user->getLanguageFile()
         ]);
-        error_log(print_r($user, true));
-        return $statement->fetch();
+
+        return $this;
     }
 }
