@@ -131,7 +131,7 @@ if (! empty($userName) && ! empty($iamhim)) {
             if (! array_key_exists("upload_rate", $cfg))
                 $cfg['upload_rate'] = '';
 
-            $_SESSION['user'] = $userName;
+            $_SESSION['user'] = $user;
             $_SESSION['uid'] = $user->getUid();
             $_SESSION['is_admin'] = ($user->getUserLevel() == 2) ? true: false;
             

@@ -27,7 +27,7 @@ session_name("Torrentbug");
 session_start();
 
 if (isset($_SESSION['user'])) {
-    $cfg["user"] = strtolower($_SESSION['user']);
+    $cfg["user"] = strtolower($_SESSION['user']->getUserId());
 } else {
     $cfg["user"] = "";
 }
@@ -109,7 +109,7 @@ function Authenticate()
         exit();
     }
     
-    if ($_SESSION['user'] == md5($cfg["pagetitle"])) {
+    if ($_SESSION['user']->getUserId() == md5($cfg["pagetitle"])) {
         // user changed password and needs to login again
         header('location: ' . $settings->get('base_url') . '/logout.php');
         exit();
