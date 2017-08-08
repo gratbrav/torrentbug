@@ -473,28 +473,6 @@ function GetSpeedValue($inValue)
 }
 
 // ***************************************************************************
-// Is User SUPER Admin
-// user is Super Admin if level is higher than 1
-function IsSuperAdmin($user = "")
-{
-    global $cfg, $db;
-    
-    $isAdmin = false;
-    
-    if ($user == "") {
-        $user = $cfg["user"];
-    }
-    
-    $sql = "SELECT user_level FROM tf_users WHERE user_id=" . $db->qstr($user);
-    $user_level = $db->GetOne($sql);
-    
-    if ($user_level > 1) {
-        $isAdmin = true;
-    }
-    return $isAdmin;
-}
-
-// ***************************************************************************
 // Get Themes data in an array
 function GetThemes()
 {

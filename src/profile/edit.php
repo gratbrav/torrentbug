@@ -18,7 +18,7 @@ $user = $userService->getUserById($_SESSION['uid']);
             $total_activity = GetActivityCount();
             
             $user_type = _NORMALUSER;
-            if (IsSuperAdmin()) {
+            if ($_SESSION['user']->getUserLevel() == 2) {
                 $user_type = _SUPERADMIN;
             } else 
                 if ($_SESSION['is_admin']) {

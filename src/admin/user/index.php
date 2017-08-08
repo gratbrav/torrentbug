@@ -75,7 +75,7 @@ include_once '../../functions.php';
                         <td style="text-align: center"><?= date(_DATEFORMAT, $user->getTimeCreated()) ?></td>
                         <td style="text-align: center"><?= $user->getLastVisit() ?></td>
                         <td>
-                            <?php if ($user->getUserLevel() <= 1 || IsSuperAdmin()) { ?>
+                            <?php if ($user->getUserLevel() <= 1 || $user->getUserLevel() == 2) { ?>
                                 <a href="edit.php?userid=<?= $user->getUid() ?>" title="<?= _EDIT . " " . $user->getUserId() ?>">
                                     <i class="fa fa-pencil" aria-hidden="true"></i>
                                 </a>

@@ -65,7 +65,7 @@
                         <td style="text-align: center"><?php echo date(_DATEFORMAT, $user->getTimeCreated()) ?></td>
                         <td style="text-align: center"><?php echo date(_DATETIMEFORMAT, $user->getLastVisit()) ?></td>
                         <td>
-                            <?php if ($user->getUserLevel() <= 1 || IsSuperAdmin()) { ?>
+                            <?php if ($user->getUserLevel() <= 1 || $user->getUserLevel() == 2) { ?>
                                 <a href="./user/edit.php?userid=<?= $user->getUid() ?>" title="<?= _EDIT . " " . $user->getUserId() ?>">
                                     <i class="fa fa-pencil" aria-hidden="true"></i>
                                 </a>
