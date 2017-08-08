@@ -60,7 +60,7 @@ class Service
     /**
      * Return single user by id
      *
-     * @param numeric $userId
+     * @param integer $userId
      * @return User
      */
     public function getUserById($userId)
@@ -117,7 +117,7 @@ class Service
     /**
      * Delete user by id
      *
-     * @param numeric $uId            
+     * @param integer $uId
      * @return array
      */
     public function delete($uId)
