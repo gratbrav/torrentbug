@@ -133,7 +133,7 @@ if (! empty($userName) && ! empty($iamhim)) {
 
             $_SESSION['user'] = $user;
             $_SESSION['uid'] = $user->getUid();
-            $_SESSION['is_admin'] = ($user->getUserLevel() == 2) ? true: false;
+            $_SESSION['is_admin'] = ($user->getUserLevel() > 0) ? true: false;
             
             header("location: " . $next_loc);
             exit();
