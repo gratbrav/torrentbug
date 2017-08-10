@@ -12,7 +12,7 @@ use Gratbrav\Torrentbug\Database;
 /**
  * Message Service
  *
- * Handle alle message events
+ * Handle all message events
  *
  * @package Torrentbug
  * @author Gratbrav
@@ -35,11 +35,11 @@ class Service
     protected $user = null;
 
     /**
-     * Messages
+     * Message List
      * 
      * @var array
      */
-    protected $messages = null;
+    protected $messageList = null;
 
     /**
      * Constructor
@@ -61,26 +61,26 @@ class Service
      */
     public function getMessages()
     {
-        if (is_null($this->messages)) {
+        if (is_null($this->messageList)) {
             $this->loadMessages();
         }
         
-        return (array) $this->messages;
+        return (array) $this->messageList;
     }
 
     /**
      * Return single message by id
      *
-     * @param numeric $msgId            
+     * @param integer $msgId
      * @return Message
      */
     public function getMessageById($msgId)
     {
-        if (is_null($this->messages) || ! isset($this->messges[$msgId])) {
+        if (is_null($this->messageList) || ! isset($this->messgeList[$msgId])) {
             $this->loadMessages();
         }
         
-        $message = isset($this->messages[$msgId]) ? $this->messages[$msgId] : new Message();
+        $message = isset($this->messageList[$msgId]) ? $this->messageList[$msgId] : new Message();
         
         return $message;
     }
@@ -100,7 +100,7 @@ class Service
         ]);
         
         while ($data = $statement->fetch()) {
-            $this->messages[$data['mid']] = new Message($data);
+            $this->messageList[$data['mid']] = new Message($data);
         }
         
         return $this;
@@ -109,8 +109,8 @@ class Service
     /**
      * Delete message by id
      *
-     * @param numeric $msgId            
-     * @return array
+     * @param integer $msgId
+     * @return Service
      */
     public function delete($msgId)
     {
@@ -122,14 +122,14 @@ class Service
             ':user' => $this->user
         ]);
         
-        return $statement->fetch();
+        return $this;
     }
 
     /**
      * Mark message as read by id
      *
-     * @param numeric $msgId            
-     * @return unknown
+     * @param integer $msgId
+     * @return Service
      */
     public function markAsRead($msgId)
     {
@@ -141,35 +141,32 @@ class Service
             ':user' => $this->user
         ]);
         
-        return $statement->fetch();
+        return $this;
     }
 
     /**
      * Save message
      *
-     * @param array $data            
-     * @return unknown
+     * @param Message $message
+     * @return Service
      */
-    public function save($data = [])
+    public function save(Message $message)
     {
-        $message = str_replace(array(
-            "'"
-        ), "", $data['message']);
-        
-        $query = "INSERT INTO tf_messages VALUES (:fromUser, :toUser, :message, :isNew, :ip, :time, :forceRead)";
-        
+        $query = "INSERT INTO tf_messages VALUES (:mid, :toUser, :fromUser, :message, :isNew, :ip, :time, :forceRead)";
+
         $statement = $this->db->prepare($query);
         $statement->execute([
-            ':fromUser' => $data['from_user'],
-            ':toUser' => $data['to_user'],
-            ':message' => $message,
-            ':isNew' => $data['is_new'],
+            ':mid' => $message->getMessageId(),
+            ':fromUser' => $message->getSender(),
+            ':toUser' => $message->getRecipient(),
+            ':message' => $message->getMessage(),
+            ':isNew' => $message->getIsNew(),
             ':ip' => $_SERVER['REMOTE_ADDR'],
-            ':time' => time(),
-            ':forceRead' => $data['force_read']
+            ':time' => $message->getTime(),
+            ':forceRead' => $message->getForceRead(),
         ]);
-        
-        return $statement->fetch();
+
+        return $this;
     }
 
     /**
@@ -179,16 +176,17 @@ class Service
      */
     public function hasForceReadMessage()
     {
-        if (is_null($this->messages)) {
+        if (is_null($this->messageList)) {
             $this->loadMessages();
         }
-        
-        foreach ((array) $this->messages as $message) {
+
+        foreach ((array)$this->messageList as $message) {
             if ($message->getForceRead()) {
                 return true;
             }
         }
-        
+
         return false;
     }
+
 }

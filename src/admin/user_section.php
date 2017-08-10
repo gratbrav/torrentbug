@@ -42,7 +42,7 @@
                     ?>
                     <tr>
                         <td>
-                            <?php if (IsUser($user->getUserId())) { ?><a href="../message.php?to_user=<?= $user->getUserId() ?>"><?php } ?>
+                            <?php if (IsUser($user->getUserId())) { ?><a href="../message.php?to_user=<?= $user->getUid() ?>"><?php } ?>
                             <i class="fa fa-user <?= $iconClass ?>" aria-hidden="true"></i>
                             <?= $user->getUserId() ?>
                             <?php if (IsUser($user->getUserId())) { ?></a><?php } ?>

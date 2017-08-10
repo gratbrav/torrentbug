@@ -28,35 +28,42 @@ include_once ("functions.php");
 
 $settings = new Gratbrav\Torrentbug\Settings();
 $msgService = new Gratbrav\Torrentbug\Message\Service($cfg['user']);
+$userService = new Gratbrav\Torrentbug\User\Service();
 
-$to_user = filter_input(INPUT_POST, 'to_user', FILTER_SANITIZE_STRING);
+$to_user = filter_input(INPUT_POST, 'to_user', FILTER_VALIDATE_INT);
 $message = filter_input(INPUT_POST, 'message', FILTER_SANITIZE_STRING);
 
 if (! empty($message) && ! empty($to_user) && ! empty($cfg['user'])) {
-    
+
     $to_all = filter_input(INPUT_POST, 'to_all', FILTER_VALIDATE_INT);
     $force_read = filter_input(INPUT_POST, 'force_read', FILTER_VALIDATE_INT);
     
     $message = check_html($message, "nohtml");
-    
+
     if ($to_all == 1) {
-        SaveMessage($to_user, $cfg['user'], $message, $to_all, $force_read);
+        $userList = $userService->getUsers();
     } else {
-        $settings = [
+        $userList[] = $userService->getUserById($to_user);
+    }
+
+    foreach ((array)$userList as $user) {
+        $messageSettings = [
             'message' => $message,
             'from_user' => $cfg['user'],
-            'to_user' => $to_user,
-            'is_new' => 1,
-            'force_read' => $force_read
+            'to_user' => $user->getUserId(),
+            'isNew' => 1,
+            'force_read' => $force_read,
         ];
-        $msgService->save($settings);
+        $msg = new \Gratbrav\Torrentbug\Message\Message($messageSettings);
+        $msgService->save($msg);
     }
-    
+
     header('location: readmsg.php');
     exit();
+
 } else {
-    
-    $to_user = filter_input(INPUT_GET, 'to_user', FILTER_SANITIZE_STRING);
+
+    $to_user = filter_input(INPUT_GET, 'to_user', FILTER_VALIDATE_INT);
     $rmid = filter_input(INPUT_GET, 'rmid', FILTER_VALIDATE_INT);
     
     if (! empty($rmid)) {
@@ -81,15 +88,14 @@ if (! empty($message) && ! empty($to_user) && ! empty($cfg['user'])) {
                 <div class="form-group row">
                     <label for="to_user" class="col-sm-2 col-form-label"><?=_TO?></label>
                     <div class="col-sm-10">
-                        <select name="to_user" id="to_user"
-                            class="form-control">
-                    <?php
-    $users = GetUsers();
-    foreach ((array) $users as $user) {
-        $selected = ($user == $to_user) ? 'selected' : '';
-        echo '<option ' . $selected . '>' . htmlentities($user, ENT_QUOTES) . '</option>';
-    }
-    ?>
+                        <select name="to_user" id="to_user" class="form-control">
+                            <?php
+                                $userList = $userService->getUsers();
+                                foreach ((array) $userList as $user) {
+                                    $selected = ($user->getUid() == $to_user) ? 'selected' : '';
+                                    echo '<option ' . $selected . ' value="' . $user->getUid() . '">' . htmlentities($user->getUserId(), ENT_QUOTES) . '</option>';
+                                }
+                            ?>
                     </select>
                     </div>
                 </div>

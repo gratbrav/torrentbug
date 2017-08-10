@@ -18,7 +18,7 @@ namespace Gratbrav\Torrentbug\Message;
 class Message
 {
 
-    protected $messageId;
+    protected $messageId = 0;
 
     protected $recipient;
 
@@ -26,15 +26,15 @@ class Message
 
     protected $message;
 
-    protected $isNew;
+    protected $isNew = 1;
 
     protected $ip;
 
-    protected $time;
+    protected $time = null;
 
-    protected $forceRead;
+    protected $forceRead = 0;
 
-    function __construct($data)
+    function __construct($data = [])
     {
         $this->setMessageId($data['mid']);
         $this->setRecipient($data['to_user']);
@@ -48,11 +48,11 @@ class Message
 
     /**
      *
-     * @return the $messageId
+     * @return integer $messageId
      */
     public function getMessageId()
     {
-        return $this->messageId;
+        return (int)$this->messageId;
     }
 
     /**
@@ -84,11 +84,11 @@ class Message
 
     /**
      *
-     * @return the $isNew
+     * @return integer $isNew
      */
     public function getIsNew()
     {
-        return $this->isNew;
+        return (int)$this->isNew;
     }
 
     /**
@@ -102,34 +102,34 @@ class Message
 
     /**
      *
-     * @return the $time
+     * @return integer $time
      */
     public function getTime()
     {
-        return $this->time;
+        return is_null($this->time) ? time() : $this->time;
     }
 
     /**
      *
-     * @return the $forceRead
+     * @return integer $forceRead
      */
     public function getForceRead()
     {
-        return $this->forceRead;
+        return (int)$this->forceRead;
     }
 
     /**
      *
-     * @param field_type $messageId            
+     * @param integer $messageId
      */
     public function setMessageId($messageId)
     {
-        $this->messageId = $messageId;
+        $this->messageId = (int)$messageId;
     }
 
     /**
      *
-     * @param field_type $recipient            
+     * @param field_type $recipient
      */
     public function setRecipient($recipient)
     {
@@ -138,7 +138,7 @@ class Message
 
     /**
      *
-     * @param field_type $sender            
+     * @param field_type $sender
      */
     public function setSender($sender)
     {
@@ -147,7 +147,7 @@ class Message
 
     /**
      *
-     * @param field_type $message            
+     * @param field_type $message
      */
     public function setMessage($message)
     {
@@ -156,16 +156,16 @@ class Message
 
     /**
      *
-     * @param field_type $isNew            
+     * @param integer $isNew
      */
     public function setIsNew($isNew)
     {
-        $this->isNew = $isNew;
+        $this->isNew = (int)$isNew;
     }
 
     /**
      *
-     * @param field_type $ip            
+     * @param field_type $ip
      */
     public function setIp($ip)
     {
@@ -174,7 +174,7 @@ class Message
 
     /**
      *
-     * @param field_type $time            
+     * @param field_type $time
      */
     public function setTime($time)
     {
@@ -183,10 +183,10 @@ class Message
 
     /**
      *
-     * @param field_type $forceRead            
+     * @param integer $forceRead
      */
     public function setForceRead($forceRead)
     {
-        $this->forceRead = $forceRead;
+        $this->forceRead = (int)$forceRead;
     }
 }
