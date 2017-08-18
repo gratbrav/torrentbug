@@ -19,19 +19,31 @@ use Gratbrav\Torrentbug\Database;
  */
 class Settings
 {
-
+    /**
+     * @var \Gratbrav\Torrentbug\Database
+     */
     protected $db = null;
 
-    protected $config = array();
+    /**
+     * @var array
+     */
+    protected $config = [];
 
+    /**
+     * Settings constructor.
+     */
     function __construct()
     {
         $db = Database::getInstance();
         $this->db = $db->getDatabase();
-        
+
         $this->load();
     }
 
+    /**
+     * @param string $key
+     * @return array|mixed|null
+     */
     public function get($key = '')
     {
         if ($key == '') {
@@ -45,6 +57,11 @@ class Settings
         }
     }
 
+    /**
+     * @param string $key
+     * @param string|integer $value
+     * @return bool
+     */
     public function set($key, $value)
     {
         if ($key == '') {
@@ -59,6 +76,9 @@ class Settings
         return false;
     }
 
+    /**
+     *
+     */
     protected function load()
     {
         $query = "SELECT tf_key, tf_value FROM tf_settings";
@@ -81,12 +101,15 @@ class Settings
             
             $this->config[$key] = $value;
         }
-        
+
         // @TODO save and load from db
         $this->config['torrent_file_path'] = $this->config['path'] . '.torrents/';
         // $this->config['document_root'] = realpath($this->config['path'] . '..');
     }
 
+    /**
+     * @param array $data
+     */
     public function save($data = array())
     {
         $config = $this->config;
@@ -106,6 +129,10 @@ class Settings
         }
     }
 
+    /**
+     * @param $key
+     * @param $value
+     */
     protected function updateValue($key, $value)
     {
         $query = "UPDATE tf_settings SET tf_value = :value WHERE tf_key = :key";
@@ -116,6 +143,10 @@ class Settings
         ]);
     }
 
+    /**
+     * @param $key
+     * @param $value
+     */
     protected function insertValue($key, $value)
     {
         $query = "INSERT INTO tf_settings VALUES (:key, :value)";
