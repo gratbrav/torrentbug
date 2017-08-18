@@ -7,6 +7,8 @@
  */
 namespace Gratbrav\Torrentbug;
 
+include_once __DIR__ . '/../config.php';
+
 /**
  * Database Class
  *
@@ -61,7 +63,8 @@ class Database
      */
     private function __construct()
     {
-        include (__DIR__ . '/../config.php');
+        // include_once(__DIR__ . '/../config.php');
+        global $cfg;
         
         $db = new \PDO("mysql:host={$cfg['db_host']};dbname={$cfg['db_name']};charset=utf8", $cfg['db_user'], $cfg['db_pass']);
         
