@@ -22,6 +22,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 include_once './Class/autoload.php';
+include_once './config.php';
 
 // ADODB support.
 include_once 'settingsfunctions.php';
@@ -37,7 +38,7 @@ if (isset($_SESSION['user'])) {
     exit();
 }
 
-include_once ("config.php");
+include_once './config.php';
 include_once 'themes/' . $settings->get('default_theme') . '/index.php';
 
 $userName = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);

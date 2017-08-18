@@ -65,7 +65,7 @@ class Service
             $this->loadMessages();
         }
         
-        return (array) $this->messageList;
+        return (array)$this->messageList;
     }
 
     /**
@@ -76,7 +76,7 @@ class Service
      */
     public function getMessageById($msgId)
     {
-        if (is_null($this->messageList) || ! isset($this->messgeList[$msgId])) {
+        if (is_null($this->messageList) || !isset($this->messgeList[$msgId])) {
             $this->loadMessages();
         }
         
