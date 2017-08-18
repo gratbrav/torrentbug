@@ -29,8 +29,6 @@ require_once ("metaInfo.php");
 
 $settings = new Gratbrav\Torrentbug\Settings();
 
-global $cfg;
-
 $torrent = SecurityClean(getRequestVar('torrent'));
 
 include_once 'header.php';
