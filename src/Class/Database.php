@@ -28,10 +28,13 @@ class Database
     /**
      * Instance
      *
-     * @var self
+     * @var Database
      */
     private static $instance = null;
 
+    /**
+     * @return Database
+     */
     static public function getInstance()
     {
         if (null === self::$instance) {
@@ -42,6 +45,7 @@ class Database
 
     /**
      * Get Database
+     * @return Database
      */
     public function getDatabase()
     {
