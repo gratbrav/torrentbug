@@ -1,7 +1,6 @@
 <?php
 
     include_once '../../Class/autoload.php';
-    include_once '../../config.php';
 
     $settings = new Gratbrav\Torrentbug\Settings();
 
